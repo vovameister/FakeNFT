@@ -20,7 +20,7 @@ final class TabBarController: UITabBarController {
         let catalogController = TestCatalogViewController(
             servicesAssembly: servicesAssembly
         )
-        let profileController = ProfileViewController()
+        let profileController = ProfileViewController.shared
         
         catalogController.tabBarItem = catalogTabBarItem
         profileController.tabBarItem = profileTabBarItem

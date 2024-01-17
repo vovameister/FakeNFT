@@ -6,22 +6,31 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
-    private var presenter: ProfilePresenter?
-
+    static let shared = ProfileViewController()
     
-    private let editButton = UIButton()
-    private let userImage = UIImageView()
-    private let userNameLabel = UILabel()
-    private let descriptionLabel = UILabel()
-    private let linkLabel = UILabel()
-    private let tableView = UITableView()
+    private var presenter: ProfilePresenter?
+    
+    var helper: ProfileHelperProtocol?
+    
+    let editButton = UIButton()
+    let userImage = UIImageView()
+    let userNameLabel = UILabel()
+    let descriptionLabel = UILabel()
+    let linkLabel = UILabel()
+    let tableView = UITableView()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.background
         setUpView()
+        
+        helper = ProfileHelper(viewController: self)
+        
+        helper?.updateProfileView()
     }
 
     @objc func presentWeb(gesture: UITapGestureRecognizer) {
@@ -39,8 +48,9 @@ final class ProfileViewController: UIViewController {
         view.addSubview(editButton)
 
         userImage.translatesAutoresizingMaskIntoConstraints = false
-        userImage.backgroundColor = .gray
-        userImage.layer.cornerRadius = 32
+        userImage.backgroundColor = .elementsBG
+        userImage.layer.cornerRadius = 35
+        userImage.clipsToBounds = true
         view.addSubview(userImage)
 
         userNameLabel.translatesAutoresizingMaskIntoConstraints = false

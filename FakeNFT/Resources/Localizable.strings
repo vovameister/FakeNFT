@@ -8,3 +8,7 @@
 "myNFT" = "Мои NFT";
 "favorites" = "Избранные NFT";
 "aboutDev" = "О разработчике";
+"name" = "Имя";
+"description" = "Описание";
+"website" = "Сайт";
+"changePhoto" = "Сменить фото";
