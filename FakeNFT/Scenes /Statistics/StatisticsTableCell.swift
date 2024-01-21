@@ -6,16 +6,16 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
     
     static let defaultReuseIdentifier = "statisticsCell"
     
-    //MARK: UI elements
-    private lazy var indexLabel: UILabel = {
+    //MARK: - UI elements
+    private lazy var ratingLabel: UILabel = {
         let label = UILabel()
         label.font = .caption1
-        label.text = "1" //debug
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -33,7 +33,6 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 14
         imageView.clipsToBounds = true
-        imageView.backgroundColor = .systemPink //debug
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -42,7 +41,6 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
         let label = UILabel()
         label.font = .headline3
         label.numberOfLines = 2
-        label.text = "Alex Timoti" //debug
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -50,12 +48,12 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
     private lazy var countsNFTLabel: UILabel = {
         let label = UILabel()
         label.font = .headline3
-        label.text = "112" //debug
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    //MARK: init
+    //MARK: - Init
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addViews()
@@ -67,12 +65,13 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
         return nil
     }
     
-    //MARK: layout
+    //MARK: - Layout
+    
     private func addViews() {
         
         backgroundColor = .background
         
-        contentView.addSubview(indexLabel)
+        contentView.addSubview(ratingLabel)
         contentView.addSubview(infoView)
         infoView.addSubview(userAvatarImage)
         infoView.addSubview(userNameLabel)
@@ -80,11 +79,11 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
         
         NSLayoutConstraint.activate([
             
-            indexLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            indexLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            ratingLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            ratingLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
          
             infoView.topAnchor.constraint(equalTo: topAnchor, constant: 4),
-            infoView.leadingAnchor.constraint(equalTo: indexLabel.trailingAnchor, constant: 8),
+            infoView.leadingAnchor.constraint(equalTo: ratingLabel.trailingAnchor, constant: 8),
             infoView.trailingAnchor.constraint(equalTo: trailingAnchor),
             infoView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
             
@@ -101,7 +100,16 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
         ])
     }
     
-    func updateInfo(index: Int) {
-        indexLabel.text = String(index + 1)
+    //MARK: - Functions
+    
+    func configure(with cellModel: User) {
+        
+        ratingLabel.text = cellModel.rating
+        
+        userAvatarImage.kf.setImage(with:  cellModel.avatar)
+        
+        userNameLabel.text = cellModel.name
+        
+        countsNFTLabel.text = String(cellModel.nfts.count)
     }
 }
