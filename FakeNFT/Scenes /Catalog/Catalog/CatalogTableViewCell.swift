@@ -13,6 +13,7 @@ final class CatalogTableViewCell: UITableViewCell, ReuseIdentifying {
         let image = UIImageView()
         image.layer.cornerRadius = 12
         image.clipsToBounds = true
+        image.backgroundColor = .blue // test
         image.contentMode = .scaleAspectFill
         return image
     }()
@@ -21,6 +22,7 @@ final class CatalogTableViewCell: UITableViewCell, ReuseIdentifying {
         let label = UILabel()
         label.font = .bodyBold
         label.textColor = .textPrimary
+        label.text = "Blue (5)" // test
         label.numberOfLines = 0
         return label
     }()
@@ -54,12 +56,12 @@ final class CatalogTableViewCell: UITableViewCell, ReuseIdentifying {
         NSLayoutConstraint.activate([
             catalogImage.heightAnchor.constraint(equalToConstant: 140),
             catalogImage.topAnchor.constraint(equalTo: topAnchor),
-            catalogImage.leadingAnchor.constraint(equalTo: leadingAnchor),
-            catalogImage.trailingAnchor.constraint(equalTo: trailingAnchor),
+            catalogImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            catalogImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             
             catalogLabel.topAnchor.constraint(equalTo: catalogImage.bottomAnchor, constant: 4),
-            catalogLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            catalogLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            catalogLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            catalogLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             catalogLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -13)
         ])
     }
