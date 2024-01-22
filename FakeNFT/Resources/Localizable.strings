@@ -5,3 +5,7 @@
 "Error.unknown" = "Произошла неизвестная ошибка";
 "Error.repeat" = "Повторить";
 "Error.title" = "Ошибка";
+"Sorting.title" = "Сортировка";
+"Sorting.close" = "Закрыть";
+"Sorting.byName" = "По имени";
+"Sorting.byRating" = "По рейтингу";

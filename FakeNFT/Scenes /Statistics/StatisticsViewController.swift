@@ -8,7 +8,7 @@
 import UIKit
 
 // MARK: - Protocol
-protocol StatisticsViewProtocol: AnyObject, ErrorView {
+protocol StatisticsViewProtocol: AnyObject, ErrorView, SortingView {
     func displayCells(_ cellModels: [User])
 }
 
@@ -56,7 +56,7 @@ final class StatisticsViewController: UIViewController {
     }
     
     @IBAction private func didTapSortingButton() {
-        //code
+        presenter.showSortingMenu()
     }
     
     private func addViews() {

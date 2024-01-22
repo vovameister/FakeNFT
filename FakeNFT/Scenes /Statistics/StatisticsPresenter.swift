@@ -5,12 +5,13 @@
 //  Created by Ramilia on 21/01/24.
 //
 
-import Foundation
+import UIKit
 
 // MARK: - Protocol
 
 protocol StatisticsPresenterProtocol {
     func viewDidLoad()
+    func showSortingMenu()
 }
 
 // MARK: - State
@@ -23,6 +24,22 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
     
     // MARK: - Properties
     weak var view: StatisticsViewProtocol?
+    
+    private let userDefaults = UserDefaults.standard
+    
+    private var sorting: Sortings? {
+        get {
+            guard let sortingRawValue = userDefaults.string(forKey: "Statistics Sorting") else
+            {
+                return nil
+            }
+            return Sortings(rawValue: sortingRawValue)
+        }
+        set {
+            userDefaults.set(newValue?.rawValue, forKey: "Statistics Sorting")
+        }
+    }
+    
     private let service: UsersServiceProtocol
     private var state = UsersState.initial {
         didSet {
@@ -41,13 +58,29 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
     func viewDidLoad() {
         state = .loading
     }
-
+    
+    func showSortingMenu() {
+        let sortingMenu = makeSortingMenu()
+        view?.showSortingMenu(sortingMenu)
+    }
+    
+    private func makeSortingMenu() -> SortingModel {
+        return SortingModel { [weak self] selectSorting in
+            self?.setSorting(selectSorting)
+        }
+    }
+    
+    private func setSorting(_ selectSorting: Sortings?) {
+        sorting = selectSorting
+        state = .loading
+    }
+    
     private func stateDidChanged() {
         switch state {
         case .initial:
             assertionFailure("can't move to initial state")
         case .loading:
-            loadUsers()
+            loadUsers(with: sorting)
         case .data(let users):
             let cellModels = users
             view?.displayCells(cellModels)
@@ -56,9 +89,9 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
             view?.showError(errorModel)
         }
     }
-
-    private func loadUsers() {
-        service.loadUsers { [weak self] result in
+    
+    private func loadUsers(with sorting: Sortings?) {
+        service.loadUsers(with: sorting) { [weak self] result in
             switch result {
             case .success(let users):
                 self?.state = .data(users)
