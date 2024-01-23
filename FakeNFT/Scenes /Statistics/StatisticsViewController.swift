@@ -8,7 +8,7 @@
 import UIKit
 
 // MARK: - Protocol
-protocol StatisticsViewProtocol: AnyObject, ErrorView, SortingView {
+protocol StatisticsViewProtocol: AnyObject, ErrorView, LoadingView, SortingView {
     func displayCells(_ cellModels: [User])
 }
 
@@ -18,6 +18,8 @@ final class StatisticsViewController: UIViewController {
     
     private let presenter: StatisticsPresenterProtocol
     private var cellModels = [User]()
+    
+    internal lazy var activityIndicator = UIActivityIndicatorView()
     
     private lazy var sortingButton: UIButton = {
         let button = UIButton(type: .custom)
@@ -51,8 +53,8 @@ final class StatisticsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupViews
-        setupConstraints
+        setupViews()
+        setupConstraints()
         presenter.viewDidLoad()
     }
     
@@ -67,11 +69,13 @@ final class StatisticsViewController: UIViewController {
         view.addSubview(statisticsTableView)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sortingButton)
 
+        statisticsTableView.addSubview(activityIndicator)
         statisticsTableView.dataSource = self
         statisticsTableView.delegate = self
     }
     
     private func setupConstraints() {
+        activityIndicator.constraintCenters(to: statisticsTableView)
         NSLayoutConstraint.activate([
             statisticsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             statisticsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),

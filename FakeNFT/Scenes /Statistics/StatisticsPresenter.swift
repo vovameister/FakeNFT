@@ -80,11 +80,14 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
         case .initial:
             assertionFailure("can't move to initial state")
         case .loading:
+            view?.showLoadingAndBlockUI()
             loadUsers(with: sorting)
         case .data(let users):
+            view?.hideLoadingAndUnblockUI()
             let cellModels = users
             view?.displayCells(cellModels)
         case .failed(let error):
+            view?.hideLoadingAndUnblockUI()
             let errorModel = makeErrorModel(error)
             view?.showError(errorModel)
         }
