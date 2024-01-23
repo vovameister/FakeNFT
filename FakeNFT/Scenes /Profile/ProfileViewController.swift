@@ -10,38 +10,39 @@ import Kingfisher
 
 final class ProfileViewController: UIViewController {
     static let shared = ProfileViewController()
-    
+
     private var presenter: ProfilePresenter?
-    
+
     var helper: ProfileHelperProtocol?
-    
+
     let editButton = UIButton()
     let userImage = UIImageView()
     let userNameLabel = UILabel()
     let descriptionLabel = UILabel()
     let linkLabel = UILabel()
     let tableView = UITableView()
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.background
         setUpView()
-        
+
         helper = ProfileHelper(viewController: self)
-        
+
         helper?.updateProfileView()
     }
 
     @objc func presentWeb(gesture: UITapGestureRecognizer) {
-        presenter?.presentWeb(gesture: gesture)
+        if let urlString = linkLabel.text, let url = URL(string: "https://" + urlString) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
     @objc func editTap() {
         presenter?.presentEdit()
     }
     private func setUpView() {
         presenter = ProfilePresenter(viewController: self)
-        
+
         editButton.translatesAutoresizingMaskIntoConstraints = false
         editButton.setImage(UIImage(named: "editProfile"), for: .normal)
         editButton.addTarget(self, action: #selector(editTap), for: .touchUpInside)
@@ -59,7 +60,6 @@ final class ProfileViewController: UIViewController {
         view.addSubview(userNameLabel)
 
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.text = "Дизайнер из Казани, люблю цифровое искусство и бейглы. В моей коллекции уже 100+ NFT, и еще больше — на моём сайте Открыт к коллаборациям."
         descriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         descriptionLabel.numberOfLines = 4
         view.addSubview(descriptionLabel)
@@ -68,10 +68,13 @@ final class ProfileViewController: UIViewController {
         linkLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(presentWeb(gesture:))))
         view.addSubview(linkLabel)
         linkLabel.translatesAutoresizingMaskIntoConstraints = false
-        linkLabel.attributedText = NSAttributedString(string: "instagram.com/vovameister", attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue])
+        linkLabel.attributedText = NSAttributedString(
+            string: "",
+            attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue])
+
         linkLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         linkLabel.textColor = UIColor.blueUniversal
-        
+
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
@@ -103,7 +106,7 @@ final class ProfileViewController: UIViewController {
             linkLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             linkLabel.heightAnchor.constraint(equalToConstant: 20),
             linkLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 12),
-            
+
             tableView.topAnchor.constraint(equalTo: linkLabel.bottomAnchor, constant: 44),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -116,7 +119,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         3
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         if indexPath.row == 0 {
@@ -127,9 +130,11 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             cell.textLabel?.text = tableText[indexPath.row]
         }
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        let accessoryImageView = UIImageView(image: UIImage(named: "chevron"))
+        let accessoryImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
+
+        accessoryImageView.tintColor = .elementsBG
         cell.accessoryView = accessoryImageView
-       
+
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -139,5 +144,5 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 private let tableText: [String] = [NSLocalizedString("myNFT", comment: ""),
                                    NSLocalizedString("favorites", comment: ""),
                                    NSLocalizedString("aboutDev", comment: "")]
-    
+
 private let sto = 100

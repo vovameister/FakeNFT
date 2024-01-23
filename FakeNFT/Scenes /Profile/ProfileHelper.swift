@@ -12,14 +12,14 @@ protocol ProfileHelperProtocol {
 }
 
 final class ProfileHelper: ProfileHelperProtocol {
-    
+
     private let profileService = ProfileService.shared
     private let profileViewController: ProfileViewController?
-    
+
     init(viewController: ProfileViewController) {
         self.profileViewController = viewController
     }
-    
+
     func updateProfileView() {
         profileViewController?.userNameLabel.text = profileService.userName
         profileViewController?.descriptionLabel.text = profileService.userDescription
@@ -28,5 +28,4 @@ final class ProfileHelper: ProfileHelperProtocol {
               let url = URL(string: profileURL) else { return }
         profileViewController?.userImage.kf.setImage(with: url)
     }
-    
 }

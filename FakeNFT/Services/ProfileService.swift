@@ -9,11 +9,11 @@ import Foundation
 
 final class ProfileService {
     static let shared = ProfileService()
-    
+
     var oldAvatarURL: String?
-    
+
     var newAvatarURL: String?
-    
+
     var userName: String? {
         didSet {
             UserDefaults.standard.set(userName, forKey: "userName")
@@ -29,8 +29,7 @@ final class ProfileService {
             UserDefaults.standard.set(website, forKey: "userWebsite")
         }
     }
-    
-    
+
     init(webLink: String? = nil) {
         if let savedAvatarURL = UserDefaults.standard.string(forKey: "userURL") {
             self.oldAvatarURL = savedAvatarURL
@@ -52,7 +51,7 @@ final class ProfileService {
             print("Saved Website: \(savedWebsite)")
         }
     }
-    
+
     func saveAvater() {
         if newAvatarURL != nil {
             UserDefaults.standard.set(newAvatarURL, forKey: "userURL")
@@ -60,4 +59,3 @@ final class ProfileService {
         }
     }
 }
-

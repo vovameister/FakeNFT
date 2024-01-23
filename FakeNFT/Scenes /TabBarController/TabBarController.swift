@@ -10,8 +10,8 @@ final class TabBarController: UITabBarController {
         tag: 0
     )
     private let profileTabBarItem = UITabBarItem(
-        title:  NSLocalizedString("Tab.profile", comment: ""),
-        image: UIImage(named: "profileTabImage"),
+        title: NSLocalizedString("Tab.profile", comment: ""),
+        image: UIImage(systemName: "person.crop.circle.fill"),
         tag: 0
     )
     override func viewDidLoad() {
@@ -21,10 +21,10 @@ final class TabBarController: UITabBarController {
             servicesAssembly: servicesAssembly
         )
         let profileController = ProfileViewController.shared
-        
+
         catalogController.tabBarItem = catalogTabBarItem
         profileController.tabBarItem = profileTabBarItem
-        
+
         viewControllers = [profileController, catalogController]
 
         view.backgroundColor = .systemBackground

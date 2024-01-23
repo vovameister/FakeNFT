@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 protocol EditProfileHelperProtocol {
     func updateEditProfile()
 }
@@ -13,11 +14,11 @@ protocol EditProfileHelperProtocol {
 final class EditProfileHelper: EditProfileHelperProtocol {
     private let profileService = ProfileService.shared
     private let profileViewController: EditProfileViewController?
-    
+
     init(viewController: EditProfileViewController) {
         self.profileViewController = viewController
     }
-    
+
     func updateEditProfile() {
         profileViewController?.nameField.text = profileService.userName
         profileViewController?.descriptionTextView.text = profileService.userDescription
