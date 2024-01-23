@@ -5,8 +5,8 @@
 //  Created by Ramilia on 20/01/24.
 //
 
-import UIKit
 import Kingfisher
+import UIKit
 
 final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
     
@@ -56,7 +56,8 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addViews()
+        setupViews()
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -67,8 +68,7 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
     
     //MARK: - Layout
     
-    private func addViews() {
-        
+    private func setupViews(){
         backgroundColor = .background
         
         contentView.addSubview(ratingLabel)
@@ -76,12 +76,13 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
         infoView.addSubview(userAvatarImage)
         infoView.addSubview(userNameLabel)
         infoView.addSubview(countsNFTLabel)
-        
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
-            
             ratingLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             ratingLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-         
+            
             infoView.topAnchor.constraint(equalTo: topAnchor, constant: 4),
             infoView.leadingAnchor.constraint(equalTo: ratingLabel.trailingAnchor, constant: 8),
             infoView.trailingAnchor.constraint(equalTo: trailingAnchor),

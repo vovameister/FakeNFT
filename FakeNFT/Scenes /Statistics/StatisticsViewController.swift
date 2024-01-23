@@ -51,7 +51,8 @@ final class StatisticsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addViews()
+        setupViews
+        setupConstraints
         presenter.viewDidLoad()
     }
     
@@ -59,23 +60,24 @@ final class StatisticsViewController: UIViewController {
         presenter.showSortingMenu()
     }
     
-    private func addViews() {
+    private func setupViews() {
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sortingButton)
+        view.backgroundColor = .systemBackground
         
         view.addSubview(statisticsTableView)
-        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sortingButton)
+
+        statisticsTableView.dataSource = self
+        statisticsTableView.delegate = self
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             statisticsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             statisticsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             statisticsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             statisticsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-        
-        statisticsTableView.dataSource = self
-        statisticsTableView.delegate = self
-        
-        view.backgroundColor = .systemBackground
     }
 }
 

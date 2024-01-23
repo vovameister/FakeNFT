@@ -5,7 +5,7 @@
 //  Created by Ramilia on 21/01/24.
 //
 
-import UIKit
+import Foundation
 
 // MARK: - Protocol
 
