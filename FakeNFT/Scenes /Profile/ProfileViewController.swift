@@ -113,6 +113,7 @@ final class ProfileViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -304)
         ])
     }
+
 }
 
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
@@ -139,6 +140,14 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return tableView.bounds.height / 3
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            let viewController = MyNFTViewController()
+            viewController.modalPresentationStyle = .fullScreen
+            viewController.modalTransitionStyle = .crossDissolve
+            present(viewController, animated: true, completion: nil)
+        }
     }
 }
 private let tableText: [String] = [NSLocalizedString("myNFT", comment: ""),
