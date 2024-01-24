@@ -9,20 +9,18 @@ import UIKit
 final class CatalogTableViewCell: UITableViewCell, ReuseIdentifying {
     
     // MARK: - Cell-Elements
-    private lazy var catalogImage: UIImageView = {
+    lazy var catalogImage: UIImageView = {
         let image = UIImageView()
         image.layer.cornerRadius = 12
         image.clipsToBounds = true
-        image.backgroundColor = .blue // test
         image.contentMode = .scaleAspectFill
         return image
     }()
     
-    private lazy var catalogLabel: UILabel = {
+    lazy var catalogLabel: UILabel = {
         let label = UILabel()
         label.font = .bodyBold
         label.textColor = .textPrimary
-        label.text = "Blue (5)" // test
         label.numberOfLines = 0
         return label
     }()
