@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class EditProfileViewController: UIViewController {
-    private var presenter: EditProfilePresenter?
+    private var presenter: EditProfilePresenterProtocol?
     private var helper: EditProfileHelperProtocol?
 
     private let closeButton = UIButton()
@@ -169,7 +170,7 @@ final class EditProfileViewController: UIViewController {
 
         let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
             if let imageLink = alertController.textFields?.first?.text {
-                self.presenter?.setImageFromURL(imageLink)
+                self.setImageFromURL(imageLink)
             }
         }
 
@@ -179,6 +180,19 @@ final class EditProfileViewController: UIViewController {
         alertController.addAction(cancelAction)
 
         present(alertController, animated: true, completion: nil)
+    }
+    func setImageFromURL(_ urlString: String) {
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        presenter?.setNewAvata(url: urlString)
+
+        let options: KingfisherOptionsInfo = [
+            .transition(.fade(0.2)),
+            .cacheOriginalImage
+        ]
+
+        userImage.kf.setImage(with: url, options: options)
     }
 }
 extension EditProfileViewController: UITextFieldDelegate {
