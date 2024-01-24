@@ -11,7 +11,7 @@ import Kingfisher
 final class ProfileViewController: UIViewController {
     static let shared = ProfileViewController()
 
-    private var presenter: ProfilePresenter?
+    private var presenter: ProfilePresenterProtocol?
 
     var helper: ProfileHelperProtocol?
 
@@ -21,6 +21,10 @@ final class ProfileViewController: UIViewController {
     let descriptionLabel = UILabel()
     let linkLabel = UILabel()
     let tableView = UITableView()
+
+    private let tableText: [String] = [NSLocalizedString("myNFT", comment: ""),
+                                       NSLocalizedString("favorites", comment: ""),
+                                       NSLocalizedString("aboutDev", comment: "")]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,9 +128,9 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         if indexPath.row == 0 {
-            cell.textLabel?.text = "\(tableText[indexPath.row]) (\(sto))"
+            cell.textLabel?.text = "\(tableText[indexPath.row]) (\(mockSum))"
         } else if indexPath.row == 1 {
-            cell.textLabel?.text = "\(tableText[indexPath.row]) (\(sto))"
+            cell.textLabel?.text = "\(tableText[indexPath.row]) (\(mockSum))"
         } else {
             cell.textLabel?.text = tableText[indexPath.row]
         }
@@ -150,8 +154,5 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 }
-private let tableText: [String] = [NSLocalizedString("myNFT", comment: ""),
-                                   NSLocalizedString("favorites", comment: ""),
-                                   NSLocalizedString("aboutDev", comment: "")]
 
-private let sto = 100
+private let mockSum = 100

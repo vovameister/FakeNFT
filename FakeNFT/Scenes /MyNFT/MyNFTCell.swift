@@ -15,6 +15,7 @@ final class MyNFTCell: UITableViewCell {
     let authorLabel = UILabel()
     let priceTitle = UILabel()
     let priceLabel = UILabel()
+    let likeButton = UIButton()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,8 +30,15 @@ final class MyNFTCell: UITableViewCell {
     func setUpView() {
 
         nftImage.image = UIImage(named: "NFTcard")
+        nftImage.clipsToBounds = true
         nftImage.translatesAutoresizingMaskIntoConstraints = false
+        nftImage.layer.cornerRadius = 12
         contentView.addSubview(nftImage)
+
+        likeButton.translatesAutoresizingMaskIntoConstraints = false
+        likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        likeButton.tintColor = .white
+        contentView.addSubview(likeButton)
 
         nameLabel.text = "lie"
         nameLabel.font = UIFont.systemFont(ofSize: 17, weight: .bold)
@@ -63,10 +71,15 @@ final class MyNFTCell: UITableViewCell {
         contentView.addSubview(priceLabel)
 
         NSLayoutConstraint.activate([
-            nftImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            nftImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             nftImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            nftImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-            nftImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -251),
+            nftImage.widthAnchor.constraint(equalToConstant: 108),
+            nftImage.heightAnchor.constraint(equalToConstant: 108),
+
+            likeButton.topAnchor.constraint(equalTo: nftImage.topAnchor, constant: 1),
+            likeButton.trailingAnchor.constraint(equalTo: nftImage.trailingAnchor, constant: -1),
+            likeButton.heightAnchor.constraint(equalToConstant: 42),
+            likeButton.widthAnchor.constraint(equalToConstant: 42),
 
             nameLabel.leadingAnchor.constraint(equalTo: nftImage.trailingAnchor, constant: 20),
             nameLabel.topAnchor.constraint(equalTo: nftImage.topAnchor, constant: 26),

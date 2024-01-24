@@ -6,9 +6,12 @@
 //
 
 import Foundation
-import Kingfisher
+protocol EditProfilePresenterProtocol {
+    func setNewAvata(url: String)
+    func profileChanged(name: String, description: String, website: String)
+}
 
-final class EditProfilePresenter {
+final class EditProfilePresenter: EditProfilePresenterProtocol {
 
     weak var viewController: EditProfileViewController?
     let service = ProfileService.shared
@@ -16,20 +19,10 @@ final class EditProfilePresenter {
     init(viewController: EditProfileViewController) {
         self.viewController = viewController
     }
-
-    func setImageFromURL(_ urlString: String) {
-        guard let url = URL(string: urlString) else {
-            return
-        }
-        service.newAvatarURL = urlString
-
-        let options: KingfisherOptionsInfo = [
-            .transition(.fade(0.2)),
-            .cacheOriginalImage
-        ]
-
-        viewController?.userImage.kf.setImage(with: url, options: options)
+    func setNewAvata(url: String) {
+        service.newAvatarURL = url
     }
+
     func profileChanged(name: String, description: String, website: String) {
         service.userName = name
         service.website = website
