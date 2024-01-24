@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - Protocol
 protocol StatisticsViewProtocol: AnyObject, ErrorView, LoadingView, SortingView {
-    func displayCells(_ cellModels: [User])
+    func displayCells(_ cellModels: [UserCellModel])
 }
 
 final class StatisticsViewController: UIViewController {
@@ -17,7 +17,7 @@ final class StatisticsViewController: UIViewController {
     // MARK: - Properties
     
     private let presenter: StatisticsPresenterProtocol
-    private var cellModels = [User]()
+    private var cellModels = [UserCellModel]()
     
     internal lazy var activityIndicator = UIActivityIndicatorView()
     
@@ -88,7 +88,7 @@ final class StatisticsViewController: UIViewController {
 // MARK: - StatisticsView Protocol
 
 extension StatisticsViewController: StatisticsViewProtocol {
-    func displayCells(_ cellModels: [User]) {
+    func displayCells(_ cellModels: [UserCellModel]) {
         self.cellModels = cellModels
         statisticsTableView.reloadData()
     }

@@ -13,7 +13,7 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
     static let defaultReuseIdentifier = "statisticsCell"
     
     //MARK: - UI elements
-    private lazy var ratingLabel: UILabel = {
+    private lazy var ratingPositionLabel: UILabel = {
         let label = UILabel()
         label.font = .caption1
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -71,7 +71,7 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
     private func setupViews(){
         backgroundColor = .background
         
-        contentView.addSubview(ratingLabel)
+        contentView.addSubview(ratingPositionLabel)
         contentView.addSubview(infoView)
         infoView.addSubview(userAvatarImage)
         infoView.addSubview(userNameLabel)
@@ -80,11 +80,11 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            ratingLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            ratingLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            ratingPositionLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            ratingPositionLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             
             infoView.topAnchor.constraint(equalTo: topAnchor, constant: 4),
-            infoView.leadingAnchor.constraint(equalTo: ratingLabel.trailingAnchor, constant: 8),
+            infoView.leadingAnchor.constraint(equalTo: ratingPositionLabel.trailingAnchor, constant: 8),
             infoView.trailingAnchor.constraint(equalTo: trailingAnchor),
             infoView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
             
@@ -103,13 +103,13 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
     
     //MARK: - Functions
     
-    func configure(with cellModel: User) {
+    func configure(with cellModel: UserCellModel) {
         
-        ratingLabel.text = cellModel.rating
+        ratingPositionLabel.text = String(cellModel.ratingPosition)
         
         userAvatarImage.kf.setImage(with:  cellModel.avatar)
         
-        userNameLabel.text = cellModel.name
+        userNameLabel.text = cellModel.name //+ " " + String(cellModel.ratingValue) //for debug ratingPosition
         
         countsNFTLabel.text = String(cellModel.nfts.count)
     }
