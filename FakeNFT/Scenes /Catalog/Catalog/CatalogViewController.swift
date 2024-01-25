@@ -9,6 +9,8 @@ import UIKit
 
 protocol CatalogViewControllerProtocol: AnyObject {
     func reloadCatalogTableView()
+    func showLoadIndicator()
+    func hideLoadIndicator()
 }
 
 final class CatalogViewController: UIViewController & CatalogViewControllerProtocol {
@@ -107,10 +109,18 @@ final class CatalogViewController: UIViewController & CatalogViewControllerProto
         present(actionSheet, animated: true)
     }
 }
-
+// MARK: - CatalogViewControllerProtocol
 extension CatalogViewController {
     func reloadCatalogTableView() {
         catalogTableView.reloadData()
+    }
+    
+    func showLoadIndicator() {
+        UIBlockingProgressHUD.show()
+    }
+    
+    func hideLoadIndicator() {
+        UIBlockingProgressHUD.dismiss()
     }
 }
 // MARK: - UITableViewDelegate

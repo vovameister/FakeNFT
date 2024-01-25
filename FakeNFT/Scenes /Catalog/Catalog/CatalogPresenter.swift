@@ -27,17 +27,20 @@ final class CatalogPresenter: CatalogPresenterProtocol {
     }
     // MARK: - Public Methods
     func getNtfCollections() {
+        catalogView?.showLoadIndicator()
         catalogService.getNtfCollections { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let collections):
                 self.collectionsNft = collections
                 self.getSortingCollections()
+                
                 self.catalogView?.reloadCatalogTableView()
             case .failure(let error):
                 print(error)
                 // TODO: - обработать ошибку алертом (Part-3)
             }
+            self.catalogView?.hideLoadIndicator()
         }
     }
     
