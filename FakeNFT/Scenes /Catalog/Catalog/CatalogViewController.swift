@@ -4,8 +4,8 @@
 //
 //  Created by Artem Dubovitsky on 21.01.2024.
 //
-import UIKit
 import Kingfisher
+import UIKit
 
 protocol CatalogViewControllerProtocol: AnyObject {
     func reloadCatalogTableView()
@@ -13,7 +13,7 @@ protocol CatalogViewControllerProtocol: AnyObject {
 
 final class CatalogViewController: UIViewController & CatalogViewControllerProtocol {
     // MARK: - Properties
-    private weak var presenter: CatalogPresenterProtocol?
+    private var presenter: CatalogPresenterProtocol
     // MARK: - UI-Elements
     private lazy var sortButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -51,8 +51,8 @@ final class CatalogViewController: UIViewController & CatalogViewControllerProto
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter?.catalogView = self
-        presenter?.getNtfCollections()
+        presenter.catalogView = self
+        presenter.getNtfCollections()
         setupCatalogViewController()
     }
     
@@ -87,15 +87,23 @@ final class CatalogViewController: UIViewController & CatalogViewControllerProto
             title: "Сортировка",
             message: nil,
             preferredStyle: .actionSheet)
+        
         actionSheet.addAction(UIAlertAction(
             title: "По названию",
-            style: .default))
+            style: .default) { _ in
+                self.presenter.sortingByName()
+            })
+        
         actionSheet.addAction(UIAlertAction(
             title: "По количеству NFT",
-            style: .default))
+            style: .default) { _ in
+                self.presenter.sortingByNftCount()
+            })
+        
         actionSheet.addAction(UIAlertAction(
             title: "Закрыть",
             style: .cancel))
+        
         present(actionSheet, animated: true)
     }
 }
@@ -122,13 +130,13 @@ extension CatalogViewController: UITableViewDelegate {
 extension CatalogViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, 
                    numberOfRowsInSection section: Int) -> Int {
-        presenter?.collectionsNft.count ?? 0
+        presenter.collectionsNft.count
     }
     
     func tableView(_ tableView: UITableView, 
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: CatalogTableViewCell = tableView.dequeueReusableCell()
-        guard let collection = presenter?.collectionsNft[indexPath.row] else { return cell }
+        let collection = presenter.collectionsNft[indexPath.row]
         let collectionCover = URL(string: collection.cover)
         cell.catalogImage.kf.indicatorType = .activity
         cell.catalogImage.kf.setImage(with: collectionCover)
