@@ -23,7 +23,7 @@ final class StatisticsViewController: UIViewController {
     
     private lazy var sortingButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(systemName: "text.justifyleft"), for: .normal)
+        button.setImage(UIImage(named: "sort") ?? UIImage(), for: .normal)
         button.tintColor = UIColor.segmentActive
         button.addTarget(self, action: #selector(didTapSortingButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false

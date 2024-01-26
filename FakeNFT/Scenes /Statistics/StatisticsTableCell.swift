@@ -69,7 +69,7 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
     //MARK: - Layout
     
     private func setupViews(){
-        backgroundColor = .background
+        backgroundColor = .systemBackground
         
         contentView.addSubview(ratingPositionLabel)
         contentView.addSubview(infoView)
