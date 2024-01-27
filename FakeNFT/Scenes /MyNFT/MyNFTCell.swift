@@ -6,8 +6,13 @@
 //
 
 import UIKit
+protocol MyNFTCellDelegate: AnyObject {
+    func likeButtonTap(cell: MyNFTCell)
+}
 
 final class MyNFTCell: UITableViewCell {
+    weak var delegate: MyNFTCellDelegate?
+
     let nftImage = UIImageView()
     let nameLabel = UILabel()
     let starsImage = UIImageView()
@@ -20,11 +25,13 @@ final class MyNFTCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpView()
+        setUpCostraints()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setUpView()
+        setUpCostraints()
     }
 
     func setUpView() {
@@ -38,9 +45,9 @@ final class MyNFTCell: UITableViewCell {
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         likeButton.tintColor = .white
+        likeButton.addTarget(self, action: #selector(tapLike), for: .touchUpInside)
         contentView.addSubview(likeButton)
 
-        nameLabel.text = "lie"
         nameLabel.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         nameLabel.textColor = .elementsBG
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -57,7 +64,6 @@ final class MyNFTCell: UITableViewCell {
 
         authorLabel.translatesAutoresizingMaskIntoConstraints = false
         authorLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        authorLabel.text = "kodzima"
         contentView.addSubview(authorLabel)
 
         priceTitle.translatesAutoresizingMaskIntoConstraints = false
@@ -67,9 +73,10 @@ final class MyNFTCell: UITableViewCell {
 
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
         priceLabel.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        priceLabel.text = "10000 HPR"
         contentView.addSubview(priceLabel)
+    }
 
+    func setUpCostraints() {
         NSLayoutConstraint.activate([
             nftImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             nftImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
@@ -93,7 +100,6 @@ final class MyNFTCell: UITableViewCell {
 
             fromLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
             fromLabel.topAnchor.constraint(equalTo: starsImage.bottomAnchor, constant: 4),
-            fromLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -204),
             fromLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -39),
 
             authorLabel.leadingAnchor.constraint(equalTo: fromLabel.trailingAnchor, constant: 4),
@@ -106,5 +112,8 @@ final class MyNFTCell: UITableViewCell {
             priceLabel.leadingAnchor.constraint(equalTo: priceTitle.leadingAnchor),
             priceLabel.topAnchor.constraint(equalTo: priceTitle.bottomAnchor, constant: 2)
         ])
+    }
+    @objc func tapLike() {
+        delegate?.likeButtonTap(cell: self)
     }
 }

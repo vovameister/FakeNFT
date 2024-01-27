@@ -8,6 +8,7 @@
 import Foundation
 
 struct MyNFT {
+    let id: Int
     let image: String
     let name: String
     let rating: Int

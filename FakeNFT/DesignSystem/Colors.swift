@@ -45,6 +45,7 @@ extension UIColor {
     static let blueUniversal = UIColor(hexString: "#0A84FF")
     static let fieldBg = UIColor(hexString: "#F7F7F8")
     static let elementsBG = UIColor(hexString: "1A1B22")
+    static let NFTRed = UIColor(hexString: "#F56B6C")
 
     private static let yaBlackLight = UIColor(hexString: "1A1B22")
     private static let yaBlackDark = UIColor.white
