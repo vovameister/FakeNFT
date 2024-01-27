@@ -6,16 +6,22 @@ final class TabBarController: UITabBarController {
 
     private let catalogTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.catalog", comment: ""),
-        image: UIImage(systemName: "square.stack.3d.up.fill"),
+        image: UIImage(systemName: "rectangle.stack.fill"),
         tag: 0
     )
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let catalogController = TestCatalogViewController(
-            servicesAssembly: servicesAssembly
+        let networkClient = DefaultNetworkClient()
+        let catalogService = CatalogService(networkClient: networkClient)
+        let sortingStorage = SortingStorage()
+        let catalogPresenter = CatalogPresenter(catalogService: catalogService, 
+                                                sortingStorage: sortingStorage)
+        let catalogController = UINavigationController(
+            rootViewController: CatalogViewController(presenter: catalogPresenter)
         )
+        
         catalogController.tabBarItem = catalogTabBarItem
 
         viewControllers = [catalogController]
