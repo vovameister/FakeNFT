@@ -60,7 +60,7 @@ final class CatalogTableViewCell: UITableViewCell, ReuseIdentifying {
             catalogLabel.topAnchor.constraint(equalTo: catalogImage.bottomAnchor, constant: 4),
             catalogLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             catalogLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            catalogLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -13)
+            catalogLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -21)
         ])
     }
 }

@@ -16,8 +16,11 @@ final class TabBarController: UITabBarController {
         let networkClient = DefaultNetworkClient()
         let catalogService = CatalogService(networkClient: networkClient)
         let sortingStorage = SortingStorage()
-        let catalogPresenter = CatalogPresenter(catalogService: catalogService, sortingStorage: sortingStorage)
-        let catalogController = UINavigationController(rootViewController: CatalogViewController(presenter: catalogPresenter))
+        let catalogPresenter = CatalogPresenter(catalogService: catalogService, 
+                                                sortingStorage: sortingStorage)
+        let catalogController = UINavigationController(
+            rootViewController: CatalogViewController(presenter: catalogPresenter)
+        )
         
         catalogController.tabBarItem = catalogTabBarItem
 
