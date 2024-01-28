@@ -123,7 +123,12 @@ final class UserInfoViewController: UIViewController {
     
     @objc
     private func didTapOpenSiteButton() {
-        //code
+        if let url = user?.website {
+            let request = URLRequest(url: url)
+            let webViewVC = WebViewController(request: request)
+            webViewVC.modalPresentationStyle = .fullScreen
+            present(webViewVC, animated: true)
+        }
     }
     
     //MARK: - Layout
@@ -172,6 +177,7 @@ final class UserInfoViewController: UIViewController {
     }
 }
 
+// MARK: - UserInfoViewProtocol
 extension UserInfoViewController: UserInfoViewProtocol {
     func displayUserInfo(with user: UserInfo) {
         self.user = user
