@@ -13,5 +13,13 @@
 "website" = "Сайт";
 "changePhoto" = "Сменить фото";
 "myNFT" = "Мои NFT";
-"from" = "От";
+"from" = "от";
 "price" = "Цена";
+"sort" = "Сортировка";
+"close" = "Закрыть";
+"byPrice" = "По цене";
+"byRating" = "По рейтингу";
+"byName" = "По названию";
+"featuredNFT" = "Избранные NFT";
+"noFavorite" = "У Вас еще нет избранных NFT";
+"noNFT" = "У Вас еще нет NFT";

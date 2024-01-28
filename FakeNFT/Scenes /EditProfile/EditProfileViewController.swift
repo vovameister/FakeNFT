@@ -28,6 +28,7 @@ final class EditProfileViewController: UIViewController {
         view.backgroundColor = .background
 
         setUpView()
+        setUpCostraints()
 
         presenter = EditProfilePresenter(viewController: self)
         helper = EditProfileHelper(viewController: self)
@@ -103,7 +104,9 @@ final class EditProfileViewController: UIViewController {
         webTextView.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         webTextView.textContainer.maximumNumberOfLines = 1
         view.addSubview(webTextView)
+    }
 
+    func setUpCostraints() {
         NSLayoutConstraint.activate([
             closeButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
             closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),

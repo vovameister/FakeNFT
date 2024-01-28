@@ -18,7 +18,7 @@ final class ProfileViewController: UIViewController {
     let editButton = UIButton()
     let userImage = UIImageView()
     let userNameLabel = UILabel()
-    let descriptionLabel = UILabel()
+    let descriptionLabel = UITextView()
     let linkLabel = UILabel()
     let tableView = UITableView()
 
@@ -30,6 +30,7 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.background
         setUpView()
+        setUpCostraints()
 
         helper = ProfileHelper(viewController: self)
 
@@ -65,7 +66,7 @@ final class ProfileViewController: UIViewController {
 
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        descriptionLabel.numberOfLines = 4
+        descriptionLabel.isEditable = false
         view.addSubview(descriptionLabel)
 
         linkLabel.isUserInteractionEnabled = true
@@ -85,6 +86,8 @@ final class ProfileViewController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorStyle = .none
         view.addSubview(tableView)
+    }
+    func setUpCostraints() {
         NSLayoutConstraint.activate([
             editButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             editButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 54),
@@ -145,22 +148,21 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return tableView.bounds.height / 3
     }
-<<<<<<< HEAD
-=======
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
         if indexPath.row == 0 {
             let viewController = MyNFTViewController()
             viewController.modalPresentationStyle = .fullScreen
             viewController.modalTransitionStyle = .crossDissolve
             present(viewController, animated: true, completion: nil)
+        } else if indexPath.row == 1 {
+            let viewController = FeaturedNFTViewController()
+            viewController.modalPresentationStyle = .fullScreen
+            viewController.modalTransitionStyle = .crossDissolve
+            present(viewController, animated: true, completion: nil)
         }
     }
-}
-private let tableText: [String] = [NSLocalizedString("myNFT", comment: ""),
-                                   NSLocalizedString("favorites", comment: ""),
-                                   NSLocalizedString("aboutDev", comment: "")]
->>>>>>> 0dcd678 (добавлен экран "мои NFT")
-
 }
 
 private let mockSum = 100
