@@ -25,7 +25,7 @@ final class ProfileViewController: UIViewController {
     private let tableText: [String] = [NSLocalizedString("myNFT", comment: ""),
                                        NSLocalizedString("favorites", comment: ""),
                                        NSLocalizedString("aboutDev", comment: "")]
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.background

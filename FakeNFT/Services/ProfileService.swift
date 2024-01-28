@@ -36,19 +36,14 @@ final class ProfileService {
         }
         if let savedUserName = UserDefaults.standard.string(forKey: "userName") {
             self.userName = savedUserName
-            print("Saved UserName: \(savedUserName)")
-        } else {
-            print("no name")
         }
 
         if let savedUserDescription = UserDefaults.standard.string(forKey: "userDescription") {
             self.userDescription = savedUserDescription
-            print("Saved User Description: \(savedUserDescription)")
         }
 
         if let savedWebsite = UserDefaults.standard.string(forKey: "userWebsite") {
             self.website = savedWebsite
-            print("Saved Website: \(savedWebsite)")
         }
     }
 
