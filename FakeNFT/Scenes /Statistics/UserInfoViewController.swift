@@ -16,7 +16,87 @@ final class UserInfoViewController: UIViewController {
    
     // MARK: - Properties
     var activityIndicator = UIActivityIndicatorView()
-    private let presenter: UserInfoPresenterProtocol?
+    private let presenter: UserInfoPresenterProtocol
+    
+    //MARK: - UI elements
+    private lazy var navigationBar: UINavigationBar = {
+        let navBar = UINavigationBar()
+        navBar.barTintColor = .systemBackground
+        
+        let navItem = UINavigationItem(title: "")
+        navItem.leftBarButtonItem =  UIBarButtonItem(customView: backButton)
+        navBar.setItems([navItem], animated: false)
+        
+        navBar.translatesAutoresizingMaskIntoConstraints = false
+        return navBar
+    }()
+    
+    private lazy var backButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "back") ?? UIImage(), for: .normal)
+        button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private let stackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.distribution = .equalSpacing
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+    
+    private lazy var avatarImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.layer.cornerRadius = 35
+        imageView.clipsToBounds = true
+        imageView.backgroundColor = .gray
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private lazy var nameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Joaquin Phoenix"
+        label.font = .headline3
+        label.textColor = .textColor
+        label.numberOfLines = 2
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Дизайнер из Казани, люблю цифровое искусство  и бейглы. В моей коллекции уже 100+ NFT,  и еще больше — на моём сайте. Открыт  к коллаборациям."
+        label.font = .caption2
+        label.textColor = .textColor
+        label.numberOfLines = 6
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var openSiteButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle("Перейти на сайт пользователя", for: .normal)
+        button.setTitleColor(.textColor, for: .normal)
+        button.titleLabel?.font = .caption1
+        button.backgroundColor = .systemBackground
+        button.layer.borderWidth = 1.0
+        button.layer.borderColor = UIColor.textColor.cgColor
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(didTapOpenSiteButton), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private var infoNFTtableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(InfoNFTTableCell.self)
+        tableView.separatorStyle = .none
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
     
     // MARK: - Init
     init(presenter: UserInfoPresenterProtocol) {
@@ -31,12 +111,90 @@ final class UserInfoViewController: UIViewController {
     // MARK: - Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        setupViews()
+        setupConstraints()
+        presenter.viewDidLoad()
+    }
+    
+    @objc
+    private func didTapBackButton() {
+        dismiss(animated: true)
+    }
+    
+    @objc
+    private func didTapOpenSiteButton() {
+        //code
+    }
+    
+    //MARK: - Layout
+    private func setupViews() {
+        
+        view.backgroundColor = .systemBackground
+        view.addSubview(activityIndicator)
+        view.addSubview(navigationBar)
+        view.addSubview(stackView)
+        stackView.addArrangedSubview(avatarImage)
+        stackView.addArrangedSubview(nameLabel)
+        view.addSubview(descriptionLabel)
+        view.addSubview(openSiteButton)
+        view.addSubview(infoNFTtableView)
+        infoNFTtableView.dataSource = self
+        infoNFTtableView.delegate = self
+        infoNFTtableView.reloadData()
+    }
+    
+    private func setupConstraints() {
+        activityIndicator.constraintCenters(to: view)
+        NSLayoutConstraint.activate([
+            navigationBar.heightAnchor.constraint(equalToConstant: 42),
+            navigationBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: 20),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            stackView.heightAnchor.constraint(equalToConstant: 70),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            avatarImage.heightAnchor.constraint(equalToConstant: 70),
+            avatarImage.widthAnchor.constraint(equalToConstant: 70),
+            nameLabel.leadingAnchor.constraint(equalTo: avatarImage.trailingAnchor, constant: 16),
+            descriptionLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 20),
+            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            openSiteButton.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 28),
+            openSiteButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            openSiteButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            openSiteButton.heightAnchor.constraint(equalToConstant: 40),
+            infoNFTtableView.topAnchor.constraint(equalTo: openSiteButton.bottomAnchor, constant: 16),
+            infoNFTtableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            infoNFTtableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            infoNFTtableView.heightAnchor.constraint(equalToConstant: 54)
+        ])
     }
 }
 
 extension UserInfoViewController: UserInfoViewProtocol {
     func displayUserInfo() {
       //code
+    }
+}
+
+// MARK: - TableView Protocols
+
+extension UserInfoViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: InfoNFTTableCell = infoNFTtableView.dequeueReusableCell()
+//        cell.configure(with: cellModel)
+        return cell
+    }
+}
+
+extension UserInfoViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //code
     }
 }
