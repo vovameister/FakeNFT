@@ -5,17 +5,19 @@
 //  Created by Ramilia on 26/01/24.
 //
 
+import Kingfisher
 import UIKit
 
 // MARK: - Protocol
 protocol UserInfoViewProtocol: AnyObject, ErrorView, LoadingView {
-    func displayUserInfo()
+    func displayUserInfo(with user: UserInfo)
 }
 
 final class UserInfoViewController: UIViewController {
    
     // MARK: - Properties
     var activityIndicator = UIActivityIndicatorView()
+    private var user: UserInfo?
     private let presenter: UserInfoPresenterProtocol
     
     //MARK: - UI elements
@@ -51,14 +53,13 @@ final class UserInfoViewController: UIViewController {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 35
         imageView.clipsToBounds = true
-        imageView.backgroundColor = .gray
+        imageView.backgroundColor = .textColor
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Joaquin Phoenix"
         label.font = .headline3
         label.textColor = .textColor
         label.numberOfLines = 2
@@ -68,7 +69,6 @@ final class UserInfoViewController: UIViewController {
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Дизайнер из Казани, люблю цифровое искусство  и бейглы. В моей коллекции уже 100+ NFT,  и еще больше — на моём сайте. Открыт  к коллаборациям."
         label.font = .caption2
         label.textColor = .textColor
         label.numberOfLines = 6
@@ -173,8 +173,12 @@ final class UserInfoViewController: UIViewController {
 }
 
 extension UserInfoViewController: UserInfoViewProtocol {
-    func displayUserInfo() {
-      //code
+    func displayUserInfo(with user: UserInfo) {
+        self.user = user
+        nameLabel.text = user.name
+        avatarImage.kf.setImage(with: user.avatar)
+        descriptionLabel.text = user.description
+        infoNFTtableView.reloadData()
     }
 }
 
@@ -187,7 +191,9 @@ extension UserInfoViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: InfoNFTTableCell = infoNFTtableView.dequeueReusableCell()
-//        cell.configure(with: cellModel)
+        if let user = user {
+            cell.configure(with: user.nfts.count)
+        }
         return cell
     }
 }

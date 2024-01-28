@@ -74,10 +74,8 @@ final class InfoNFTTableCell: UITableViewCell, ReuseIdentifying {
     
     //MARK: - Functions
     
-    func configure(with cellModel: UserCellModel) {
-        
-        let count = String(cellModel.nfts.count)
-        countsNFTLabel.text = "(\(count))"
+    func configure(with countNFT: Int) {
+        countsNFTLabel.text = "(\(countNFT))"
     }
 }
 
