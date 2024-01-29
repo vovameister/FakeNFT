@@ -56,6 +56,10 @@
 		4F4D5B602B68512900125D07 /* CurrencyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4D5B5F2B68512900125D07 /* CurrencyRequest.swift */; };
 		4F4D5B622B68518700125D07 /* CurrencyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4D5B612B68518700125D07 /* CurrencyStorage.swift */; };
 		4F4D5B652B685D8800125D07 /* CartDecomposition.md in Resources */ = {isa = PBXBuildFile; fileRef = 4F4D5B642B685D8800125D07 /* CartDecomposition.md */; };
+		4F4D5B6A2B68684700125D07 /* CartService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4D5B692B68684700125D07 /* CartService.swift */; };
+		4F4D5B6C2B6868C600125D07 /* CartStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4D5B6B2B6868C600125D07 /* CartStorage.swift */; };
+		4F4D5B6E2B68696700125D07 /* Cart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4D5B6D2B68696700125D07 /* Cart.swift */; };
+		4F4D5B702B686A3E00125D07 /* CartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4D5B6F2B686A3E00125D07 /* CartRequest.swift */; };
 		E19CD5AB2A98B56600CA39A5 /* NftImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19CD5AA2A98B56600CA39A5 /* NftImageCollectionViewCell.swift */; };
 		E1A1B9DA2AA01CE400C3AFBC /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */; };
 		E1CD40DC2A96BECC00BE7FE8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1CD40DB2A96BECC00BE7FE8 /* Localizable.strings */; };
@@ -130,6 +134,10 @@
 		4F4D5B5F2B68512900125D07 /* CurrencyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRequest.swift; sourceTree = "<group>"; };
 		4F4D5B612B68518700125D07 /* CurrencyStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyStorage.swift; sourceTree = "<group>"; };
 		4F4D5B642B685D8800125D07 /* CartDecomposition.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CartDecomposition.md; sourceTree = "<group>"; };
+		4F4D5B692B68684700125D07 /* CartService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartService.swift; sourceTree = "<group>"; };
+		4F4D5B6B2B6868C600125D07 /* CartStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartStorage.swift; sourceTree = "<group>"; };
+		4F4D5B6D2B68696700125D07 /* Cart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cart.swift; sourceTree = "<group>"; };
+		4F4D5B6F2B686A3E00125D07 /* CartRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartRequest.swift; sourceTree = "<group>"; };
 		E19CD5AA2A98B56600CA39A5 /* NftImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E1CD40D82A96BE7D00BE7FE8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
@@ -215,6 +223,7 @@
 			children = (
 				0CFCB74D2A7817DC0009A829 /* NftStorage.swift */,
 				4F4D5B612B68518700125D07 /* CurrencyStorage.swift */,
+				4F4D5B6B2B6868C600125D07 /* CartStorage.swift */,
 			);
 			path = MemoryStorage;
 			sourceTree = "<group>";
@@ -288,6 +297,7 @@
 				0C79EE6B2A76DE2E00EE90EA /* ServicesAssemly.swift */,
 				0CFCB73F2A78002A0009A829 /* NftService.swift */,
 				4F4D5B5D2B68504A00125D07 /* PaymentService.swift */,
+				4F4D5B692B68684700125D07 /* CartService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -350,6 +360,7 @@
 			children = (
 				0CFCB7412A78013E0009A829 /* Nft.swift */,
 				4F4D5B5B2B670A1A00125D07 /* Currency.swift */,
+				4F4D5B6D2B68696700125D07 /* Cart.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -361,6 +372,7 @@
 				0C79EE602A76DCD600EE90EA /* NftByIdRequest.swift */,
 				0C79EE622A76DD1900EE90EA /* RequestConstants.swift */,
 				4F4D5B5F2B68512900125D07 /* CurrencyRequest.swift */,
+				4F4D5B6F2B686A3E00125D07 /* CartRequest.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -599,6 +611,7 @@
 				0C79EE6A2A76DE1000EE90EA /* NftDetailAssembly.swift in Sources */,
 				4F4D5B542B6705C400125D07 /* PaymentViewController.swift in Sources */,
 				4F4D5B602B68512900125D07 /* CurrencyRequest.swift in Sources */,
+				4F4D5B6A2B68684700125D07 /* CartService.swift in Sources */,
 				4F4D5B4D2B66CF0200125D07 /* CartViewController.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
 				4F4D5B622B68518700125D07 /* CurrencyStorage.swift in Sources */,
@@ -609,6 +622,7 @@
 				0CFCB7402A78002A0009A829 /* NftService.swift in Sources */,
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
 				0CF2C2DB2A783C1B00FDC837 /* LoadingView.swift in Sources */,
+				4F4D5B6C2B6868C600125D07 /* CartStorage.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
 				4F4D5B4F2B66CFC600125D07 /* CartViewPresenter.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
@@ -620,7 +634,9 @@
 				0CFCB74B2A780EA80009A829 /* UIView+Constraints.swift in Sources */,
 				3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */,
 				0C79EE612A76DCD600EE90EA /* NftByIdRequest.swift in Sources */,
+				4F4D5B702B686A3E00125D07 /* CartRequest.swift in Sources */,
 				E19CD5AB2A98B56600CA39A5 /* NftImageCollectionViewCell.swift in Sources */,
+				4F4D5B6E2B68696700125D07 /* Cart.swift in Sources */,
 				0CF2C2E12A784C7000FDC837 /* LinePageControl.swift in Sources */,
 				4F4D5B562B6705F000125D07 /* PaymentViewPresenter.swift in Sources */,
 				4F4D5B512B66FE8600125D07 /* RatingControl.swift in Sources */,

@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol CartView: AnyObject, LoadingView {
+protocol CartView: AnyObject, LoadingView, ErrorView {
     func setTableView(nfts: [Nft])
     func setPrice(price: Float)
     func isCartEmpty()
