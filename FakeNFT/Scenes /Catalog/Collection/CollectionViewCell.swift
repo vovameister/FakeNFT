@@ -12,7 +12,7 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
     private lazy var nftImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "CoverCollection") // для настройки, удалить
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 12
         return imageView
@@ -26,12 +26,12 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
             left: 9,
             bottom: 11,
             right: 10)
+        // TODO: - add target (Part-3-3)
         return button
     }()
     
     private lazy var nftName: UILabel = {
         let label = UILabel()
-        label.text = "Test" // для настройки, удалить
         label.font = .headline3
         label.textColor = .textPrimary
         label.numberOfLines = 0
@@ -40,7 +40,6 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
     private lazy var nftPrice: UILabel = {
         let label = UILabel()
-        label.text = "Test" // для настройки, удалить
         label.font = .headline3
         label.textColor = .textPrimary
         label.numberOfLines = 0
@@ -51,6 +50,7 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "CartAdd"), for: .normal)
         button.tintColor = .textPrimary
+        // TODO: - add target (Part-3-3)
         return button
     }()
     // MARK: - Initializers
@@ -62,6 +62,10 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    // MARK: - Public Methods
+    func configCollectionCell() {
+        
     }
     // MARK: - Setup View
     private func setupCollectionViewCell() {
@@ -82,7 +86,8 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
             nftImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             nftImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             nftImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            nftImageView.heightAnchor.constraint(equalToConstant: 108),
+            nftImageView.widthAnchor.constraint(equalToConstant: contentView.frame.width),
+            nftImageView.heightAnchor.constraint(equalToConstant: nftImageView.frame.width),
             
             likeButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: -2),
             likeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 2),
@@ -99,7 +104,7 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
             nftPrice.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             
             cardButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            cardButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            cardButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
             cardButton.heightAnchor.constraint(equalToConstant: 40),
             cardButton.widthAnchor.constraint(equalToConstant: 40)
         ])

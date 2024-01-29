@@ -8,6 +8,16 @@ import UIKit
 
 final class CollectionViewController: UIViewController {
     // MARK: - UI-Elements
+    private lazy var backButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.backward"),
+            style: .plain,
+            target: self,
+            action: #selector(backButtonTapped))
+        button.tintColor = .black
+        return button
+    }()
+    
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.backgroundColor = .clear
@@ -58,6 +68,7 @@ final class CollectionViewController: UIViewController {
         label.font = .caption1
         label.textColor = .yaBlueUniversal
         label.numberOfLines = 0
+        // TODO: - Ссылка на страницу автора (Part-3)
         return label
     }()
     
@@ -76,6 +87,7 @@ final class CollectionViewController: UIViewController {
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
         )
+        collectionView.allowsMultipleSelection = false
         collectionView.backgroundColor = .clear
         collectionView.isScrollEnabled = false
         return collectionView
@@ -88,6 +100,7 @@ final class CollectionViewController: UIViewController {
     // MARK: - Setup View
     private func setupCollectionViewController() {
         view.backgroundColor = .systemBackground
+        navigationItem.leftBarButtonItem = backButton
         addSubviews()
         setupCollectionView()
         setupCollectionViewControllerConstrains()
@@ -115,7 +128,9 @@ final class CollectionViewController: UIViewController {
     }
     
     private func setupCollectionView() {
-
+        nftCollectionView.dataSource = self
+        nftCollectionView.delegate = self
+        nftCollectionView.register(CollectionViewCell.self)
     }
     
     private func setupCollectionViewControllerConstrains() {
@@ -154,5 +169,48 @@ final class CollectionViewController: UIViewController {
             nftCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             nftCollectionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
+    }
+    // MARK: - Actions
+    @objc
+    private func backButtonTapped() {
+        // TODO: переход на экран каталога NFT
+    }
+}
+// MARK: - UICollectionViewDataSource
+extension CollectionViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
+        return 3 // test
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, 
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: CollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+        cell.configCollectionCell()
+        return cell
+    }
+}
+// MARK: - UICollectionViewDelegateFlowLayout
+extension CollectionViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, 
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: (collectionView.bounds.width - 18) / 3, height: 192)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, 
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 9
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, 
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 8
     }
 }
