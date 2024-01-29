@@ -16,7 +16,7 @@ final class InfoNFTTableCell: UITableViewCell, ReuseIdentifying {
         let label = UILabel()
         label.font = .bodyBold
         label.textColor = .textColor
-        label.text = "Коллекция NFT"
+        label.text = NSLocalizedString("UserInfo.nftCollections", comment: "")
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

@@ -78,7 +78,7 @@ final class UserInfoViewController: UIViewController {
     
     private lazy var openSiteButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTitle("Перейти на сайт пользователя", for: .normal)
+        button.setTitle(NSLocalizedString("UserInfo.openSite", comment: ""), for: .normal)
         button.setTitleColor(.textColor, for: .normal)
         button.titleLabel?.font = .caption1
         button.backgroundColor = .systemBackground
