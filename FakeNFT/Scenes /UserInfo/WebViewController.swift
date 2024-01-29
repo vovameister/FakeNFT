@@ -13,6 +13,15 @@ final class WebViewController: UIViewController {
     private let request: URLRequest
     
     //MARK: - UI elements
+    private var estimatedProgressObservation: NSKeyValueObservation?
+    
+    private lazy var progressView: UIProgressView = {
+        let progress = UIProgressView()
+        progress.progress = 0.5
+        progress.tintColor = .segmentActive
+        progress.translatesAutoresizingMaskIntoConstraints = false
+        return progress
+    }()
     
     private lazy var webView: WKWebView = {
         let webView = WKWebView(frame: view.safeAreaLayoutGuide.layoutFrame)
@@ -55,7 +64,18 @@ final class WebViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        
         webView.load(request)
+        
+        estimatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [],
+             changeHandler: { [weak self] _, _ in
+                 guard let self = self else { return }
+                 self.updateProgress()
+             })
+        
+        updateProgress()
     }
     
     @IBAction func didTapBackButton(_ sender: Any) {
@@ -67,6 +87,7 @@ final class WebViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(navigationBar)
         view.addSubview(webView)
+        view.addSubview(progressView)
     }
     
     private func setupConstraints() {
@@ -78,8 +99,16 @@ final class WebViewController: UIViewController {
             webView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
             webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            progressView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
+            progressView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             
         ])
+    }
+    
+    private func updateProgress() {
+        progressView.progress = Float(webView.estimatedProgress)
+        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
 }
