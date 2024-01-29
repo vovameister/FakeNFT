@@ -56,6 +56,8 @@
 		91FC13062B665FFA00FFFFDA /* CollectionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC13052B665FFA00FFFFDA /* CollectionPresenter.swift */; };
 		91FC13082B66602100FFFFDA /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC13072B66602100FFFFDA /* CollectionViewCell.swift */; };
 		91FC130A2B671B5900FFFFDA /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC13092B671B5900FFFFDA /* RatingView.swift */; };
+		91FC130C2B68516F00FFFFDA /* NFTs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC130B2B68516F00FFFFDA /* NFTs.swift */; };
+		91FC130E2B68526C00FFFFDA /* NFTsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC130D2B68526C00FFFFDA /* NFTsRequest.swift */; };
 		E19CD5AB2A98B56600CA39A5 /* NftImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19CD5AA2A98B56600CA39A5 /* NftImageCollectionViewCell.swift */; };
 		E1A1B9DA2AA01CE400C3AFBC /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */; };
 		E1CD40DC2A96BECC00BE7FE8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1CD40DB2A96BECC00BE7FE8 /* Localizable.strings */; };
@@ -130,6 +132,8 @@
 		91FC13052B665FFA00FFFFDA /* CollectionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionPresenter.swift; sourceTree = "<group>"; };
 		91FC13072B66602100FFFFDA /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		91FC13092B671B5900FFFFDA /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
+		91FC130B2B68516F00FFFFDA /* NFTs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTs.swift; sourceTree = "<group>"; };
+		91FC130D2B68526C00FFFFDA /* NFTsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTsRequest.swift; sourceTree = "<group>"; };
 		E19CD5AA2A98B56600CA39A5 /* NftImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E1CD40D82A96BE7D00BE7FE8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
@@ -387,6 +391,7 @@
 			children = (
 				919CA91F2B60723E005475B4 /* NFTCollections.swift */,
 				919CA9232B616C36005475B4 /* Sorting.swift */,
+				91FC130B2B68516F00FFFFDA /* NFTs.swift */,
 			);
 			path = CatalogModels;
 			sourceTree = "<group>";
@@ -405,6 +410,7 @@
 			isa = PBXGroup;
 			children = (
 				919CA91D2B606EBA005475B4 /* NFTCollectionsRequest.swift */,
+				91FC130D2B68526C00FFFFDA /* NFTsRequest.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -632,6 +638,7 @@
 				0C79EE6A2A76DE1000EE90EA /* NftDetailAssembly.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
 				91FC13082B66602100FFFFDA /* CollectionViewCell.swift in Sources */,
+				91FC130E2B68526C00FFFFDA /* NFTsRequest.swift in Sources */,
 				0CFCB7422A78013E0009A829 /* Nft.swift in Sources */,
 				0CF2C2DD2A783CE600FDC837 /* ErrorView.swift in Sources */,
 				0C79EE682A76DE0900EE90EA /* NftDetailPresenter.swift in Sources */,
@@ -648,6 +655,7 @@
 				919CA9122B5D69A9005475B4 /* CatalogTableViewCell.swift in Sources */,
 				919CA91A2B5ECC5A005475B4 /* CatalogPresenter.swift in Sources */,
 				0CFCB7462A78064B0009A829 /* NftDetailCellModel.swift in Sources */,
+				91FC130C2B68516F00FFFFDA /* NFTs.swift in Sources */,
 				91FC130A2B671B5900FFFFDA /* RatingView.swift in Sources */,
 				919CA9202B60723E005475B4 /* NFTCollections.swift in Sources */,
 				0CFCB74B2A780EA80009A829 /* UIView+Constraints.swift in Sources */,

@@ -34,7 +34,6 @@ final class CatalogPresenter: CatalogPresenterProtocol {
             case .success(let collections):
                 self.collectionsNft = collections
                 self.getSortingCollections()
-                
                 self.catalogView?.reloadCatalogTableView()
             case .failure(let error):
                 print(error)

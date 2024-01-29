@@ -4,9 +4,18 @@
 //
 //  Created by Artem Dubovitsky on 28.01.2024.
 //
+import Kingfisher
 import UIKit
 
+protocol CollectionViewControllerProtocol: AnyObject {
+    func reloadNftCollectionView()
+    func showLoadIndicator()
+    func hideLoadIndicator()
+}
+
 final class CollectionViewController: UIViewController {
+    // MARK: - Properties
+    private var presenter: CollectionPresenterProtocol
     // MARK: - UI-Elements
     private lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -92,6 +101,15 @@ final class CollectionViewController: UIViewController {
         collectionView.isScrollEnabled = false
         return collectionView
     }()
+    // MARK: - Initializers
+    init(presenter: CollectionPresenterProtocol) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -178,9 +196,9 @@ final class CollectionViewController: UIViewController {
 }
 // MARK: - UICollectionViewDataSource
 extension CollectionViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
+//    func numberOfSections(in collectionView: UICollectionView) -> Int {
+//        return 1
+//    }
     
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
@@ -212,5 +230,19 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 8
+    }
+}
+// MARK: - CollectionViewControllerProtocol
+extension CollectionViewController: CollectionViewControllerProtocol {
+    func reloadNftCollectionView() {
+        nftCollectionView.reloadData()
+    }
+    
+    func showLoadIndicator() {
+        UIBlockingProgressHUD.show()
+    }
+    
+    func hideLoadIndicator() {
+        UIBlockingProgressHUD.dismiss()
     }
 }
