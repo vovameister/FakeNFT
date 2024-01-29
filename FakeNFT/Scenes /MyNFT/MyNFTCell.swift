@@ -38,6 +38,8 @@ final class MyNFTCell: UITableViewCell {
 
         nftImage.image = UIImage(named: "NFTcard")
         nftImage.translatesAutoresizingMaskIntoConstraints = false
+        nftImage.layer.cornerRadius = 12
+        nftImage.clipsToBounds = true
         contentView.addSubview(nftImage)
 
         nameLabel.text = "lie"
@@ -81,7 +83,7 @@ final class MyNFTCell: UITableViewCell {
             nftImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             nftImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             nftImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-            nftImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -251),
+            nftImage.widthAnchor.constraint(equalTo: nftImage.heightAnchor),
 
             likeButton.topAnchor.constraint(equalTo: nftImage.topAnchor, constant: 1),
             likeButton.trailingAnchor.constraint(equalTo: nftImage.trailingAnchor, constant: -1),

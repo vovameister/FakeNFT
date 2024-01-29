@@ -8,8 +8,8 @@
 import UIKit
 
 final class FeaturedNFTViewController: UIViewController {
-    private var presenter: FeaturedPresenter?
-    private var helper: FeaturedHelper?
+    private var presenter: FeaturedPresenterProtocol?
+    private var helper: FeaturedHelperProtocol?
 
     private let titleView = UILabel()
     private let buttonBack = UIButton()
@@ -92,7 +92,7 @@ extension FeaturedNFTViewController: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell",
-                                                      for: indexPath) as? FeaturedCell ?? FeaturedCell()
+                                                              for: indexPath) as? FeaturedCell ?? FeaturedCell()
         let nft = helper?.updateTableView(indexPath: indexPath)
 
         cell.nftName.text = nft?.name

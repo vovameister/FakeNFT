@@ -11,5 +11,12 @@ import UIKit
     func scene(_: UIScene, willConnectTo _: UISceneSession, options _: UIScene.ConnectionOptions) {
         let tabBarController = window?.rootViewController as? TabBarController
         tabBarController?.servicesAssembly = servicesAssembly
+
+        let defaults = UserDefaults.standard
+
+        if !defaults.bool(forKey: "hasLaunchedBefore") {
+            defaults.set(true, forKey: "hasLaunchedBefore")
+            defaults.set(0, forKey: "savedFilter")
+        }
     }
  }

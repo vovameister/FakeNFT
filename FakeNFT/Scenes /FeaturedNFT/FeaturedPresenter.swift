@@ -9,7 +9,7 @@ import Foundation
 protocol FeaturedPresenterProtocol {
     func isLikeTap(nftName: String)
 }
-final class FeaturedPresenter {
+final class FeaturedPresenter: FeaturedPresenterProtocol {
     private let service = MyNFTService.shared
 
     func isLikeTap(nftName: String) {

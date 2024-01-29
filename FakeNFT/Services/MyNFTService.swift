@@ -14,8 +14,11 @@ final class MyNFTService {
     var likedNFTsid: [Int] = []
     var likedNFT: [MyNFT] = []
 
+    let defaults = UserDefaults.standard
+
     init() {
         myNFTs = mockNFTs
+        savedSortBy(tipe: defaults.integer(forKey: "savedFilter"))
     }
 
     let mockNFTs: [MyNFT] = [
@@ -35,15 +38,27 @@ final class MyNFTService {
               author: "Artist3",
               price: 15.49)
     ]
+    private func savedSortBy(tipe: Int) {
+        if tipe == 0 {
+            sortByRating()
+        } else if tipe == 1 {
+            sortByPrice()
+        } else {
+            sortByName()
+        }
+    }
 
     func sortByPrice() {
         myNFTs = myNFTs.sorted { $0.price > $1.price }
+        defaults.set(1, forKey: "savedFilter")
     }
     func sortByRating() {
         myNFTs = myNFTs.sorted { $0.rating > $1.rating }
+        defaults.set(0, forKey: "savedFilter")
     }
     func sortByName() {
         myNFTs = myNFTs.sorted { $0.name.localizedCompare($1.name) == .orderedAscending }
+        defaults.set(2, forKey: "savedFilter")
     }
     func containsInt(value: Int) -> Bool {
         return likedNFTsid.contains(value)
