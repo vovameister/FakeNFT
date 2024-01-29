@@ -17,7 +17,6 @@ final class UserInfoViewController: UIViewController {
    
     // MARK: - Properties
     var activityIndicator = UIActivityIndicatorView()
-    private var user: UserInfo?
     private let presenter: UserInfoPresenterProtocol
     
     //MARK: - UI elements
@@ -28,6 +27,9 @@ final class UserInfoViewController: UIViewController {
         let navItem = UINavigationItem(title: "")
         navItem.leftBarButtonItem =  UIBarButtonItem(customView: backButton)
         navBar.setItems([navItem], animated: false)
+        
+        navBar.shadowImage = UIImage()
+        navBar.setBackgroundImage(UIImage(), for: .default)
         
         navBar.translatesAutoresizingMaskIntoConstraints = false
         return navBar
@@ -123,7 +125,7 @@ final class UserInfoViewController: UIViewController {
     
     @objc
     private func didTapOpenSiteButton() {
-        if let url = user?.website {
+        if let url = presenter.user?.website {
             let request = URLRequest(url: url)
             let webViewVC = WebViewController(request: request)
             webViewVC.modalPresentationStyle = .fullScreen
@@ -169,7 +171,7 @@ final class UserInfoViewController: UIViewController {
             openSiteButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             openSiteButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             openSiteButton.heightAnchor.constraint(equalToConstant: 40),
-            infoNFTtableView.topAnchor.constraint(equalTo: openSiteButton.bottomAnchor, constant: 16),
+            infoNFTtableView.topAnchor.constraint(equalTo: openSiteButton.bottomAnchor, constant: 40),
             infoNFTtableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             infoNFTtableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             infoNFTtableView.heightAnchor.constraint(equalToConstant: 54)
@@ -180,7 +182,6 @@ final class UserInfoViewController: UIViewController {
 // MARK: - UserInfoViewProtocol
 extension UserInfoViewController: UserInfoViewProtocol {
     func displayUserInfo(with user: UserInfo) {
-        self.user = user
         nameLabel.text = user.name
         avatarImage.kf.setImage(with: user.avatar)
         descriptionLabel.text = user.description
@@ -197,7 +198,7 @@ extension UserInfoViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: InfoNFTTableCell = infoNFTtableView.dequeueReusableCell()
-        if let user = user {
+        if let user = presenter.user {
             cell.configure(with: user.nfts.count)
         }
         return cell

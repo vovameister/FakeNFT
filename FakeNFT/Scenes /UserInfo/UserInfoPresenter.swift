@@ -10,6 +10,7 @@ import Foundation
 // MARK: - Protocol
 
 protocol UserInfoPresenterProtocol {
+    var user: UserInfo? { get set }
     func viewDidLoad()
 }
 
@@ -23,6 +24,8 @@ final class UserInfoPresenter: UserInfoPresenterProtocol {
     
     // MARK: - Properties
     weak var view: UserInfoViewProtocol?
+    var user: UserInfo?
+    
     private let userID: String
     private let service: UserInfoServiceProtocol
     private var state = UserInfoState.initial {
@@ -51,6 +54,7 @@ final class UserInfoPresenter: UserInfoPresenterProtocol {
             loadUserInfo()
         case .data(let user):
             view?.hideLoadingAndUnblockUI()
+            self.user = user
             view?.displayUserInfo(with: user)
         case .failed(let error):
             view?.hideLoadingAndUnblockUI()
