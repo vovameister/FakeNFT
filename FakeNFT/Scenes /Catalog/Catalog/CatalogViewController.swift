@@ -19,8 +19,7 @@ final class CatalogViewController: UIViewController & CatalogViewControllerProto
     // MARK: - UI-Elements
     private lazy var sortButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
-            // TODO: Заменить на изображение из макета в следующей итерации:
-            image: UIImage(systemName: "text.justifyleft"),
+            image: UIImage(named: "SortButton"),
             style: .plain,
             target: self,
             action: #selector(sortButtonTapped))

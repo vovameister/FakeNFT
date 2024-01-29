@@ -55,6 +55,7 @@
 		91FC13042B665FD900FFFFDA /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC13032B665FD900FFFFDA /* CollectionViewController.swift */; };
 		91FC13062B665FFA00FFFFDA /* CollectionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC13052B665FFA00FFFFDA /* CollectionPresenter.swift */; };
 		91FC13082B66602100FFFFDA /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC13072B66602100FFFFDA /* CollectionViewCell.swift */; };
+		91FC130A2B671B5900FFFFDA /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC13092B671B5900FFFFDA /* RatingView.swift */; };
 		E19CD5AB2A98B56600CA39A5 /* NftImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19CD5AA2A98B56600CA39A5 /* NftImageCollectionViewCell.swift */; };
 		E1A1B9DA2AA01CE400C3AFBC /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */; };
 		E1CD40DC2A96BECC00BE7FE8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1CD40DB2A96BECC00BE7FE8 /* Localizable.strings */; };
@@ -128,6 +129,7 @@
 		91FC13032B665FD900FFFFDA /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		91FC13052B665FFA00FFFFDA /* CollectionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionPresenter.swift; sourceTree = "<group>"; };
 		91FC13072B66602100FFFFDA /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		91FC13092B671B5900FFFFDA /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		E19CD5AA2A98B56600CA39A5 /* NftImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E1CD40D82A96BE7D00BE7FE8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
@@ -421,6 +423,7 @@
 				91FC13052B665FFA00FFFFDA /* CollectionPresenter.swift */,
 				91FC13072B66602100FFFFDA /* CollectionViewCell.swift */,
 				91FC13032B665FD900FFFFDA /* CollectionViewController.swift */,
+				91FC13092B671B5900FFFFDA /* RatingView.swift */,
 			);
 			path = Collection;
 			sourceTree = "<group>";
@@ -645,6 +648,7 @@
 				919CA9122B5D69A9005475B4 /* CatalogTableViewCell.swift in Sources */,
 				919CA91A2B5ECC5A005475B4 /* CatalogPresenter.swift in Sources */,
 				0CFCB7462A78064B0009A829 /* NftDetailCellModel.swift in Sources */,
+				91FC130A2B671B5900FFFFDA /* RatingView.swift in Sources */,
 				919CA9202B60723E005475B4 /* NFTCollections.swift in Sources */,
 				0CFCB74B2A780EA80009A829 /* UIView+Constraints.swift in Sources */,
 				3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */,
