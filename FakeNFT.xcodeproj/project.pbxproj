@@ -221,6 +221,8 @@
 			isa = PBXGroup;
 			children = (
 				0CFCB74D2A7817DC0009A829 /* NftStorage.swift */,
+				A8CEEDB62B5DA2F7008C2216 /* UserStorage.swift */,
+				A8CEEDCE2B66C8F8008C2216 /* UserInfoStorage.swift */,
 			);
 			path = MemoryStorage;
 			sourceTree = "<group>";
@@ -292,6 +294,8 @@
 				3FC8C38F29D245250081F015 /* Requests */,
 				0C79EE6B2A76DE2E00EE90EA /* ServicesAssemly.swift */,
 				0CFCB73F2A78002A0009A829 /* NftService.swift */,
+				A8CEEDB02B5D632B008C2216 /* UsersService.swift */,
+				A8CEEDCC2B66C81E008C2216 /* UserInfoService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -303,6 +307,7 @@
 				0CF2C2D92A783C1600FDC837 /* Common */,
 				0CFCB7472A7808870009A829 /* Catalog */,
 				A8C06EA52B584BD4009B4200 /* Statistics */,
+				A8CEEDD42B680E0B008C2216 /* UserInfo */,
 				0C79EE642A76DDCF00EE90EA /* NftDetails */,
 				3F6806C829CBBC8100B4F915 /* ProductDetails */,
 			);
@@ -329,6 +334,7 @@
 		3F6806CE29CBBD1B00B4F915 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				A8CEEDD52B680F24008C2216 /* Models */,
 				0CFCB74C2A7817C30009A829 /* MemoryStorage */,
 				3F6806CF29CBBDB100B4F915 /* NetworkClient */,
 				3F6806D629CBC50A00B4F915 /* CellsReusingUtils.swift */,
@@ -369,56 +375,34 @@
 		A8C06EA52B584BD4009B4200 /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
-				A8CEEDCB2B66B24F008C2216 /* Assembly */,
-				A8CEEDC02B642BDF008C2216 /* Services */,
-				A8CEEDBF2B642BCF008C2216 /* Cells */,
-				A8CEEDBE2B642BAA008C2216 /* Models */,
 				A8C06EA62B584C07009B4200 /* StatisticsViewController.swift */,
 				A8CEEDAE2B5D6314008C2216 /* StatisticsPresenter.swift */,
-				A8CEEDC12B642C12008C2216 /* UserInfoViewController.swift */,
-				A8CEEDC32B643617008C2216 /* UserInfoPresenter.swift */,
-				A8CEEDD22B66E3B0008C2216 /* WebViewController.swift */,
+				A8C06EA82B5C3C05009B4200 /* StatisticsTableCell.swift */,
+				A8CEEDB42B5D8214008C2216 /* StatisticsAssembly.swift */,
 			);
 			path = Statistics;
 			sourceTree = "<group>";
 		};
-		A8CEEDBE2B642BAA008C2216 /* Models */ = {
+		A8CEEDD42B680E0B008C2216 /* UserInfo */ = {
 			isa = PBXGroup;
 			children = (
-				A8CEEDB62B5DA2F7008C2216 /* UserStorage.swift */,
-				A8CEEDCE2B66C8F8008C2216 /* UserInfoStorage.swift */,
+				A8CEEDC12B642C12008C2216 /* UserInfoViewController.swift */,
+				A8CEEDC32B643617008C2216 /* UserInfoPresenter.swift */,
+				A8CEEDD22B66E3B0008C2216 /* WebViewController.swift */,
+				A8CEEDC92B66A9CA008C2216 /* InfoNFTTableCell.swift */,
+				A8CEEDC52B643634008C2216 /* UserInfoAssembly.swift */,
+			);
+			path = UserInfo;
+			sourceTree = "<group>";
+		};
+		A8CEEDD52B680F24008C2216 /* Models */ = {
+			isa = PBXGroup;
+			children = (
 				A8CEEDB22B5D6395008C2216 /* UserModel.swift */,
 				A8CEEDD02B66CD18008C2216 /* UserInfoModel.swift */,
 				A8CEEDBA2B5EE217008C2216 /* SortingsModel.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		A8CEEDBF2B642BCF008C2216 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				A8C06EA82B5C3C05009B4200 /* StatisticsTableCell.swift */,
-				A8CEEDC92B66A9CA008C2216 /* InfoNFTTableCell.swift */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		A8CEEDC02B642BDF008C2216 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				A8CEEDB02B5D632B008C2216 /* UsersService.swift */,
-				A8CEEDCC2B66C81E008C2216 /* UserInfoService.swift */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		A8CEEDCB2B66B24F008C2216 /* Assembly */ = {
-			isa = PBXGroup;
-			children = (
-				A8CEEDB42B5D8214008C2216 /* StatisticsAssembly.swift */,
-				A8CEEDC52B643634008C2216 /* UserInfoAssembly.swift */,
-			);
-			path = Assembly;
 			sourceTree = "<group>";
 		};
 		E19CD5A92A98B55900CA39A5 /* Cell */ = {
