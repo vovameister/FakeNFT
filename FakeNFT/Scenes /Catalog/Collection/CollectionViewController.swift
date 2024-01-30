@@ -16,7 +16,7 @@ protocol CollectionViewControllerProtocol: AnyObject {
 
 final class CollectionViewController: UIViewController {
     // MARK: - Properties
-    private var presenter: CollectionPresenterProtocol
+    var presenter: CollectionPresenterProtocol
     // MARK: - UI-Elements
     private lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -88,7 +88,7 @@ final class CollectionViewController: UIViewController {
         return label
     }()
     
-    private lazy var nftCollectionView: UICollectionView = {
+    private let nftCollectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
@@ -111,7 +111,7 @@ final class CollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.collectionView = self
-        presenter.loadAuthor()
+        presenter.loadCollectionData()
         presenter.getNtfs()
         setupCollectionViewController()
     }
@@ -152,8 +152,12 @@ final class CollectionViewController: UIViewController {
     }
     
     private func setupCollectionViewControllerConstrains() {
+        var navigationBarHeight: CGFloat {
+            (navigationController?.view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0) +
+            (self.navigationController?.navigationBar.frame.height ?? 0.0)
+        }
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: -navigationBarHeight),
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -171,7 +175,7 @@ final class CollectionViewController: UIViewController {
             collectionName.leadingAnchor.constraint(equalTo: descriptionStackView.leadingAnchor, constant: 16),
             collectionName.trailingAnchor.constraint(equalTo: descriptionStackView.trailingAnchor, constant: -16),
             
-            collectionAuthor.topAnchor.constraint(equalTo: collectionName.bottomAnchor, constant: 8),
+            collectionAuthor.topAnchor.constraint(equalTo: collectionName.bottomAnchor, constant: 13),
             collectionAuthor.leadingAnchor.constraint(equalTo: collectionName.leadingAnchor),
             
             collectionAuthorLink.leadingAnchor.constraint(equalTo: collectionAuthor.trailingAnchor, constant: 4),
@@ -185,50 +189,49 @@ final class CollectionViewController: UIViewController {
             nftCollectionView.topAnchor.constraint(equalTo: descriptionStackView.bottomAnchor, constant: 24),
             nftCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             nftCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            nftCollectionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+            nftCollectionView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
         ])
     }
     // MARK: - Actions
     @objc
     private func backButtonTapped() {
-        // TODO: переход на экран каталога NFT
+        navigationController?.popViewController(animated: true)
     }
 }
 // MARK: - UICollectionViewDataSource
-extension CollectionViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        return 1
-//    }
+extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
     
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         return presenter.nfts.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, 
+    func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: CollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-        let cellData = presenter.nfts[indexPath.row]
-        cell.nftModel = cellData
-        cell.configCollectionCell()
+        let cellModel = presenter.getModel(for: indexPath)
+        cell.configCollectionCell(nftModel: cellModel)
         return cell
     }
 }
 // MARK: - UICollectionViewDelegateFlowLayout
 extension CollectionViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, 
+    func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: (collectionView.bounds.width - 18) / 3, height: 192)
     }
     
-    func collectionView(_ collectionView: UICollectionView, 
+    func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 9
     }
     
-    func collectionView(_ collectionView: UICollectionView, 
+    func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 8

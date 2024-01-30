@@ -12,14 +12,10 @@ final class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let catalogConfiguration = CatalogSceneConfiguration()
 
-        let networkClient = DefaultNetworkClient()
-        let catalogService = CatalogService(networkClient: networkClient)
-        let sortingStorage = SortingStorage()
-        let catalogPresenter = CatalogPresenter(catalogService: catalogService, 
-                                                sortingStorage: sortingStorage)
         let catalogController = UINavigationController(
-            rootViewController: CatalogViewController(presenter: catalogPresenter)
+            rootViewController: catalogConfiguration.catalogViewController
         )
         
         catalogController.tabBarItem = catalogTabBarItem

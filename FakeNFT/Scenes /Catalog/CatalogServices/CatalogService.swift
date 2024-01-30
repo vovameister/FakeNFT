@@ -20,7 +20,7 @@ final class CatalogService: CatalogServiceProtocol {
     init(networkClient: DefaultNetworkClient) {
         self.networkClient = networkClient
     }
-    // MARK: - Get Author Nft Collection
+    // MARK: - Get Author Nft Collection (для рабочего API)
     func getAuthorNftCollection(id: String, completion: @escaping (UserModel) -> Void) {
         let request = UserRequest(id: id)
         networkClient.send(request: request,
