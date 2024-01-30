@@ -60,7 +60,7 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupCollectionViewCell()
-        setupTrackerCollectionViewConstrains()
+        setupCollectionViewConstrains()
     }
     
     required init?(coder: NSCoder) {
@@ -89,7 +89,7 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         }
     }
     
-    private func setupTrackerCollectionViewConstrains() {
+    private func setupCollectionViewConstrains() {
         NSLayoutConstraint.activate([
             nftImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             nftImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

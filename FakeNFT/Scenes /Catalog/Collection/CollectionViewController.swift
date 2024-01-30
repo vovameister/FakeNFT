@@ -175,7 +175,7 @@ final class CollectionViewController: UIViewController {
             collectionName.leadingAnchor.constraint(equalTo: descriptionStackView.leadingAnchor, constant: 16),
             collectionName.trailingAnchor.constraint(equalTo: descriptionStackView.trailingAnchor, constant: -16),
             
-            collectionAuthor.topAnchor.constraint(equalTo: collectionName.bottomAnchor, constant: 13),
+            collectionAuthor.topAnchor.constraint(equalTo: collectionName.bottomAnchor, constant: 8),
             collectionAuthor.leadingAnchor.constraint(equalTo: collectionName.leadingAnchor),
             
             collectionAuthorLink.leadingAnchor.constraint(equalTo: collectionAuthor.trailingAnchor, constant: 4),
@@ -200,10 +200,6 @@ final class CollectionViewController: UIViewController {
 }
 // MARK: - UICollectionViewDataSource
 extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         return presenter.nfts.count
