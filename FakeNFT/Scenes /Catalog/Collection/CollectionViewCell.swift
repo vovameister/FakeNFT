@@ -4,12 +4,13 @@
 //
 //  Created by Artem Dubovitsky on 28.01.2024.
 //
+import Kingfisher
 import UIKit
 
 final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
+    var nftModel: NFTs?
     // MARK: - UI-Elements
     private lazy var ratingView = RatingView()
-    
     private lazy var nftImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -65,7 +66,13 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     }
     // MARK: - Public Methods
     func configCollectionCell() {
-        
+        guard let nftModel = nftModel else { return }
+        if let imageURL = nftModel.images.first {
+            nftImageView.kf.setImage(with: imageURL)
+        }
+        nftName.text = nftModel.name
+        nftPrice.text = "\(nftModel.price) ETH"
+        ratingView.createRating(with: nftModel.rating)
     }
     // MARK: - Setup View
     private func setupCollectionViewCell() {

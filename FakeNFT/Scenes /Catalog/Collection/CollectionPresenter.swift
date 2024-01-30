@@ -9,6 +9,7 @@ import Foundation
 protocol CollectionPresenterProtocol: AnyObject {
     var nfts: [NFTs] { get }
     var collectionView: CollectionViewControllerProtocol? { get set }
+    func loadAuthor()
     func getNtfs()
 }
 
@@ -24,6 +25,16 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         self.catalogService = catalogService
     }
     // MARK: - Public Methods
+    func loadAuthor() {
+        guard let id = collectionNft?.author else { return }
+        collectionView?.showLoadIndicator()
+        catalogService.getAuthorNftCollection(id: id) { [weak self] result in
+            guard let self = self else { return }
+            self.prepare(authorName: result.name)
+            self.collectionView?.hideLoadIndicator()
+        }
+    }
+    
     func getNtfs() {
         guard let collectionNft, !collectionNft.nfts.isEmpty else { return }
         collectionNft.nfts.forEach {
@@ -41,5 +52,16 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                 self.collectionView?.hideLoadIndicator()
             })
         }
+    }
+    // MARK: - Private Methods
+    private func prepare(authorName: String) {
+        guard let collection = collectionNft else { return }
+        let collectionViewData = CollectionViewData(
+            coverImage: collection.cover,
+            collectionName: collection.name,
+            authorName: authorName,
+            description: collection.description
+        )
+        collectionView?.collectionViewData(data: collectionViewData)
     }
 }

@@ -7,6 +7,7 @@
 import Foundation
 
 protocol CatalogServiceProtocol: AnyObject {
+    func getAuthorNftCollection(id: String, completion: @escaping (UserModel) -> Void)
     func getNtfCollections(completion: @escaping (Result<[NFTCollection], Error>) -> Void)
     func getNFTs(id: String, completion: @escaping (Result<NFTs, Error>) -> Void)
 }
@@ -18,6 +19,19 @@ final class CatalogService: CatalogServiceProtocol {
     // MARK: - Initializers
     init(networkClient: DefaultNetworkClient) {
         self.networkClient = networkClient
+    }
+    // MARK: - Get Author Nft Collection
+    func getAuthorNftCollection(id: String, completion: @escaping (UserModel) -> Void) {
+        let request = UserRequest(id: id)
+        networkClient.send(request: request,
+                           type: UserResult.self) { result in
+            switch result {
+            case .success(let data):
+                completion((UserModel(with: data)))
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     // MARK: - Get collections NFT
     func getNtfCollections(completion: @escaping (Result<[NFTCollection], Error>) -> Void) {

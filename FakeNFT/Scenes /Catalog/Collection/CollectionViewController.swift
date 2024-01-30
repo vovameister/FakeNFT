@@ -8,6 +8,7 @@ import Kingfisher
 import UIKit
 
 protocol CollectionViewControllerProtocol: AnyObject {
+    func collectionViewData(data: CollectionViewData)
     func reloadNftCollectionView()
     func showLoadIndicator()
     func hideLoadIndicator()
@@ -47,7 +48,6 @@ final class CollectionViewController: UIViewController {
     
     private lazy var collectionCoverImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "CoverCollection") // для настройки, удалить
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 12
         return imageView
@@ -55,7 +55,6 @@ final class CollectionViewController: UIViewController {
     
     private lazy var collectionName: UILabel = {
         let label = UILabel()
-        label.text = "Test" // для настройки, удалить
         label.font = .headline3
         label.textColor = .textPrimary
         label.numberOfLines = 0
@@ -73,7 +72,6 @@ final class CollectionViewController: UIViewController {
     
     private lazy var collectionAuthorLink: UILabel = {
         let label = UILabel()
-        label.text = "John Doe" // для настройки, удалить
         label.font = .caption1
         label.textColor = .yaBlueUniversal
         label.numberOfLines = 0
@@ -83,7 +81,6 @@ final class CollectionViewController: UIViewController {
     
     private lazy var collectionDescription: UILabel = {
         let label = UILabel()
-        label.text = "Персиковый — как облака над закатным солнцем в океане. В этой коллекции совмещены трогательная нежность и живая игривость сказочных зефирных зверей." // для настройки, удалить
         label.font = .caption2
         label.textColor = .textPrimary
         label.numberOfLines = 0
@@ -113,6 +110,9 @@ final class CollectionViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter.collectionView = self
+        presenter.loadAuthor()
+        presenter.getNtfs()
         setupCollectionViewController()
     }
     // MARK: - Setup View
@@ -202,12 +202,14 @@ extension CollectionViewController: UICollectionViewDataSource, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        return 3 // test
+        return presenter.nfts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, 
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: CollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+        let cellData = presenter.nfts[indexPath.row]
+        cell.nftModel = cellData
         cell.configCollectionCell()
         return cell
     }
@@ -234,6 +236,15 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
 }
 // MARK: - CollectionViewControllerProtocol
 extension CollectionViewController: CollectionViewControllerProtocol {
+    func collectionViewData(data: CollectionViewData) {
+        DispatchQueue.main.async {
+            self.collectionCoverImage.kf.setImage(with: URL(string: data.coverImage))
+            self.collectionName.text = data.collectionName
+            self.collectionAuthorLink.text = data.authorName
+            self.collectionDescription.text = data.description
+        }
+    }
+    
     func reloadNftCollectionView() {
         nftCollectionView.reloadData()
     }
