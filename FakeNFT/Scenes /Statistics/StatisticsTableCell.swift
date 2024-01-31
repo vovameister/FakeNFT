@@ -16,6 +16,7 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
     private lazy var ratingPositionLabel: UILabel = {
         let label = UILabel()
         label.font = .caption1
+        label.textColor = .textColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -40,6 +41,7 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
     private lazy var userNameLabel: UILabel = {
         let label = UILabel()
         label.font = .headline3
+        label.textColor = .textColor
         label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -48,6 +50,7 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
     private lazy var countsNFTLabel: UILabel = {
         let label = UILabel()
         label.font = .headline3
+        label.textColor = .textColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -61,7 +64,6 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
     }
     
     required init?(coder: NSCoder) {
-        
         assertionFailure("init(coder:) has not been implemented")
         return nil
     }
