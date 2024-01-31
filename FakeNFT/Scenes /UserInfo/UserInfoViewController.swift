@@ -208,6 +208,15 @@ extension UserInfoViewController: UITableViewDataSource {
 extension UserInfoViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //code
+        if indexPath.row == 0 {
+            showUserCollectionVC()
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
+    
+    private func showUserCollectionVC() {
+        let assembly = UserCollectionAssembly()
+        let userCollectionVC = assembly.build()
+        present(userCollectionVC, animated: true)
     }
 }
