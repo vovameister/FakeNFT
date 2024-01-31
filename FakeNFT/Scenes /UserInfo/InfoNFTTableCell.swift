@@ -12,7 +12,7 @@ final class InfoNFTTableCell: UITableViewCell, ReuseIdentifying {
     static let defaultReuseIdentifier = "infoNFTCell"
     
     //MARK: - UI elements
-    private lazy var infolabel: UILabel = {
+    private lazy var infoLabel: UILabel = {
         let label = UILabel()
         label.font = .bodyBold
         label.textColor = .textColor
@@ -54,17 +54,17 @@ final class InfoNFTTableCell: UITableViewCell, ReuseIdentifying {
     private func setupViews(){
         backgroundColor = .systemBackground
         
-        contentView.addSubview(infolabel)
+        contentView.addSubview(infoLabel)
         contentView.addSubview(countsNFTLabel)
         contentView.addSubview(forwardButton)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            infolabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            infolabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            infoLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            infoLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             
-            countsNFTLabel.leadingAnchor.constraint(equalTo: infolabel.trailingAnchor, constant: 8),
+            countsNFTLabel.leadingAnchor.constraint(equalTo: infoLabel.trailingAnchor, constant: 8),
             countsNFTLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             
             forwardButton.trailingAnchor.constraint(equalTo: trailingAnchor),

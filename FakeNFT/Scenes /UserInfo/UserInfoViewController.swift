@@ -92,7 +92,7 @@ final class UserInfoViewController: UIViewController {
         return button
     }()
     
-    private var infoNFTtableView: UITableView = {
+    private var infoNFTTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(InfoNFTTableCell.self)
         tableView.separatorStyle = .none
@@ -144,10 +144,10 @@ final class UserInfoViewController: UIViewController {
         stackView.addArrangedSubview(nameLabel)
         view.addSubview(descriptionLabel)
         view.addSubview(openSiteButton)
-        view.addSubview(infoNFTtableView)
-        infoNFTtableView.dataSource = self
-        infoNFTtableView.delegate = self
-        infoNFTtableView.reloadData()
+        view.addSubview(infoNFTTableView)
+        infoNFTTableView.dataSource = self
+        infoNFTTableView.delegate = self
+        infoNFTTableView.reloadData()
     }
     
     private func setupConstraints() {
@@ -171,10 +171,10 @@ final class UserInfoViewController: UIViewController {
             openSiteButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             openSiteButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             openSiteButton.heightAnchor.constraint(equalToConstant: 40),
-            infoNFTtableView.topAnchor.constraint(equalTo: openSiteButton.bottomAnchor, constant: 40),
-            infoNFTtableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            infoNFTtableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            infoNFTtableView.heightAnchor.constraint(equalToConstant: 54)
+            infoNFTTableView.topAnchor.constraint(equalTo: openSiteButton.bottomAnchor, constant: 40),
+            infoNFTTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            infoNFTTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            infoNFTTableView.heightAnchor.constraint(equalToConstant: 54)
         ])
     }
 }
@@ -185,7 +185,7 @@ extension UserInfoViewController: UserInfoViewProtocol {
         nameLabel.text = user.name
         avatarImage.kf.setImage(with: user.avatar)
         descriptionLabel.text = user.description
-        infoNFTtableView.reloadData()
+        infoNFTTableView.reloadData()
     }
 }
 
@@ -197,7 +197,7 @@ extension UserInfoViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: InfoNFTTableCell = infoNFTtableView.dequeueReusableCell()
+        let cell: InfoNFTTableCell = infoNFTTableView.dequeueReusableCell()
         if let user = presenter.user {
             cell.configure(with: user.nfts.count)
         }
