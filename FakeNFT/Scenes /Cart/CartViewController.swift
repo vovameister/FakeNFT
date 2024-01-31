@@ -16,7 +16,7 @@ protocol CartView: AnyObject, LoadingView, ErrorView {
 
 final class CartViewController: UIViewController {
     
-    init(presenter: CartViewPresenterProtocol) {
+    init(presenter: CartViewPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -25,7 +25,7 @@ final class CartViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let presenter: CartViewPresenterProtocol
+    private let presenter: CartViewPresenter
     
     private lazy var sortButton: UIButton = {
         let button = UIButton()
@@ -89,6 +89,7 @@ final class CartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareView()
+        presenter.view = self
         presenter.viewDidLoad()
         
     }

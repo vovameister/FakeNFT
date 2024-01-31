@@ -16,6 +16,7 @@ final class CartTableView: UITableView {
         self.backgroundColor = .clear
         delegate = self
         dataSource = self
+        register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.reuseId)
     }
     
     required init?(coder: NSCoder) {

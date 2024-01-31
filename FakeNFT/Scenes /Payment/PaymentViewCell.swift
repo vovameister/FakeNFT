@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class PaymentViewCell: UICollectionViewCell {
     
@@ -29,7 +30,7 @@ final class PaymentViewCell: UICollectionViewCell {
     
     private lazy var currencyImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "Vector")
+//        imageView.image = UIImage(named: "Vector")
         imageView.layer.cornerRadius = 6
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -70,8 +71,8 @@ final class PaymentViewCell: UICollectionViewCell {
     func configureCell(currency: CurrencyModel) {
         nameLabel.text = currency.title
         currencyNameLabel.text = currency.name
-        guard let url = URL(string: currency.image) else { return }
-        currencyImageView.kf.setImage(with: url)
+        print(currency.image)
+        currencyImageView.kf.setImage(with: URL(string: currency.image), placeholder: UIImage(named: "Vector"))
     }
     
     func didSelectCell() {

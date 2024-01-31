@@ -32,12 +32,13 @@ final class CartService: CartServiceProtocol {
     }
     
     func loadNfts(with id: String, completion: @escaping (Result<[Nft], Error>) -> Void) {
-        loadCart(id: id){ result in
+        loadCart(id: id){ [weak self] result in
+            guard let self = self else { return }
             switch result{
             case .success(let cartModel):
                 var nfts: [Nft] = []
                 cartModel.nfts.forEach{
-                    self.loadNft(id: $0){ result in
+                    self.loadNft(id: $0){ [weak self] result in
                         switch result{
                         case .success(let nft):
                             nfts.append(nft)

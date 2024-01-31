@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RatingControl: UIStackView {
+final class RatingControl: UIStackView {
     private var ratingButtons = [UIButton]()
     var rating = 0 {
         didSet {

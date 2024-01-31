@@ -12,7 +12,6 @@ protocol CartStorage: AnyObject {
     func getCart(with id: String) -> CartModel?
 }
 
-// Пример простого класса, который сохраняет данные из сети
 final class CartStorageImpl: CartStorage {
     private var storage: [String: CartModel] = [:]
 

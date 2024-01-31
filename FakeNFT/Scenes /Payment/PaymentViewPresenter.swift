@@ -66,7 +66,8 @@ final class PaymentViewPresenter: PaymentViewPresenterProtocol {
     }
     
     func loadCurrencies(){
-        service.loadCurrencies{ result in
+        service.loadCurrencies{ [weak self] result in
+            guard let self = self else { return }
             switch result{
             case .success(let currencies):
                 self.state = .data(currencies)

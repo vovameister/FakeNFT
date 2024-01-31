@@ -13,7 +13,6 @@ protocol PaymentView: AnyObject, LoadingView, ErrorView {
 
 final class PaymentViewController: UIViewController {
     
-    
     init(presenter: PaymentViewPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
