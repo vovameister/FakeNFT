@@ -19,8 +19,7 @@ final class CatalogViewController: UIViewController & CatalogViewControllerProto
     // MARK: - UI-Elements
     private lazy var sortButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
-            // TODO: Заменить на изображение из макета в следующей итерации:
-            image: UIImage(systemName: "text.justifyleft"),
+            image: UIImage(named: "SortButton"),
             style: .plain,
             target: self,
             action: #selector(sortButtonTapped))
@@ -81,6 +80,13 @@ final class CatalogViewController: UIViewController & CatalogViewControllerProto
             catalogTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
+    
+    private func showNFTCollection(indexPath: IndexPath) {
+        let configuration = CatalogSceneConfiguration()
+        let collection = presenter.collectionsNft[indexPath.row]
+        let viewController = configuration.assemblyCollection(collection)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
     // MARK: - Actions
     @objc
     private func sortButtonTapped() {
@@ -125,32 +131,32 @@ extension CatalogViewController {
 }
 // MARK: - UITableViewDelegate
 extension CatalogViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, 
+    func tableView(_ tableView: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 187
     }
     
-    func tableView(_ tableView: UITableView, 
+    func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
-        // TODO: Обработать выбор ячейки (переход на CollectionViewController)
+        showNFTCollection(indexPath: indexPath)
     }
     
 }
 // MARK: - UITableViewDataSource
 extension CatalogViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, 
+    func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
         presenter.collectionsNft.count
     }
     
-    func tableView(_ tableView: UITableView, 
+    func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: CatalogTableViewCell = tableView.dequeueReusableCell()
         let collection = presenter.collectionsNft[indexPath.row]
         let collectionCover = URL(string: collection.cover)
         cell.catalogImage.kf.indicatorType = .activity
         cell.catalogImage.kf.setImage(with: collectionCover)
-        cell.catalogLabel.text = "\(collection.name) (\(collection.nfts.count))"
+        cell.catalogLabel.text = ("\(collection.name) (\(collection.nfts.count))").firstUppercased
         return cell
     }
 }
