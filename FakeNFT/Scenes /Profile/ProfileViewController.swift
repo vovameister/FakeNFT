@@ -60,7 +60,6 @@ final class ProfileViewController: UIViewController {
         view.addSubview(userImage)
 
         userNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        userNameLabel.text = "hoakin phenix"
         userNameLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
         view.addSubview(userNameLabel)
 
@@ -138,6 +137,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             cell.textLabel?.text = tableText[indexPath.row]
         }
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        cell.selectionStyle = .none
         let accessoryImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
 
         accessoryImageView.tintColor = .elementsBG
@@ -150,7 +150,6 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: false)
         if indexPath.row == 0 {
             let viewController = MyNFTViewController()
             viewController.modalPresentationStyle = .fullScreen

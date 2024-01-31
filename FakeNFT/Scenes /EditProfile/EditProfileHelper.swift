@@ -13,7 +13,7 @@ protocol EditProfileHelperProtocol {
 
 final class EditProfileHelper: EditProfileHelperProtocol {
     private let profileService = ProfileService.shared
-    private let profileViewController: EditProfileViewController?
+    private weak var profileViewController: EditProfileViewController?
 
     init(viewController: EditProfileViewController) {
         self.profileViewController = viewController

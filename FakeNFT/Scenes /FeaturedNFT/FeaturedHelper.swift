@@ -14,7 +14,7 @@ protocol FeaturedHelperProtocol {
 
 final class FeaturedHelper: FeaturedHelperProtocol {
 
-    private let viewController: FeaturedNFTViewController?
+    private weak var viewController: FeaturedNFTViewController?
     private let service = MyNFTService.shared
 
     init(viewController: FeaturedNFTViewController) {

@@ -15,7 +15,7 @@ protocol MyNFTHelperProtocol {
 
 final class MyNFTHelper: MyNFTHelperProtocol {
 
-    private let myNFTViewController: MyNFTViewController?
+    private weak var myNFTViewController: MyNFTViewController?
     private let service = MyNFTService.shared
 
     init(viewController: MyNFTViewController) {

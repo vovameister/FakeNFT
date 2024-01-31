@@ -68,6 +68,6 @@ final class MyNFTService {
         likedNFT = myNFTs.filter { likedNFTsid.contains($0.id) }
     }
     func mapNFTId(for nftName: String) -> Int? {
-           return likedNFT.first { $0.name == nftName }?.id
-       }
+        return likedNFT.first { $0.name == nftName }?.id
+    }
 }

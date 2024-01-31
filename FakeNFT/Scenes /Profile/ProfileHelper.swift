@@ -14,7 +14,7 @@ protocol ProfileHelperProtocol {
 final class ProfileHelper: ProfileHelperProtocol {
 
     private let profileService = ProfileService.shared
-    private let profileViewController: ProfileViewController?
+    private weak var profileViewController: ProfileViewController?
 
     init(viewController: ProfileViewController) {
         self.profileViewController = viewController
