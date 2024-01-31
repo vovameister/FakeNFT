@@ -14,14 +14,14 @@ protocol MyNFTHelperProtocol {
 }
 
 final class MyNFTHelper: MyNFTHelperProtocol {
-
+    
     private weak var myNFTViewController: MyNFTViewController?
     private let service = MyNFTService.shared
-
+    
     init(viewController: MyNFTViewController) {
         self.myNFTViewController = viewController
     }
-
+    
     func updateTableView(indexPath: IndexPath) -> MyNFT {
         return service.myNFTs[indexPath.row]
     }

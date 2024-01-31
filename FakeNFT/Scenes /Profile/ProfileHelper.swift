@@ -12,14 +12,14 @@ protocol ProfileHelperProtocol {
 }
 
 final class ProfileHelper: ProfileHelperProtocol {
-
+    
     private let profileService = ProfileService.shared
     private weak var profileViewController: ProfileViewController?
-
+    
     init(viewController: ProfileViewController) {
         self.profileViewController = viewController
     }
-
+    
     func updateProfileView() {
         profileViewController?.userNameLabel.text = profileService.userName
         profileViewController?.descriptionLabel.text = profileService.userDescription

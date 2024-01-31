@@ -13,14 +13,14 @@ protocol FeaturedHelperProtocol {
 }
 
 final class FeaturedHelper: FeaturedHelperProtocol {
-
+    
     private weak var viewController: FeaturedNFTViewController?
     private let service = MyNFTService.shared
-
+    
     init(viewController: FeaturedNFTViewController) {
         self.viewController = viewController
     }
-
+    
     func updateTableView(indexPath: IndexPath) -> MyNFT {
         return service.likedNFT[indexPath.row]
     }

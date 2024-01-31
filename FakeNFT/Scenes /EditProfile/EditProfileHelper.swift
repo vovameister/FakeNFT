@@ -14,11 +14,11 @@ protocol EditProfileHelperProtocol {
 final class EditProfileHelper: EditProfileHelperProtocol {
     private let profileService = ProfileService.shared
     private weak var profileViewController: EditProfileViewController?
-
+    
     init(viewController: EditProfileViewController) {
         self.profileViewController = viewController
     }
-
+    
     func updateEditProfile() {
         profileViewController?.nameField.text = profileService.userName
         profileViewController?.descriptionTextView.text = profileService.userDescription
