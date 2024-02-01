@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class UserCollectionAssembly {
+final class UserNftsAssembly {
     
     func build() -> UIViewController {
-        let presenter = UserCollectionPresenter()
-        let viewController = UserCollectionViewController(presenter: presenter)
+        let presenter = UserNftsPresenter()
+        let viewController = UserNftsViewController(presenter: presenter)
         presenter.view = viewController
         viewController.modalPresentationStyle = .fullScreen
         return viewController

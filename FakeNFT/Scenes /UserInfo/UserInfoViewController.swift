@@ -209,14 +209,14 @@ extension UserInfoViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            showUserCollectionVC()
+            showUserNftsVC()
             tableView.deselectRow(at: indexPath, animated: true)
         }
     }
     
-    private func showUserCollectionVC() {
-        let assembly = UserCollectionAssembly()
-        let userCollectionVC = assembly.build()
-        present(userCollectionVC, animated: true)
+    private func showUserNftsVC() {
+        let assembly = UserNftsAssembly()
+        let userNftsVC = assembly.build()
+        present(userNftsVC, animated: true)
     }
 }
