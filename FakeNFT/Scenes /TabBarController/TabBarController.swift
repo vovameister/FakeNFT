@@ -16,9 +16,18 @@ final class TabBarController: UITabBarController {
         let catalogController = TestCatalogViewController(
             servicesAssembly: servicesAssembly
         )
+        
+        let cartTabBarItem = UITabBarItem(
+            title: NSLocalizedString("Tab.cart", comment: ""),
+            image: UIImage(named: "TabCart"),
+            tag: 1
+        )
         catalogController.tabBarItem = catalogTabBarItem
-
-        viewControllers = [catalogController]
+        
+        let cartController = CartViewController(presenter: CartViewPresenter(service: CartService(networkClient: DefaultNetworkClient(), storage: CartStorageImpl())))
+        cartController.tabBarItem = cartTabBarItem
+        
+        viewControllers = [catalogController, cartController]
 
         view.backgroundColor = .systemBackground
     }

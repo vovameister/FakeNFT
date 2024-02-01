@@ -64,4 +64,10 @@ extension UIColor {
         ? .yaBlackDark
         : .yaBlackLight
     }
+    
+    static let ypBlack = UIColor(named: "ypBlack")
+    static let ypBlue = UIColor(named: "ypBlue")
+    static let ypLightGray = UIColor(named: "ypLightGray")
+    static let ypWhite = UIColor(named: "ypWhite")
+    static let ypGreen = UIColor(named: "ypGreen")
 }
