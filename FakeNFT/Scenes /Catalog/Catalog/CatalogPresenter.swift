@@ -12,6 +12,7 @@ protocol CatalogPresenterProtocol: AnyObject {
     func getNtfCollections()
     func sortingByName()
     func sortingByNftCount()
+    func getModel(for indexPath: IndexPath) -> CatalogCellModel
 }
 
 final class CatalogPresenter: CatalogPresenterProtocol {
@@ -43,6 +44,10 @@ final class CatalogPresenter: CatalogPresenterProtocol {
         }
     }
     
+    func getModel(for indexPath: IndexPath) -> CatalogCellModel {
+        self.convertToCellModel(collection: collectionsNft[indexPath.row])
+    }
+    
     func sortingByName() {
         sortingStorage.saveSorting(.byCollectionName)
         collectionsNft = collectionsNft.sorted {
@@ -68,5 +73,12 @@ final class CatalogPresenter: CatalogPresenterProtocol {
             sortingByNftCount()
         default: break
         }
+    }
+    
+    private func convertToCellModel(collection: NFTCollection) -> CatalogCellModel {
+        return CatalogCellModel(
+            name: collection.name,
+            image: URL(string: collection.cover),
+            count: collection.nfts.count)
     }
 }

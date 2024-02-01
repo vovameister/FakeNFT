@@ -152,11 +152,8 @@ extension CatalogViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: CatalogTableViewCell = tableView.dequeueReusableCell()
-        let collection = presenter.collectionsNft[indexPath.row]
-        let collectionCover = URL(string: collection.cover)
-        cell.catalogImage.kf.indicatorType = .activity
-        cell.catalogImage.kf.setImage(with: collectionCover)
-        cell.catalogLabel.text = ("\(collection.name) (\(collection.nfts.count))").firstUppercased
+        let cellModel = presenter.getModel(for: indexPath)
+        cell.configCatalogCell(cellModel: cellModel)
         return cell
     }
 }
