@@ -9,6 +9,7 @@ import Foundation
 
 protocol PaymentServiceProtocol {
     func loadCurrencies(completion: @escaping (Result<[CurrencyModel], Error>) -> Void)
+    func getPaymentResult(with id: String, completion: @escaping (Result<OrderModel, Error>) -> Void)
 }
 
 final class PaymentService: PaymentServiceProtocol {
@@ -31,5 +32,10 @@ final class PaymentService: PaymentServiceProtocol {
                 completion(.failure(error))
             }
         }
+    }
+    
+    func getPaymentResult(with id: String, completion: @escaping (Result<OrderModel, Error>) -> Void) {
+        let request = OrderRequest(id: id)
+        networkClient.send(request: request, type: OrderModel.self, onResponse: completion)
     }
 }

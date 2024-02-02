@@ -10,6 +10,7 @@ import Foundation
 protocol CartViewPresenterProtocol {
     func viewDidLoad()
     func sortNFTs()
+    func didTapCellDeleteButton(with id: String)
 }
 
 enum CartDetailState {
@@ -25,8 +26,25 @@ final class CartViewPresenter: CartViewPresenterProtocol {
         }
     }
     
+    private var nftsInCart: [Nft] = [] {
+        didSet {
+            view?.setTableView(nfts: nftsInCart)
+        }
+    }
+    
+    private var choosenSortOption = SortOption.name {
+        didSet {
+            sort(with: choosenSortOption)
+        }
+    }
+    
     init(service: CartService) {
         self.service = service
+        if let savedSortOption = UserDefaults.standard.string(forKey: "SortOptionKey") {
+            if let sortOption = SortOption(rawValue: savedSortOption) {
+                self.choosenSortOption = sortOption
+            }
+        }
     }
     
     func viewDidLoad() {
@@ -34,7 +52,24 @@ final class CartViewPresenter: CartViewPresenterProtocol {
     }
     
     func sortNFTs() {
+        view?.sortOptions { [weak self] sortOption in
+            self?.choosenSortOption = sortOption
+            UserDefaults.standard.set(sortOption.rawValue, forKey: "SortOptionKey")
+        }
+    }
+    
+    
+    func didTapCellDeleteButton(with id: String) {
+        deleteButtonDidTapped(with: id)
+    }
+    
+    func deleteButtonDidTapped(with id: String) {
+        nftsInCart.removeAll(where: {
+            $0.id == id
+        })
+        state = nftsInCart.isEmpty ? .empty:.data(nftsInCart)
         
+        service.removeFromCart(id: id, nfts: nftsInCart){_ in }
     }
     
     private func stateDidChanged() {
@@ -46,13 +81,16 @@ final class CartViewPresenter: CartViewPresenterProtocol {
             loadNfts()
         case .data(let nfts):
             view?.hideLoading()
-            view?.setTableView(nfts: nfts)
+            self.nftsInCart = nfts
+            view?.setPrice(price: getTotalPrice(with: nfts))
+            view?.setCount(count: getTotalCount(with: nfts))
         case .failed(let error):
             let errorModel = makeErrorModel(error)
             view?.hideLoading()
             view?.showError(errorModel)
         case .empty:
             view?.isCartEmpty()
+            
         }
     }
     
@@ -81,6 +119,42 @@ final class CartViewPresenter: CartViewPresenterProtocol {
         return ErrorModel(message: message, actionText: actionText) { [weak self] in
             self?.state = .loading
         }
+    }
+    
+    private func sort(with sortOption: SortOption) {
+        switch sortOption {
+        case .price:
+            nftsInCart = nftsInCart.sorted {$0.price < $1.price}
+        case .rating:
+            nftsInCart = nftsInCart.sorted {$0.rating > $1.rating}
+        case .name:
+            nftsInCart = nftsInCart.sorted {$0.name < $1.name}
+        }
+    }
+    
+    private lazy var priceFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        return formatter
+    }()
+    
+    private func formatPrice(_ price: Float) -> String? {
+        return priceFormatter.string(from: NSNumber(value: price))
+    }
+    
+    private func getTotalPrice(with nfts: [Nft]) -> String {
+        var totalPrice: Float = 0.0
+        nfts.forEach{
+            totalPrice += $0.price
+        }
+        guard let totalString = formatPrice(totalPrice) else { return "0.0 ETH" }
+        return totalString
+    }
+    
+    private func getTotalCount(with nfts: [Nft]) -> Int {
+        return nfts.count
     }
     
 }

@@ -7,11 +7,15 @@
 
 import UIKit
 
-protocol CartView: AnyObject, LoadingView, ErrorView {
+protocol CartView: AnyObject, LoadingView, ErrorView, CartSortView {
     func setTableView(nfts: [Nft])
-    func setPrice(price: Float)
+    func setPrice(price: String)
     func isCartEmpty()
     func setCount(count: Int)
+}
+
+protocol CartViewControllerDelegate: AnyObject {
+    func didTapCellDeleteButton(with id: String)
 }
 
 final class CartViewController: UIViewController {
@@ -92,6 +96,8 @@ final class CartViewController: UIViewController {
         presenter.view = self
         presenter.viewDidLoad()
         
+        cartTableView.cartDelegate = self
+        
     }
     
     private func prepareView() {
@@ -162,7 +168,7 @@ extension CartViewController: CartView {
         cartTableView.configureTableView(nfts: nfts)
     }
     
-    func setPrice(price: Float) {
+    func setPrice(price: String) {
         amoutPriceLabel.text = "\(price) ETH"
     }
     
@@ -180,6 +186,10 @@ extension CartViewController: CartView {
     func setCount(count: Int) {
         amountCountLabel.text = "\(count) NFT"
     }
-    
-    
+}
+
+extension CartViewController: CartViewControllerDelegate {
+    func didTapCellDeleteButton(with id: String) {
+        presenter.didTapCellDeleteButton(with: id)
+    }
 }

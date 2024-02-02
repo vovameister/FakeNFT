@@ -7,8 +7,9 @@
 
 import UIKit
 
-protocol PaymentView: AnyObject, LoadingView, ErrorView {
+protocol PaymentView: AnyObject, ErrorView, LoadingView {
     func setCollectionView(currencies: [CurrencyModel])
+    func showPaymentResultView()
 }
 
 final class PaymentViewController: UIViewController {
@@ -75,6 +76,9 @@ final class PaymentViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 13)
         label.textColor = UIColor.ypBlue
         label.text = NSLocalizedString("Payment.linkAgreement", comment: "")
+        label.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(linkLabelButtonTapped))
+        label.addGestureRecognizer(tapGesture)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -136,11 +140,18 @@ final class PaymentViewController: UIViewController {
     }
     
     @objc private func payButtonTapped() {
-        
+        presenter.didTapPayButton()
     }
     
     @objc private func backButtonTapped() {
         dismiss(animated: true)
+    }
+    
+    @objc private func linkLabelButtonTapped() {
+        guard let url = URL(string: "https://yandex.ru/legal/practicum_termsofuse/") else { return }
+        let webView = WebViewViewController(link: url)
+        webView.modalPresentationStyle = .fullScreen
+        present(webView, animated: true)
     }
 }
 
@@ -149,5 +160,9 @@ extension PaymentViewController: PaymentView {
         paymentCollectionView.configureCollectionView(currs: currencies)
     }
     
-    
+    func showPaymentResultView(){
+        let paymentResult = PaymentResultViewController()
+        paymentResult.modalPresentationStyle = .fullScreen
+        present(paymentResult, animated: true)
+    }
 }

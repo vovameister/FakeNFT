@@ -11,6 +11,8 @@ import Kingfisher
 final class CartTableViewCell: UITableViewCell {
     
     static let reuseId = "cartCell"
+    var nftId: String = ""
+    weak var delegate: CartViewControllerDelegate?
     
     private lazy var nameLabel: UILabel =  {
         let label = UILabel()
@@ -49,6 +51,7 @@ final class CartTableViewCell: UITableViewCell {
        let button = UIButton()
         button.setImage(UIImage(named: "deleteButton"), for: .normal)
         button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -65,9 +68,11 @@ final class CartTableViewCell: UITableViewCell {
     }
     
     func configureCell(with nft: Nft) {
+        nftId = nft.id
         nameLabel.text = nft.name
         priceLabel.text = "\(nft.price) ETH"
         nftImage.kf.setImage(with: nft.images.first, placeholder: UIImage(named: "Vector"))
+        ratingControl.rating = nft.rating
     }
     
     private func prepareView() {
@@ -75,8 +80,9 @@ final class CartTableViewCell: UITableViewCell {
         addSubview(nftImage)
         addSubview(priceLabel)
         addSubview(priceHeaderLabel)
-        addSubview(deleteButton)
+        contentView.addSubview(deleteButton)
         addSubview(ratingControl)
+        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             nftImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
@@ -91,7 +97,7 @@ final class CartTableViewCell: UITableViewCell {
             ratingControl.leadingAnchor.constraint(equalTo: nftImage.trailingAnchor, constant: 20),
             
             priceHeaderLabel.leadingAnchor.constraint(equalTo: nftImage.trailingAnchor, constant: 20),
-            priceHeaderLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 12),
+            priceHeaderLabel.topAnchor.constraint(equalTo: ratingControl.bottomAnchor, constant: 12),
             
             priceLabel.leadingAnchor.constraint(equalTo: nftImage.trailingAnchor, constant: 20),
             priceLabel.topAnchor.constraint(equalTo: priceHeaderLabel.bottomAnchor, constant: 2),
@@ -101,6 +107,10 @@ final class CartTableViewCell: UITableViewCell {
             deleteButton.heightAnchor.constraint(equalToConstant: 40),
             deleteButton.widthAnchor.constraint(equalToConstant: 40)
         ])
-        
+    }
+    
+    @objc private func deleteButtonTapped() {
+        print("delete button tapped")
+        delegate?.didTapCellDeleteButton(with: nftId)
     }
 }

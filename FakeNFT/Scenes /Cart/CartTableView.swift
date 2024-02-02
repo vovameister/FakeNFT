@@ -10,6 +10,8 @@ import UIKit
 final class CartTableView: UITableView {
     private var nftsInCart: [Nft] = []
     
+    weak var cartDelegate: CartViewControllerDelegate?
+    
     init() {
         super.init(frame: .zero, style: .plain)
         translatesAutoresizingMaskIntoConstraints = false
@@ -37,6 +39,7 @@ extension CartTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = self.dequeueReusableCell(withIdentifier: CartTableViewCell.reuseId) as? CartTableViewCell else { return UITableViewCell()}
         cell.configureCell(with: nftsInCart[indexPath.row])
+        cell.delegate = cartDelegate
         return cell
     }
 }
