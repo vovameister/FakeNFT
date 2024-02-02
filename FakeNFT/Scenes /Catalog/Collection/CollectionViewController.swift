@@ -6,6 +6,7 @@
 //
 import Kingfisher
 import UIKit
+import SafariServices
 
 protocol CollectionViewControllerProtocol: AnyObject {
     func collectionViewData(data: CollectionViewData)
@@ -75,7 +76,11 @@ final class CollectionViewController: UIViewController {
         label.font = .caption1
         label.textColor = .yaBlueUniversal
         label.numberOfLines = 0
-        // TODO: - Ссылка на страницу автора (Part-3)
+        let gesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(collectionAuthorLinkTapped))
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(gesture)
         return label
     }()
     
@@ -196,6 +201,12 @@ final class CollectionViewController: UIViewController {
     @objc
     private func backButtonTapped() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func collectionAuthorLinkTapped() {
+        guard let url = URL(string: presenter.authorURL ?? "") else { return }
+        let safaryViewController = SFSafariViewController(url: url)
+        navigationController?.present(safaryViewController, animated: true)
     }
 }
 // MARK: - UICollectionViewDataSource

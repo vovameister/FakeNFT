@@ -9,6 +9,7 @@ import Foundation
 protocol CollectionPresenterProtocol: AnyObject {
     var nfts: [NFTs] { get }
     var collectionView: CollectionViewControllerProtocol? { get set }
+    var authorURL: String? { get }
     func loadCollectionData()
     func getNtfs()
     func getModel(for indexPath: IndexPath) -> NFTCellModel
@@ -18,6 +19,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     // MARK: - Properties
     var collectionNft: NFTCollection?
     var nfts: [NFTs] = []
+    var authorURL: String?
     weak var collectionView: CollectionViewControllerProtocol?
     private let catalogService: CatalogServiceProtocol
     // MARK: - Initializers
@@ -47,6 +49,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     
     func loadCollectionData() {
         self.prepare()
+        loadAuthor()
         self.collectionView?.hideLoadIndicator()
     }
     
@@ -63,6 +66,11 @@ final class CollectionPresenter: CollectionPresenterProtocol {
             description: collection.description.firstUppercased
         )
         collectionView?.collectionViewData(data: collectionViewData)
+    }
+    
+    private func loadAuthor() {
+        // моковый сайт
+        self.authorURL = RequestConstants.stubAuthorUrl
     }
     
     private func convertAuthorName() -> String {
