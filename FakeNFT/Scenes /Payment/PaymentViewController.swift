@@ -28,6 +28,8 @@ final class PaymentViewController: UIViewController {
     private lazy var grayBackground: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.ypLightGray
+        view.layer.cornerRadius = 12
+        view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

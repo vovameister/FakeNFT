@@ -40,6 +40,9 @@ final class PaymentResultViewController: UIViewController {
         label.font = UIFont.boldSystemFont(ofSize: 22)
         label.textColor = UIColor.ypBlack
         label.text = NSLocalizedString("Payment.paySuccess", comment: "")
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -71,7 +74,7 @@ final class PaymentResultViewController: UIViewController {
             successLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 36),
             successLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -36),
             
-            backButton.topAnchor.constraint(equalTo: successLabel.bottomAnchor, constant: 152),
+            backButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             backButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             backButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             backButton.heightAnchor.constraint(equalToConstant: 60)
@@ -80,6 +83,5 @@ final class PaymentResultViewController: UIViewController {
     
     @objc private func backButtonTapped() {
         dismiss(animated: true)
-        
     }
 }

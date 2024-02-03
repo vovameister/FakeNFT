@@ -14,11 +14,12 @@ protocol CartViewPresenterProtocol {
 }
 
 enum CartDetailState {
-    case initial, loading, failed(Error), data([Nft]), empty
+    case initial, loading, failed(Error), data([Nft]), empty, delete
 }
 
 final class CartViewPresenter: CartViewPresenterProtocol {
     weak var view: CartView?
+    var idToDelete: String = ""
     private let service: CartService
     private var state = CartDetailState.initial {
         didSet {
@@ -57,19 +58,22 @@ final class CartViewPresenter: CartViewPresenterProtocol {
             UserDefaults.standard.set(sortOption.rawValue, forKey: "SortOptionKey")
         }
     }
-    
-    
+
     func didTapCellDeleteButton(with id: String) {
-        deleteButtonDidTapped(with: id)
+        state = .delete
+        idToDelete = id
     }
     
-    func deleteButtonDidTapped(with id: String) {
+    func returnButtonTapped() {
+        state = .data(nftsInCart)
+    }
+    
+    func deleteButtonTapped() {
         nftsInCart.removeAll(where: {
-            $0.id == id
+            $0.id == idToDelete
         })
         state = nftsInCart.isEmpty ? .empty:.data(nftsInCart)
-        
-        service.removeFromCart(id: id, nfts: nftsInCart){_ in }
+        service.removeFromCart(id: "1", nfts: nftsInCart){_ in }
     }
     
     private func stateDidChanged() {
@@ -80,6 +84,7 @@ final class CartViewPresenter: CartViewPresenterProtocol {
             view?.showLoading()
             loadNfts()
         case .data(let nfts):
+            view?.showDeleteWarning(show: false)
             view?.hideLoading()
             self.nftsInCart = nfts
             view?.setPrice(price: getTotalPrice(with: nfts))
@@ -88,9 +93,12 @@ final class CartViewPresenter: CartViewPresenterProtocol {
             let errorModel = makeErrorModel(error)
             view?.hideLoading()
             view?.showError(errorModel)
+            view?.showDeleteWarning(show: false)
         case .empty:
             view?.isCartEmpty()
-            
+            view?.showDeleteWarning(show: false)
+        case .delete:
+            view?.showDeleteWarning(show: true)
         }
     }
     
@@ -156,5 +164,4 @@ final class CartViewPresenter: CartViewPresenterProtocol {
     private func getTotalCount(with nfts: [Nft]) -> Int {
         return nfts.count
     }
-    
 }

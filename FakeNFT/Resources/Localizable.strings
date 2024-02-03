@@ -19,5 +19,8 @@
 "Cart.sort.close" = "Закрыть";
 "Payment.paySuccess" = "Успех! Оплата прошла, поздравляем с покупкой!";
 "Payment.backButton" = "Вернуться в каталог";
+"Cart.delete" = "Удалить";
+"Cart.return" = "Вернуться";
+"Cart.deleteAccept" = "Вы уверены, что хотите удалить объект из корзины?";
 
 

@@ -18,6 +18,8 @@ final class CartTableView: UITableView {
         self.backgroundColor = .clear
         delegate = self
         dataSource = self
+        separatorStyle = .none
+        allowsSelection = false
         register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.reuseId)
     }
     

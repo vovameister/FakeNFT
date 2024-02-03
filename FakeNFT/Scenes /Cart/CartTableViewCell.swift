@@ -11,7 +11,7 @@ import Kingfisher
 final class CartTableViewCell: UITableViewCell {
     
     static let reuseId = "cartCell"
-    var nftId: String = ""
+    var nftId: String?
     weak var delegate: CartViewControllerDelegate?
     
     private lazy var nameLabel: UILabel =  {
@@ -82,7 +82,6 @@ final class CartTableViewCell: UITableViewCell {
         addSubview(priceHeaderLabel)
         contentView.addSubview(deleteButton)
         addSubview(ratingControl)
-        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             nftImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
@@ -111,6 +110,9 @@ final class CartTableViewCell: UITableViewCell {
     
     @objc private func deleteButtonTapped() {
         print("delete button tapped")
-        delegate?.didTapCellDeleteButton(with: nftId)
+        guard let image = nftImage.image,
+              let id = nftId
+        else { return }
+        delegate?.didTapCellDeleteButton(with: id, with: image)
     }
 }
