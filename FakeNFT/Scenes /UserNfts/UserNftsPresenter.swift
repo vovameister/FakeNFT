@@ -26,6 +26,9 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
     weak var view: UserNftsViewProtocol?
     var userNfts = [UserNftCellModel]()
     
+    private let nftsInput: [String]
+    private let service: UserNftServiceProtocol
+    
     private var state = UserNftsState.initial {
         didSet {
             stateDidChanged()
@@ -33,8 +36,9 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
     }
     
     // MARK: - Init
-    init() {
-        print("init")
+    init(nftsInput: [String], service: UserNftServiceProtocol) {
+        self.nftsInput = nftsInput
+        self.service = service
     }
     
     // MARK: - Functions
@@ -75,7 +79,33 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
     }
     
     private func loadUserNfts() {
-        mockData()
-        state = .data
+        nftsInput.forEach {
+            service.loadUserNft(with: $0, completion: { [weak self] result in
+                guard let self = self else {
+                    return
+                }
+                switch result {
+                case .success(let nft):
+                    let nftCell = convertToNftCellModel(from: nft)
+                    self.userNfts.append(nftCell)
+                    if nftsInput.count == self.userNfts.count {
+                        state = .data
+                    }
+                case .failure(let error):
+                    state = .failed(error)
+                }
+            })
+        }
+    }
+    
+    private func convertToNftCellModel(from nft: UserNft) -> UserNftCellModel {
+        let cell = UserNftCellModel(
+            id: nft.id,
+            name: nft.name,
+            image: nft.images.first,
+            price: String(nft.price),
+            rating: Int(nft.rating) ?? 0
+        )
+        return cell
     }
 }

@@ -11,8 +11,8 @@ struct UserNft: Codable {
     let id: String
     let name: String
     let images: [URL]
-    let price: String
-    let rating: String
+    let price: Float
+    let rating: Int
 }
 
 struct UserNftCellModel {

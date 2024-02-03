@@ -216,7 +216,7 @@ extension UserInfoViewController: UITableViewDelegate {
     
     private func showUserNftsVC() {
         let assembly = UserNftsAssembly()
-        let userNftsVC = assembly.build()
+        let userNftsVC = assembly.build(with: presenter.getNftsStringArray())
         present(userNftsVC, animated: true)
     }
 }
