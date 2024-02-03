@@ -16,10 +16,10 @@ protocol UserInfoViewProtocol: AnyObject, ErrorView, LoadingView {
 final class UserInfoViewController: UIViewController {
    
     // MARK: - Properties
-    var activityIndicator = UIActivityIndicatorView()
     private let presenter: UserInfoPresenterProtocol
     
     //MARK: - UI elements
+    var activityIndicator = UIActivityIndicatorView()
     private lazy var navigationBar: UINavigationBar = {
         let navBar = UINavigationBar()
         navBar.barTintColor = .systemBackground
@@ -135,7 +135,6 @@ final class UserInfoViewController: UIViewController {
     
     //MARK: - Layout
     private func setupViews() {
-        
         view.backgroundColor = .systemBackground
         view.addSubview(activityIndicator)
         view.addSubview(navigationBar)

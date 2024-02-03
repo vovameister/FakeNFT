@@ -8,10 +8,16 @@
 import Kingfisher
 import UIKit
 
+// MARK: - Delegate
+protocol UserNftCellDelegate: AnyObject {
+    func cellDidTapLike(_ cell: UserNftCell)
+}
+
 final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
     
     static let defaultReuseIdentifier = "userNftCell"
     private var starsView: [UIImageView] = []
+    weak var delegate: UserNftCellDelegate?
     
     //MARK: - UI elements
     
@@ -38,12 +44,13 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
         return stack
     }()
     
-    private lazy var likeImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "like_disable")
-        imageView.contentMode = .center
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
+    private lazy var likeButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "like_disable") ?? UIImage(), for: .normal)
+        button.contentMode = .center
+        button.addTarget(self, action: #selector(didTapLike), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     private lazy var subView: UIView = {
@@ -71,6 +78,7 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
     private lazy var basketButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "basket") ?? UIImage(), for: .normal)
+        button.addTarget(self, action: #selector(didTapBasket), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -94,7 +102,7 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
         backgroundColor = .systemBackground
         
         contentView.addSubview(nftImage)
-        contentView.addSubview(likeImageView)
+        contentView.addSubview(likeButton)
         contentView.addSubview(ratingStack)
         contentView.addSubview(subView)
         subView.addSubview(basketButton)
@@ -109,10 +117,10 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
             nftImage.widthAnchor.constraint(equalToConstant: 108),
             nftImage.heightAnchor.constraint(equalToConstant: 108),
             
-            likeImageView.topAnchor.constraint(equalTo: topAnchor),
-            likeImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            likeImageView.heightAnchor.constraint(equalToConstant: 40),
-            likeImageView.widthAnchor.constraint(equalToConstant: 40),
+            likeButton.topAnchor.constraint(equalTo: topAnchor),
+            likeButton.trailingAnchor.constraint(equalTo: trailingAnchor),
+            likeButton.heightAnchor.constraint(equalToConstant: 40),
+            likeButton.widthAnchor.constraint(equalToConstant: 40),
             
             ratingStack.topAnchor.constraint(equalTo: nftImage.bottomAnchor, constant: 8),
             ratingStack.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -147,10 +155,25 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
         }
     }
     
+    func setLike(to like: Bool) {
+        likeButton.setImage(UIImage(named: like ? "like_enable" : "like_disable"), for: .normal)
+    }
+    
     func configure(with nft: UserNftCellModel) {
         nftImage.kf.setImage(with: nft.image)
         nameLabel.text = nft.name
         priceLabel.text = "\(nft.price) ETH"
         setStars(to: nft.rating)
+        setLike(to: nft.like)
+    }
+    
+    @objc
+    func didTapLike(_ sender: Any) {
+        delegate?.cellDidTapLike(self)
+    }
+    
+    @objc
+    func didTapBasket(_ sender: Any) {
+       print("basket")
     }
 }

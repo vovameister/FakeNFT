@@ -17,10 +17,17 @@ final class UserNftsAssembly {
         )
     }
     
+    private var likeService: LikesServiceProtocol {
+        LikesService (
+            networkClient: networkClient
+        )
+    }
+    
     func build(with input: [String]) -> UIViewController {
         let presenter = UserNftsPresenter(
             nftsInput: input,
-            service: userNftService
+            nftService: userNftService,
+            likeService: likeService
         )
         let viewController = UserNftsViewController(presenter: presenter)
         presenter.view = viewController

@@ -77,15 +77,15 @@ final class UserNftsViewController: UIViewController {
     //MARK: - Layout
     private func setupViews() {
         view.backgroundColor = .systemBackground
-        view.addSubview(activityIndicator)
         view.addSubview(navigationBar)
         view.addSubview(userNftsCollectionView)
+        userNftsCollectionView.addSubview(activityIndicator)
         userNftsCollectionView.dataSource = self
         userNftsCollectionView.delegate = self
     }
     
     private func setupConstraints() {
-        activityIndicator.constraintCenters(to: view)
+        activityIndicator.constraintCenters(to: userNftsCollectionView)
         NSLayoutConstraint.activate([
             navigationBar.heightAnchor.constraint(equalToConstant: 42),
             navigationBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -107,13 +107,14 @@ extension UserNftsViewController: UserNftsViewProtocol {
 
 extension UserNftsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        presenter.userNfts.count
+        presenter.userNftsCellModel.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: UserNftCell = userNftsCollectionView.dequeueReusableCell(indexPath: indexPath)
-        let userNftCell = presenter.userNfts[indexPath.row]
+        let userNftCell = presenter.userNftsCellModel[indexPath.row]
         cell.configure(with: userNftCell)
+        cell.delegate = self
         return cell
     }
 }
@@ -135,5 +136,13 @@ extension UserNftsViewController: UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 8
+    }
+}
+
+extension UserNftsViewController: UserNftCellDelegate {
+    func cellDidTapLike(_ cell: UserNftCell) {
+        guard let indexPath = userNftsCollectionView.indexPath(for: cell) else { return }
+        presenter.updateLike(cell, index: indexPath.row)
+        userNftsCollectionView.reloadItems(at: [indexPath])
     }
 }

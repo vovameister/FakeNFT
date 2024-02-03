@@ -20,5 +20,10 @@ struct UserNftCellModel {
     let name: String
     let image: URL?
     let price: String
-    var rating: Int
+    let rating: Int
+    var like: Bool
+    
+    mutating func changeLike() {
+        like.toggle()
+    }
 }

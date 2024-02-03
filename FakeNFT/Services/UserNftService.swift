@@ -8,6 +8,7 @@
 import Foundation
 
 typealias UserNftCompletion = (Result<UserNft, Error>) -> Void
+typealias UserNftsCompletion = (Result<[UserNft], Error>) -> Void
 
 struct UserNftRequest: NetworkRequest {
     
@@ -23,6 +24,7 @@ struct UserNftRequest: NetworkRequest {
 // MARK: - Protocol
 protocol UserNftServiceProtocol {
     func loadUserNft(with id: String, completion: @escaping UserNftCompletion)
+    func loadNfts(with nftsID: [String], completion: @escaping UserNftsCompletion)
 }
 
 final class UserNftService: UserNftServiceProtocol {
@@ -43,6 +45,23 @@ final class UserNftService: UserNftServiceProtocol {
                 completion(.success(nft))
             case .failure(let error):
                 completion(.failure(error))
+            }
+        }
+    }
+    
+    func loadNfts(with nftsID: [String], completion: @escaping UserNftsCompletion) {
+        var nfts = [UserNft]()
+        nftsID.forEach {
+            self.loadUserNft(with: $0){ result in
+                switch result{
+                case .success(let nft):
+                    nfts.append(nft)
+                    if nfts.count == nftsID.count {
+                        completion(.success(nfts))
+                    }
+                case .failure(let error):
+                    completion(.failure(error))
+                }
             }
         }
     }
