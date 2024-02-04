@@ -9,35 +9,6 @@ import Foundation
 
 typealias OrdersCompletion = (Result<Orders, Error>) -> Void
 
-struct GetOrdersRequest: NetworkRequest {
-    
-    var httpMethod: HttpMethod { .get }
-    
-    var endpoint: URL? {
-        URL(string: "\(RequestConstants.baseURL)/api/v1/orders/1")
-    }
-}
-
-struct PutOrdersRequest: NetworkRequest {
-    
-    var orders: [String]
-    
-    var params: String {
-        var params = ""
-        orders.forEach {
-            params += "nfts=" + $0 + "&"
-        }
-        params.removeLast()
-        return params
-    }
-    
-    var httpMethod: HttpMethod { .put }
-    
-    var endpoint: URL? {
-        URL(string: "\(RequestConstants.baseURL)/api/v1/orders/1?\(params)")
-    }
-}
-
 // MARK: - Protocol
 protocol OrdersServiceProtocol {
     func getOrders(completion: @escaping OrdersCompletion)

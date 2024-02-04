@@ -16,7 +16,6 @@ protocol UserNftCellDelegate: AnyObject {
 
 final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
     
-    static let defaultReuseIdentifier = "userNftCell"
     private var starsView: [UIImageView] = []
     weak var delegate: UserNftCellDelegate?
     
@@ -27,7 +26,6 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
         imageView.backgroundColor = .lightGray
         imageView.layer.cornerRadius = 12
         imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -41,7 +39,6 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
             starsView.append(imageView)
             stack.addArrangedSubview(imageView)
         }
-        stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
     
@@ -50,13 +47,11 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
         button.setImage(UIImage(named: "like_disable") ?? UIImage(), for: .normal)
         button.contentMode = .center
         button.addTarget(self, action: #selector(didTapLike), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     private lazy var subView: UIView = {
         let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -64,7 +59,6 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
         let label = UILabel()
         label.font = .bodyBold
         label.textColor = .textColor
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -72,7 +66,6 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
         let label = UILabel()
         label.font = .caption3
         label.textColor = .textColor
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -80,7 +73,6 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "basket_disable") ?? UIImage(), for: .normal)
         button.addTarget(self, action: #selector(didTapBasket), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -102,13 +94,15 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
     private func setupViews(){
         backgroundColor = .systemBackground
         
-        contentView.addSubview(nftImage)
-        contentView.addSubview(likeButton)
-        contentView.addSubview(ratingStack)
-        contentView.addSubview(subView)
-        subView.addSubview(basketButton)
-        subView.addSubview(nameLabel)
-        subView.addSubview(priceLabel)
+        [nftImage, likeButton, ratingStack, subView].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview($0)
+        }
+        
+        [basketButton, nameLabel, priceLabel].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            subView.addSubview($0)
+        }
     }
     
     private func setupConstraints() {
@@ -149,13 +143,6 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
     
     //MARK: - Functions
     
-    private func setStars(to rating: Int) {
-        for (index, imageView) in starsView.enumerated() {
-            let namedImage = index < rating ? "star_enable": "star_disable"
-            imageView.image = UIImage(named: namedImage)
-        }
-    }
-    
     func setLike(to like: Bool) {
         likeButton.setImage(UIImage(named: like ? "like_enable" : "like_disable"), for: .normal)
     }
@@ -181,5 +168,12 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
     @objc
     func didTapBasket(_ sender: Any) {
         delegate?.cellDidTapBasket(self)
+    }
+    
+    private func setStars(to rating: Int) {
+        for (index, imageView) in starsView.enumerated() {
+            let namedImage = index < rating ? "star_enable": "star_disable"
+            imageView.image = UIImage(named: namedImage)
+        }
     }
 }

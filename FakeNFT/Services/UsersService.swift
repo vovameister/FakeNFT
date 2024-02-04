@@ -9,15 +9,6 @@ import Foundation
 
 typealias UsersCompletion = (Result<[User], Error>) -> Void
 
-struct UsersRequest: NetworkRequest {
-    
-    var httpMethod: HttpMethod { .get }
-    
-    var endpoint: URL? {
-        URL(string: "\(RequestConstants.baseURL)/api/v1/users")
-    }
-}
-
 // MARK: - Protocol
 protocol UsersServiceProtocol {
     func loadUsers(completion: @escaping UsersCompletion)

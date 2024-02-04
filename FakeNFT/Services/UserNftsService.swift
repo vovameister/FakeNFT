@@ -10,17 +10,6 @@ import Foundation
 typealias UserNftCompletion = (Result<UserNft, Error>) -> Void
 typealias UserNftsCompletion = (Result<[UserNft], Error>) -> Void
 
-struct UserNftRequest: NetworkRequest {
-    
-    let id: String
-    
-    var httpMethod: HttpMethod { .get }
-    
-    var endpoint: URL? {
-        URL(string: "\(RequestConstants.baseURL)/api/v1/nft/\(id)")
-    }
-}
-
 // MARK: - Protocol
 protocol UserNftsServiceProtocol {
     func loadUserNft(with id: String, completion: @escaping UserNftCompletion)

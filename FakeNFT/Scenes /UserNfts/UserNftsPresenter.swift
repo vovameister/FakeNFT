@@ -60,7 +60,6 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
         state = .loading
     }
     
-    
     private func stateDidChanged() {
         switch state {
         case .initial:
