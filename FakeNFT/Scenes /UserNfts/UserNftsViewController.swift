@@ -145,4 +145,10 @@ extension UserNftsViewController: UserNftCellDelegate {
         presenter.updateLike(cell, index: indexPath.row)
         userNftsCollectionView.reloadItems(at: [indexPath])
     }
+    
+    func cellDidTapBasket(_ cell: UserNftCell) {
+        guard let indexPath = userNftsCollectionView.indexPath(for: cell) else { return }
+        presenter.updateOrder(cell, index: indexPath.row)
+        userNftsCollectionView.reloadItems(at: [indexPath])
+    }
 }

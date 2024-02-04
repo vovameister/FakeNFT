@@ -13,6 +13,7 @@ protocol UserNftsPresenterProtocol {
     var userNftsCellModel: [UserNftCellModel] { get set }
     func viewDidLoad()
     func updateLike(_ cell: UserNftCell, index: Int)
+    func updateOrder(_ cell: UserNftCell, index: Int) 
 }
 
 // MARK: - State
@@ -27,9 +28,11 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
     weak var view: UserNftsViewProtocol?
     var userNftsCellModel = [UserNftCellModel]()
     var likesProfile = [String]()
+    var ordersProfile = [String]()
     
-    private let nftService: UserNftServiceProtocol
+    private let userNftService: UserNftsServiceProtocol
     private let likeService: LikesServiceProtocol
+    private let orderService: OrdersServiceProtocol
     private let nftsInput: [String]
     private var userNfts = [UserNft]()
 
@@ -40,10 +43,16 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
     }
     
     // MARK: - Init
-    init(nftsInput: [String], nftService: UserNftServiceProtocol, likeService: LikesServiceProtocol) {
+    init(
+        nftsInput: [String],
+        userNftService: UserNftsServiceProtocol,
+        likeService: LikesServiceProtocol,
+        orderService: OrdersServiceProtocol
+    ) {
         self.nftsInput = nftsInput
-        self.nftService = nftService
+        self.userNftService = userNftService
         self.likeService = likeService
+        self.orderService = orderService
     }
     
     // MARK: - Functions
@@ -51,26 +60,6 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
         state = .loading
     }
     
-    private func mockData() {
-        let url1 = URL(string: "https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/April/1.png")
-        let url2 = URL(string: "https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/Breena/1.png")
-        let url3 = URL(string: "https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/Buster/1.png")
-        let url4 = URL(string: "")
-        
-        userNftsCellModel = [
-            UserNftCellModel(id: "a640ea4f-fe73-4994-835a-a715542cdaeb", name: "Archie", image: url1, price: "1.35", rating: 1, like: false),
-            UserNftCellModel(id: "2", name: "Emma", image: url2, price: "2.70", rating: 5, like: false),
-            UserNftCellModel(id: "3", name: "Buster 123456789012334", image: url3, price: "5.0", rating: 0, like: false),
-            UserNftCellModel(id: "4", name: "Cupid", image: url4, price: "2", rating: 2, like: false)
-        ]
-        
-        for index in 5...10 {
-            let user =  UserNftCellModel(id: "\(index)", name: "Archie", image: url1, price: "1.35", rating: 3, like: false)
-            userNftsCellModel.append(user)
-        }
-        
-        state = .data
-    }
     
     private func stateDidChanged() {
         switch state {
@@ -79,10 +68,11 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
         case .loading:
             view?.showLoadingAndBlockUI()
             loadLikesProfile()
+            loadOrdersProfile()
             loadUserNfts()
         case .data:
             view?.hideLoadingAndUnblockUI()
-            setLikes()
+            setLikesAndOrders()
             view?.displayUserNfts()
         case .failed(let error):
             view?.hideLoadingAndUnblockUI()
@@ -92,7 +82,7 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
     }
     
     private func loadUserNfts() {
-        nftService.loadNfts(with: nftsInput, completion: { [weak self] result in
+        userNftService.loadNfts(with: nftsInput, completion: { [weak self] result in
             guard let self = self else {
                 return
             }
@@ -122,26 +112,47 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
         })
     }
     
-    private func convertToNftCellModel(from nft: UserNft, like: Bool) -> UserNftCellModel {
+    private func loadOrdersProfile() {
+        orderService.getOrders (completion: { [weak self] result in
+            guard let self = self else {
+                return
+            }
+            switch result {
+            case .success(let orders):
+                self.ordersProfile = orders.nfts
+            case .failure(let error):
+                self.state = .failed(error)
+            }
+        })
+    }
+    
+    private func setLikesAndOrders(){
+        for nft in userNfts {
+            
+            let like = likesProfile.first { like in
+                return like == nft.id
+            } != nil
+            
+            let order = ordersProfile.first { order in
+                return order == nft.id
+            } != nil
+            
+            let nftCell = convertToNftCellModel(from: nft, like: like, order: order)
+            userNftsCellModel.append(nftCell)
+        }
+    }
+    
+    private func convertToNftCellModel(from nft: UserNft, like: Bool, order: Bool) -> UserNftCellModel {
         let cell = UserNftCellModel(
             id: nft.id,
             name: nft.name,
             image: nft.images.first,
             price: String(nft.price),
             rating: nft.rating,
-            like: like
+            like: like,
+            order: order
         )
         return cell
-    }
-    
-    private func setLikes(){
-        for nft in userNfts {
-            let like = likesProfile.first { like in
-                return like == nft.id
-            } != nil
-            let nftCell = convertToNftCellModel(from: nft, like: like)
-            userNftsCellModel.append(nftCell)
-        }
     }
     
     func updateLike(_ cell: UserNftCell, index: Int) {
@@ -177,6 +188,39 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
         }
     }
     
+    func updateOrder(_ cell: UserNftCell, index: Int) {
+        userNftsCellModel[index].changeOrder()
+        let nft = userNftsCellModel[index]
+        updateOrders(to: cell, by: nft.order, nftId: nft.id)
+    }
+    
+    private func updateOrders(to cell: UserNftCell, by order: Bool, nftId: String) {
+        switch order {
+        case true:
+            ordersProfile.append(nftId)
+        case false:
+            ordersProfile.removeAll(where: {
+                $0 == nftId
+            })
+        }
+        putOrders(cell: cell, order: order)
+    }
+    
+    private func putOrders(cell: UserNftCell, order: Bool) {
+        orderService.putOrders(orders: ordersProfile) { [weak self] result in
+            guard let self = self else {
+                return
+            }
+            switch result {
+            case .success(let orders):
+                self.ordersProfile = orders.nfts
+                cell.setBasket(to: order)
+            case .failure(let error):
+                self.state = .failed(error)
+            }
+        }
+    }
+    
     private func makeErrorModel(_ error: Error) -> ErrorModel {
         let message: String
         switch error {
@@ -188,6 +232,7 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
 
         let actionText = NSLocalizedString("Error.repeat", comment: "")
         return ErrorModel(message: message, actionText: actionText) { [weak self] in
+            self?.userNftsCellModel = [UserNftCellModel]()
             self?.state = .loading
         }
     }

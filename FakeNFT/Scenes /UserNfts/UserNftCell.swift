@@ -11,6 +11,7 @@ import UIKit
 // MARK: - Delegate
 protocol UserNftCellDelegate: AnyObject {
     func cellDidTapLike(_ cell: UserNftCell)
+    func cellDidTapBasket(_ cell: UserNftCell)
 }
 
 final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
@@ -77,7 +78,7 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
     
     private lazy var basketButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "basket") ?? UIImage(), for: .normal)
+        button.setImage(UIImage(named: "basket_disable") ?? UIImage(), for: .normal)
         button.addTarget(self, action: #selector(didTapBasket), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -159,12 +160,17 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
         likeButton.setImage(UIImage(named: like ? "like_enable" : "like_disable"), for: .normal)
     }
     
+    func setBasket(to order: Bool) {
+        basketButton.setImage(UIImage(named: order ? "basket_enable" : "basket_disable"), for: .normal)
+    }
+    
     func configure(with nft: UserNftCellModel) {
         nftImage.kf.setImage(with: nft.image)
         nameLabel.text = nft.name
         priceLabel.text = "\(nft.price) ETH"
         setStars(to: nft.rating)
         setLike(to: nft.like)
+        setBasket(to: nft.order)
     }
     
     @objc
@@ -174,6 +180,6 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
     
     @objc
     func didTapBasket(_ sender: Any) {
-       print("basket")
+        delegate?.cellDidTapBasket(self)
     }
 }

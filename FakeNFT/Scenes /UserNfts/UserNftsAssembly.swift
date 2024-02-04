@@ -11,8 +11,8 @@ final class UserNftsAssembly {
     
     private let networkClient = DefaultNetworkClient()
     
-    private var userNftService: UserNftServiceProtocol {
-        UserNftService(
+    private var userNftService: UserNftsServiceProtocol {
+        UserNftsService(
             networkClient: networkClient
         )
     }
@@ -23,11 +23,18 @@ final class UserNftsAssembly {
         )
     }
     
+    private var orderService: OrdersServiceProtocol {
+        OrdersService (
+            networkClient: networkClient
+        )
+    }
+    
     func build(with input: [String]) -> UIViewController {
         let presenter = UserNftsPresenter(
             nftsInput: input,
-            nftService: userNftService,
-            likeService: likeService
+            userNftService: userNftService,
+            likeService: likeService,
+            orderService: orderService
         )
         let viewController = UserNftsViewController(presenter: presenter)
         presenter.view = viewController

@@ -22,12 +22,12 @@ struct UserNftRequest: NetworkRequest {
 }
 
 // MARK: - Protocol
-protocol UserNftServiceProtocol {
+protocol UserNftsServiceProtocol {
     func loadUserNft(with id: String, completion: @escaping UserNftCompletion)
     func loadNfts(with nftsID: [String], completion: @escaping UserNftsCompletion)
 }
 
-final class UserNftService: UserNftServiceProtocol {
+final class UserNftsService: UserNftsServiceProtocol {
     
     private let networkClient: NetworkClient
     
