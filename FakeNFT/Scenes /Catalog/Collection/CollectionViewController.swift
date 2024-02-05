@@ -221,6 +221,8 @@ extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDa
         let cell: CollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         let cellModel = presenter.getModel(for: indexPath)
         cell.configCollectionCell(nftModel: cellModel)
+        cell.indexPath = indexPath
+        cell.delegate = self
         return cell
     }
 }
@@ -265,5 +267,11 @@ extension CollectionViewController: CollectionViewControllerProtocol {
     
     func hideLoadIndicator() {
         UIBlockingProgressHUD.dismiss()
+    }
+}
+// MARK: - CollectionViewCellDelegate
+extension CollectionViewController: CollectionViewCellDelegate {
+    func likeButtonDidChange(for indexPath: IndexPath, isLiked: Bool) {
+        presenter.changeLike(for: indexPath, isLiked: isLiked)
     }
 }

@@ -7,8 +7,15 @@
 import Kingfisher
 import UIKit
 
+protocol CollectionViewCellDelegate: AnyObject {
+    func likeButtonDidChange(for indexPath: IndexPath, isLiked: Bool)
+}
+
 final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     var nftModel: NFTs?
+    var indexPath: IndexPath?
+    weak var delegate: CollectionViewCellDelegate?
+    private var isLiked: Bool = false
     // MARK: - UI-Elements
     private lazy var ratingView = RatingView()
     private lazy var nftImageView: UIImageView = {
@@ -28,7 +35,10 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
             left: 9,
             bottom: 11,
             right: 10)
-        // TODO: - add target (Part-3-3)
+        button.addTarget(
+            self,
+            action: #selector (likeButtonTapped),
+            for: .touchUpInside)
         return button
     }()
     
@@ -73,7 +83,23 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
             self.nftName.text = nftModel.name
             self.nftPrice.text = "\(nftModel.price) ETH"
             self.ratingView.createRating(with: nftModel.rating)
+            self.likeButton.tintColor = self.setIsLiked(isLiked: nftModel.isLiked)
         }
+    }
+    // MARK: - Actions
+    @objc
+    func likeButtonTapped() {
+        guard let indexPath = indexPath else { return }
+        delegate?.likeButtonDidChange(for: indexPath, isLiked: isLiked)
+    }
+    // MARK: - Private Methods
+    private func setIsLiked(isLiked: Bool) -> UIColor {
+        let likeColor = UIColor { _ in
+            return isLiked
+            ? .yaRedUniversal
+            : .yaWhiteUniversal
+        }
+        return likeColor
     }
     // MARK: - Setup View
     private func setupCollectionViewCell() {

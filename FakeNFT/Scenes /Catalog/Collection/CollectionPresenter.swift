@@ -13,6 +13,7 @@ protocol CollectionPresenterProtocol: AnyObject {
     func loadCollectionData()
     func getNtfs()
     func getModel(for indexPath: IndexPath) -> NFTCellModel
+    func changeLike(for indexPath: IndexPath, isLiked: Bool)
 }
 
 final class CollectionPresenter: CollectionPresenterProtocol {
@@ -20,6 +21,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     var collectionNft: NFTCollection?
     var nfts: [NFTs] = []
     var authorURL: String?
+    var profile: ProfileResult?
     weak var collectionView: CollectionViewControllerProtocol?
     private let catalogService: CatalogServiceProtocol
     // MARK: - Initializers
@@ -50,11 +52,27 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     func loadCollectionData() {
         self.prepare()
         loadAuthor()
+        getLikes()
         self.collectionView?.hideLoadIndicator()
     }
     
     func getModel(for indexPath: IndexPath) -> NFTCellModel {
         self.convertToCellModel(nft: nfts[indexPath.row])
+    }
+    
+    func changeLike(for indexPath: IndexPath, isLiked: Bool) {
+        collectionView?.showLoadIndicator()
+        catalogService.putProfile(id: nfts[indexPath.row].id, completion: { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let profile):
+                self.profile = profile
+            case .failure(let error):
+                print(error)
+            }
+            self.collectionView?.reloadNftCollectionView()
+            self.collectionView?.hideLoadIndicator()
+        })
     }
     // MARK: - Private Methods
     private func prepare() {
@@ -85,7 +103,20 @@ final class CollectionPresenter: CollectionPresenterProtocol {
             name: nft.name.components(separatedBy: " ").first ?? "",
             image: nft.images.first,
             rating: nft.rating,
+            isLiked: catalogService.likeStatus(nft.id), 
             price: nft.price
         )
+    }
+    
+    private func getLikes() {
+        catalogService.getProfile(completion: { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let profile):
+                self.profile = profile
+            case .failure(let error):
+                print(error)
+            }
+        })
     }
 }

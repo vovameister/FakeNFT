@@ -10,15 +10,20 @@ protocol CatalogServiceProtocol: AnyObject {
     func getAuthorNftCollection(id: String, completion: @escaping (UserModel) -> Void)
     func getNtfCollections(completion: @escaping (Result<[NFTCollection], Error>) -> Void)
     func getNFTs(id: String, completion: @escaping (Result<NFTs, Error>) -> Void)
+    func getProfile(completion: @escaping (Result<ProfileResult, Error>) -> Void)
+    func putProfile(id: String, completion: @escaping (Result<ProfileResult, Error>) -> Void)
+    func likeStatus(_ id: String) -> Bool
 }
 
 final class CatalogService: CatalogServiceProtocol {
     
     // MARK: - Properties
     private let networkClient: DefaultNetworkClient
+    private let catalogStorage: CatalogStorageProtocol
     // MARK: - Initializers
-    init(networkClient: DefaultNetworkClient) {
+    init(networkClient: DefaultNetworkClient, catalogStorage: CatalogStorageProtocol) {
         self.networkClient = networkClient
+        self.catalogStorage = catalogStorage
     }
     // MARK: - Get Author Nft Collection (для рабочего API)
     func getAuthorNftCollection(id: String, completion: @escaping (UserModel) -> Void) {
@@ -66,5 +71,59 @@ final class CatalogService: CatalogServiceProtocol {
                 }
             }
         }
+    }
+    // MARK: - Get Profile (likes)
+    func getProfile(completion: @escaping (Result<ProfileResult, Error>) -> Void) {
+        let request = ProfileRequest()
+        networkClient.send(request: request,
+                           type: ProfileResult.self) { [weak self] result in
+            switch result {
+            case .success(let profile):
+                if !profile.likes.isEmpty {
+                    profile.likes.forEach {
+                        self?.catalogStorage.saveNft($0)
+                    }
+                }
+                completion(.success(profile))
+            case .failure(let error):
+                if let networkError = error as? NetworkClientError {
+                    completion(.failure(networkError))
+                } else {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    // MARK: - Put Profile (likes)
+    func putProfile(id: String, completion: @escaping (Result<ProfileResult, Error>) -> Void) {
+        var likes = catalogStorage.likes
+        if let _ = catalogStorage.getNft(with: id) {
+            likes.remove(id)
+        } else {
+            likes.insert(id)
+        }
+        let request = ProfilePutRequest(likes: likes)
+        networkClient.send(request: request, type: ProfileResult.self) { [weak self] result in
+            switch result {
+            case .success(let profile):
+                self?.catalogStorage.likes.removeAll()
+                if !profile.likes.isEmpty {
+                    profile.likes.forEach {
+                        self?.catalogStorage.saveNft($0)
+                    }
+                }
+                completion(.success(profile))
+            case .failure(let error):
+                if let networkError = error as? NetworkClientError {
+                    completion(.failure(networkError))
+                } else {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    
+    func likeStatus(_ id: String) -> Bool {
+        catalogStorage.getNft(with: id) != nil
     }
 }

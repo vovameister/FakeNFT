@@ -11,7 +11,10 @@ class CatalogSceneConfiguration {
     
     init() {
         let networkClient = DefaultNetworkClient()
-        let catalogService = CatalogService(networkClient: networkClient)
+        let catalogStorage = CatalogStorage()
+        let catalogService = CatalogService(
+            networkClient: networkClient,
+            catalogStorage: catalogStorage)
         let sortingStorage = SortingStorage()
         let catalogPresenter = CatalogPresenter(
             catalogService: catalogService,
@@ -21,7 +24,10 @@ class CatalogSceneConfiguration {
     
     func assemblyCollection(_ collection: NFTCollection) -> UIViewController {
         let networkClient = DefaultNetworkClient()
-        let catalogService = CatalogService(networkClient: networkClient)
+        let catalogStorage = CatalogStorage()
+        let catalogService = CatalogService(
+            networkClient: networkClient,
+            catalogStorage: catalogStorage)
         let presenter = CollectionPresenter(
             collectionNft: collection,
             catalogService: catalogService)
