@@ -274,4 +274,8 @@ extension CollectionViewController: CollectionViewCellDelegate {
     func likeButtonDidChange(for indexPath: IndexPath, isLiked: Bool) {
         presenter.changeLike(for: indexPath, isLiked: isLiked)
     }
+    
+    func cartButtonDidChange(for indexPath: IndexPath) {
+        presenter.changeOrder(for: indexPath)
+    }
 }

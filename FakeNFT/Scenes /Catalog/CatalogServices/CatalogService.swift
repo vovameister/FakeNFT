@@ -13,6 +13,9 @@ protocol CatalogServiceProtocol: AnyObject {
     func getProfile(completion: @escaping (Result<ProfileResult, Error>) -> Void)
     func putProfile(id: String, completion: @escaping (Result<ProfileResult, Error>) -> Void)
     func likeStatus(_ id: String) -> Bool
+    func getOrders(completion: @escaping (Result<OrdersResult, Error>) -> Void)
+    func putOrders(id: String, completion: @escaping (Result<OrdersResult, Error>) -> Void)
+    func orderStatus(_ id: String) -> Bool
 }
 
 final class CatalogService: CatalogServiceProtocol {
@@ -122,8 +125,63 @@ final class CatalogService: CatalogServiceProtocol {
             }
         }
     }
-    
+    // MARK: - Check Profile (likes)
     func likeStatus(_ id: String) -> Bool {
         catalogStorage.getNft(with: id) != nil
+    }
+    // MARK: - Get Orders
+    func getOrders(completion: @escaping (Result<OrdersResult, Error>) -> Void) {
+        let request = OrdersRequest()
+        networkClient.send(request: request, type: OrdersResult.self) { [weak self] result in
+            switch result {
+            case .success(let orders):
+                self?.catalogStorage.saveOrderId(orderId: orders.id)
+                if !orders.nfts.isEmpty{
+                    orders.nfts.forEach{
+                        self?.catalogStorage.saveOrders($0)
+                    }
+                }
+                completion(.success(orders))
+            case .failure(let error):
+                if let networkError = error as? NetworkClientError {
+                    completion(.failure(networkError))
+                } else {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    // MARK: - Put Orders
+    func putOrders(id: String, completion: @escaping (Result<OrdersResult, Error>) -> Void) {
+        var orders = catalogStorage.orders
+        if catalogStorage.findInOrders(id) {
+            orders.remove(id)
+        } else {
+            orders.insert(id)
+        }
+        let request = OrdersPutRequest(id: catalogStorage.orderId ?? "", orders: orders)
+        networkClient.send(request: request, type: OrdersResult.self) { [weak self] result in
+            switch result {
+            case .success(let orders):
+                self?.catalogStorage.saveOrderId(orderId: orders.id)
+                self?.catalogStorage.orders.removeAll()
+                if !orders.nfts.isEmpty{
+                    orders.nfts.forEach{
+                        self?.catalogStorage.saveOrders($0)
+                    }
+                }
+                completion(.success(orders))
+            case .failure(let error):
+                if let networkError = error as? NetworkClientError {
+                    completion(.failure(networkError))
+                } else {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    // MARK: - Check Orders
+    func orderStatus(_ id: String) -> Bool {
+        catalogStorage.findInOrders(id)
     }
 }
