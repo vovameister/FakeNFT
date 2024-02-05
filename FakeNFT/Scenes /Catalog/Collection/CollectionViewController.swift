@@ -8,7 +8,7 @@ import Kingfisher
 import UIKit
 import SafariServices
 
-protocol CollectionViewControllerProtocol: AnyObject {
+protocol CollectionViewControllerProtocol: AnyObject, AlertCatalogView {
     func collectionViewData(data: CollectionViewData)
     func reloadNftCollectionView()
     func showLoadIndicator()

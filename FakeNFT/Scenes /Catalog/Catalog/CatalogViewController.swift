@@ -7,7 +7,7 @@
 import Kingfisher
 import UIKit
 
-protocol CatalogViewControllerProtocol: AnyObject {
+protocol CatalogViewControllerProtocol: AnyObject, AlertCatalogView {
     func reloadCatalogTableView()
     func showLoadIndicator()
     func hideLoadIndicator()
@@ -90,29 +90,21 @@ final class CatalogViewController: UIViewController & CatalogViewControllerProto
     // MARK: - Actions
     @objc
     private func sortButtonTapped() {
-        // TODO: Добавить AlertPresenter
-        let actionSheet = UIAlertController(
-            title: "Сортировка",
-            message: nil,
-            preferredStyle: .actionSheet)
-        
-        actionSheet.addAction(UIAlertAction(
-            title: "По названию",
-            style: .default) { _ in
+        let sortModel = presenter.makeSortingModel()
+        self.openAlert(
+            title: sortModel.title,
+            message: sortModel.message,
+            alertStyle: .actionSheet,
+            actionTitles: sortModel.actionTitles,
+            actionStyles: [.default,
+                           .default,
+                           .cancel],
+            actions: [{ _ in
                 self.presenter.sortingByName()
-            })
-        
-        actionSheet.addAction(UIAlertAction(
-            title: "По количеству NFT",
-            style: .default) { _ in
+            }, { _ in
                 self.presenter.sortingByNftCount()
-            })
-        
-        actionSheet.addAction(UIAlertAction(
-            title: "Закрыть",
-            style: .cancel))
-        
-        present(actionSheet, animated: true)
+            }, { _ in }]
+        )
     }
 }
 // MARK: - CatalogViewControllerProtocol
