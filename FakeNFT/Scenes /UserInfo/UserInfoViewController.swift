@@ -83,7 +83,6 @@ final class UserInfoViewController: UIViewController {
         button.setTitle(NSLocalizedString("UserInfo.openSite", comment: ""), for: .normal)
         button.setTitleColor(.textColor, for: .normal)
         button.titleLabel?.font = .caption1
-        //button.backgroundColor = .background
         button.layer.borderWidth = 1.0
         button.layer.borderColor = UIColor.textColor.cgColor
         button.layer.cornerRadius = 16
