@@ -23,7 +23,7 @@ final class CatalogViewController: UIViewController & CatalogViewControllerProto
             style: .plain,
             target: self,
             action: #selector(sortButtonTapped))
-        button.tintColor = .black
+        button.tintColor = .segmentActive
         return button
     }()
     

@@ -46,7 +46,7 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     private lazy var nftName: UILabel = {
         let label = UILabel()
         label.font = .bodyBold
-        label.textColor = .textPrimary
+        label.textColor = .segmentActive
         label.textAlignment = .left
         label.numberOfLines = 0
         return label
@@ -55,14 +55,13 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     private lazy var nftPrice: UILabel = {
         let label = UILabel()
         label.font = .medium10
-        label.textColor = .textPrimary
+        label.textColor = .segmentActive
         label.numberOfLines = 0
         return label
     }()
     
     private lazy var cartButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.tintColor = .textPrimary
         button.addTarget(
             self,
             action: #selector (cartButtonTapped),

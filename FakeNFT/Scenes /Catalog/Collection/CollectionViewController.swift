@@ -25,7 +25,7 @@ final class CollectionViewController: UIViewController {
             style: .plain,
             target: self,
             action: #selector(backButtonTapped))
-        button.tintColor = .black
+        button.tintColor = .closeButton
         return button
     }()
     
@@ -57,7 +57,7 @@ final class CollectionViewController: UIViewController {
     private lazy var collectionName: UILabel = {
         let label = UILabel()
         label.font = .headline3
-        label.textColor = .textPrimary
+        label.textColor = .segmentActive
         label.numberOfLines = 0
         return label
     }()
@@ -66,7 +66,7 @@ final class CollectionViewController: UIViewController {
         let label = UILabel()
         label.text = "Автор коллекции:"
         label.font = .caption2
-        label.textColor = .textPrimary
+        label.textColor = .segmentActive
         label.numberOfLines = 0
         return label
     }()
@@ -87,7 +87,7 @@ final class CollectionViewController: UIViewController {
     private lazy var collectionDescription: UILabel = {
         let label = UILabel()
         label.font = .caption2
-        label.textColor = .textPrimary
+        label.textColor = .segmentActive
         label.numberOfLines = 0
         label.sizeToFit()
         return label
