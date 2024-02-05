@@ -47,6 +47,7 @@ final class UserNftsViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(UserNftCell.self)
+        collectionView.backgroundColor = .background
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -76,7 +77,7 @@ final class UserNftsViewController: UIViewController {
     
     //MARK: - Layout
     private func setupViews() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .background
         view.addSubview(navigationBar)
         view.addSubview(userNftsCollectionView)
         userNftsCollectionView.addSubview(activityIndicator)
@@ -99,12 +100,29 @@ final class UserNftsViewController: UIViewController {
     }
 }
 
+// MARK: - UserNftsViewProtocol
 extension UserNftsViewController: UserNftsViewProtocol {
     func displayUserNfts() {
         userNftsCollectionView.reloadData()
     }
 }
 
+// MARK: - UserNftCellDelegate
+extension UserNftsViewController: UserNftCellDelegate {
+    func cellDidTapLike(_ cell: UserNftCell) {
+        guard let indexPath = userNftsCollectionView.indexPath(for: cell) else { return }
+        presenter.updateLike(cell, index: indexPath.row)
+        userNftsCollectionView.reloadItems(at: [indexPath])
+    }
+    
+    func cellDidTapBasket(_ cell: UserNftCell) {
+        guard let indexPath = userNftsCollectionView.indexPath(for: cell) else { return }
+        presenter.updateOrder(cell, index: indexPath.row)
+        userNftsCollectionView.reloadItems(at: [indexPath])
+    }
+}
+
+// MARK: - CollectionView Protocols
 extension UserNftsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         presenter.userNftsCellModel.count
@@ -136,19 +154,5 @@ extension UserNftsViewController: UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 8
-    }
-}
-
-extension UserNftsViewController: UserNftCellDelegate {
-    func cellDidTapLike(_ cell: UserNftCell) {
-        guard let indexPath = userNftsCollectionView.indexPath(for: cell) else { return }
-        presenter.updateLike(cell, index: indexPath.row)
-        userNftsCollectionView.reloadItems(at: [indexPath])
-    }
-    
-    func cellDidTapBasket(_ cell: UserNftCell) {
-        guard let indexPath = userNftsCollectionView.indexPath(for: cell) else { return }
-        presenter.updateOrder(cell, index: indexPath.row)
-        userNftsCollectionView.reloadItems(at: [indexPath])
     }
 }

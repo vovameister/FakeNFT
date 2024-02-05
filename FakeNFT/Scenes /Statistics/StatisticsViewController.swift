@@ -34,6 +34,7 @@ final class StatisticsViewController: UIViewController {
         let tableView = UITableView()
         tableView.register(StatisticsTableCell.self)
         tableView.separatorStyle = .none
+        tableView.backgroundColor = .background
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -64,7 +65,7 @@ final class StatisticsViewController: UIViewController {
     
     private func setupViews() {
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .background
         
         view.addSubview(statisticsTableView)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sortingButton)

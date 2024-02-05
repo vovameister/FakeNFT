@@ -92,7 +92,7 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
     //MARK: - Layout
     
     private func setupViews(){
-        backgroundColor = .systemBackground
+        backgroundColor = .background
         
         [nftImage, likeButton, ratingStack, subView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -161,12 +161,12 @@ final class UserNftCell: UICollectionViewCell, ReuseIdentifying {
     }
     
     @objc
-    func didTapLike(_ sender: Any) {
+    private func didTapLike(_ sender: Any) {
         delegate?.cellDidTapLike(self)
     }
     
     @objc
-    func didTapBasket(_ sender: Any) {
+    private func didTapBasket(_ sender: Any) {
         delegate?.cellDidTapBasket(self)
     }
     

@@ -27,15 +27,16 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
     // MARK: - Properties
     weak var view: UserNftsViewProtocol?
     var userNftsCellModel = [UserNftCellModel]()
-    var likesProfile = [String]()
-    var ordersProfile = [String]()
     
+    private var likesProfile = [String]()
+    private var ordersProfile = [String]()
+    private var userNfts = [UserNft]()
+    
+    private let nftsInput: [String]
     private let userNftService: UserNftsServiceProtocol
     private let likeService: LikesServiceProtocol
     private let orderService: OrdersServiceProtocol
-    private let nftsInput: [String]
-    private var userNfts = [UserNft]()
-
+ 
     private var state = UserNftsState.initial {
         didSet {
             stateDidChanged()
@@ -81,20 +82,24 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
     }
     
     private func loadUserNfts() {
-        userNftService.loadNfts(with: nftsInput, completion: { [weak self] result in
-            guard let self = self else {
-                return
-            }
-            switch result {
-            case .success(let nfts):
-                self.userNfts = nfts
-                if nftsInput.count == self.userNfts.count {
-                    state = .data
+        if !nftsInput.isEmpty {
+            userNftService.loadNfts(with: nftsInput, completion: { [weak self] result in
+                guard let self = self else {
+                    return
                 }
-            case .failure(let error):
-                state = .failed(error)
-            }
-        })
+                switch result {
+                case .success(let nfts):
+                    self.userNfts = nfts
+                    if nftsInput.count == self.userNfts.count {
+                        state = .data
+                    }
+                case .failure(let error):
+                    state = .failed(error)
+                }
+            })
+        } else {
+            view?.hideLoadingAndUnblockUI()
+        }
     }
     
     private func loadLikesProfile() {

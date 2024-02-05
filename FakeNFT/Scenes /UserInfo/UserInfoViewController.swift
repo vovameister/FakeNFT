@@ -83,7 +83,7 @@ final class UserInfoViewController: UIViewController {
         button.setTitle(NSLocalizedString("UserInfo.openSite", comment: ""), for: .normal)
         button.setTitleColor(.textColor, for: .normal)
         button.titleLabel?.font = .caption1
-        button.backgroundColor = .systemBackground
+        //button.backgroundColor = .background
         button.layer.borderWidth = 1.0
         button.layer.borderColor = UIColor.textColor.cgColor
         button.layer.cornerRadius = 16
@@ -96,6 +96,7 @@ final class UserInfoViewController: UIViewController {
         let tableView = UITableView()
         tableView.register(InfoNFTTableCell.self)
         tableView.separatorStyle = .none
+        tableView.backgroundColor = .background
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -135,7 +136,7 @@ final class UserInfoViewController: UIViewController {
     
     //MARK: - Layout
     private func setupViews() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .background
         view.addSubview(activityIndicator)
         view.addSubview(navigationBar)
         view.addSubview(stackView)
