@@ -9,17 +9,6 @@ import Foundation
 
 typealias UserInfoCompletion = (Result<UserInfo, Error>) -> Void
 
-struct UserInfoRequest: NetworkRequest {
-    
-    let id: String
-    
-    var httpMethod: HttpMethod { .get }
-    
-    var endpoint: URL? {
-        URL(string: "\(RequestConstants.baseURL)/api/v1/users/\(id)")
-    }
-}
-
 // MARK: - Protocol
 protocol UserInfoServiceProtocol {
     func loadUserInfo(with id: String, completion: @escaping UserInfoCompletion)

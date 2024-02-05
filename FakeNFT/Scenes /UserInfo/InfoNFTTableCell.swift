@@ -52,7 +52,7 @@ final class InfoNFTTableCell: UITableViewCell, ReuseIdentifying {
     //MARK: - Layout
     
     private func setupViews(){
-        backgroundColor = .systemBackground
+        backgroundColor = .background
         
         contentView.addSubview(infoLabel)
         contentView.addSubview(countsNFTLabel)

@@ -31,7 +31,7 @@ final class TabBarController: UITabBarController {
 
         viewControllers = [catalogController, statisticsController]
 
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .background
         view.tintColor = UIColor.segmentActive
     }
 }

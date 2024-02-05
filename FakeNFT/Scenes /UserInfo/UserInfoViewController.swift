@@ -16,10 +16,10 @@ protocol UserInfoViewProtocol: AnyObject, ErrorView, LoadingView {
 final class UserInfoViewController: UIViewController {
    
     // MARK: - Properties
-    var activityIndicator = UIActivityIndicatorView()
     private let presenter: UserInfoPresenterProtocol
     
     //MARK: - UI elements
+    var activityIndicator = UIActivityIndicatorView()
     private lazy var navigationBar: UINavigationBar = {
         let navBar = UINavigationBar()
         navBar.barTintColor = .systemBackground
@@ -83,7 +83,6 @@ final class UserInfoViewController: UIViewController {
         button.setTitle(NSLocalizedString("UserInfo.openSite", comment: ""), for: .normal)
         button.setTitleColor(.textColor, for: .normal)
         button.titleLabel?.font = .caption1
-        button.backgroundColor = .systemBackground
         button.layer.borderWidth = 1.0
         button.layer.borderColor = UIColor.textColor.cgColor
         button.layer.cornerRadius = 16
@@ -96,6 +95,7 @@ final class UserInfoViewController: UIViewController {
         let tableView = UITableView()
         tableView.register(InfoNFTTableCell.self)
         tableView.separatorStyle = .none
+        tableView.backgroundColor = .background
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -135,8 +135,7 @@ final class UserInfoViewController: UIViewController {
     
     //MARK: - Layout
     private func setupViews() {
-        
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .background
         view.addSubview(activityIndicator)
         view.addSubview(navigationBar)
         view.addSubview(stackView)
@@ -208,6 +207,15 @@ extension UserInfoViewController: UITableViewDataSource {
 extension UserInfoViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //code
+        if indexPath.row == 0 {
+            showUserNftsVC()
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
+    
+    private func showUserNftsVC() {
+        let assembly = UserNftsAssembly()
+        let userNftsVC = assembly.build(with: presenter.getNftsStringArray())
+        present(userNftsVC, animated: true)
     }
 }

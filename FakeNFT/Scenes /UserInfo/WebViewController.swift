@@ -31,11 +31,13 @@ final class WebViewController: UIViewController {
     
     private lazy var navigationBar: UINavigationBar = {
         let navBar = UINavigationBar()
-        navBar.barTintColor = .systemBackground
         
         let navItem = UINavigationItem(title: "")
         navItem.leftBarButtonItem =  UIBarButtonItem(customView: backButton)
         navBar.setItems([navItem], animated: false)
+        
+        navBar.shadowImage = UIImage()
+        navBar.setBackgroundImage(UIImage(), for: .default)
         
         navBar.translatesAutoresizingMaskIntoConstraints = false
         return navBar
@@ -84,7 +86,7 @@ final class WebViewController: UIViewController {
     
     //MARK: - Layout
     private func setupViews() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .background
         view.addSubview(navigationBar)
         view.addSubview(webView)
         view.addSubview(progressView)
