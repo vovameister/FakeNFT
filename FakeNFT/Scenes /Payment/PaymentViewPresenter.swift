@@ -9,6 +9,11 @@ import UIKit
 
 protocol PaymentViewPresenterProtocol {
     func viewDidLoad()
+    func didTapPayButton()
+}
+
+enum PaymentError: Error {
+    case failedPayment
 }
 
 enum PaymentDetailState {
@@ -71,6 +76,23 @@ final class PaymentViewPresenter: PaymentViewPresenterProtocol {
             switch result{
             case .success(let currencies):
                 self.state = .data(currencies)
+            case .failure(let error):
+                self.state = .failed(error)
+            }
+        }
+    }
+    
+    func didTapPayButton() {
+        service.getPaymentResult(with: "1" ){ [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let paymentResult):
+                if paymentResult.success {
+                    view?.showPaymentResultView()
+                } else {
+                    let errorModel = makeErrorModel(PaymentError.failedPayment)
+                    view?.showError(errorModel)
+                }
             case .failure(let error):
                 self.state = .failed(error)
             }

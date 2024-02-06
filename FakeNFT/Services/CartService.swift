@@ -31,6 +31,13 @@ final class CartService: CartServiceProtocol {
         networkClient.send(request: request, type: Nft.self, onResponse: completion)
     }
     
+    func removeFromCart(id: String, nfts: [Nft], completion: @escaping (Result<CartModel, Error>) -> Void) {
+        let nftsString = nfts.map{ $0.id }
+        let request = CartPutRequest(id: id, nfts: nftsString)
+
+        networkClient.send(request: request, type: CartModel.self, onResponse: completion)
+    }
+    
     func loadNfts(with id: String, completion: @escaping (Result<[Nft], Error>) -> Void) {
         loadCart(id: id){ [weak self] result in
             guard let self = self else { return }
@@ -38,7 +45,7 @@ final class CartService: CartServiceProtocol {
             case .success(let cartModel):
                 var nfts: [Nft] = []
                 cartModel.nfts.forEach{
-                    self.loadNft(id: $0){ [weak self] result in
+                    self.loadNft(id: $0){ result in
                         switch result{
                         case .success(let nft):
                             nfts.append(nft)

@@ -12,4 +12,15 @@
 "Payment.title" = "Выберите способ оплаты";
 "Payment.agreement" = "Совершая покупку, вы соглашаетесь с условиями";
 "Payment.linkAgreement" = "Пользовательского соглашения";
+"Cart.sort" = "Сортировка";
+"Cart.sort.by_price" = "По цене";
+"Cart.sort.by_rating" = "По рейтингу";
+"Cart.sort.by_name" = "По названию";
+"Cart.sort.close" = "Закрыть";
+"Payment.paySuccess" = "Успех! Оплата прошла, поздравляем с покупкой!";
+"Payment.backButton" = "Вернуться в каталог";
+"Cart.delete" = "Удалить";
+"Cart.return" = "Вернуться";
+"Cart.deleteAccept" = "Вы уверены, что хотите удалить объект из корзины?";
+
 
