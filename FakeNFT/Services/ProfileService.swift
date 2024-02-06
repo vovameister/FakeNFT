@@ -11,9 +11,7 @@ final class ProfileService {
     static let shared = ProfileService()
 
     var oldAvatarURL: String?
-
     var newAvatarURL: String?
-
     var userName: String? {
         didSet {
             UserDefaults.standard.set(userName, forKey: "userName")
@@ -46,7 +44,6 @@ final class ProfileService {
             self.website = savedWebsite
         }
     }
-
     func saveAvater() {
         if newAvatarURL != nil {
             UserDefaults.standard.set(newAvatarURL, forKey: "userURL")

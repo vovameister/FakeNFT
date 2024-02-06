@@ -12,22 +12,31 @@ protocol EditProfilePresenterProtocol {
 }
 
 final class EditProfilePresenter: EditProfilePresenterProtocol {
-
     weak var viewController: EditProfileViewController?
-    let service = ProfileService.shared
+    private var service: EditProfileServiceProtocol?
 
     init(viewController: EditProfileViewController) {
         self.viewController = viewController
+        self.service = ProfileService2.shared
     }
     func setNewAvata(url: String) {
-        service.newAvatarURL = url
+        service?.newAvatarURL = url
     }
 
     func profileChanged(name: String, description: String, website: String) {
-        service.userName = name
-        service.website = website
-        service.userDescription = description
-        service.saveAvater()
-        ProfileViewController.shared.helper?.updateProfileView()
+        UIBlockingProgressHUD.show()
+        service?.putProfile(name: name,
+                            description: description,
+                            website: website) { result in
+            switch result {
+            case .success(let result):
+                UIBlockingProgressHUD.dismiss()
+                ProfileViewController.shared.helper?.updateProfileView()
+                print(result)
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                print(error)
+            }
+        }
     }
 }

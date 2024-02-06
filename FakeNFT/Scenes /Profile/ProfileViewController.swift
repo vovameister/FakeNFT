@@ -130,9 +130,9 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         if indexPath.row == 0 {
-            cell.textLabel?.text = "\(tableText[indexPath.row]) (\(mockSum))"
+            cell.textLabel?.text = "\(tableText[indexPath.row]) (\(helper?.sumNFT ?? 0))"
         } else if indexPath.row == 1 {
-            cell.textLabel?.text = "\(tableText[indexPath.row]) (\(mockSum))"
+            cell.textLabel?.text = "\(tableText[indexPath.row]) (\(helper?.sumLikes ?? 0))"
         } else {
             cell.textLabel?.text = tableText[indexPath.row]
         }

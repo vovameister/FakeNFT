@@ -12,7 +12,7 @@ protocol ProfilePresenterProtocol {
 final class ProfilePresenter: ProfilePresenterProtocol {
     private let profileService = ProfileService.shared
     weak var viewController: ProfileViewController?
-    
+
     init(viewController: ProfileViewController) {
         self.viewController = viewController
     }
