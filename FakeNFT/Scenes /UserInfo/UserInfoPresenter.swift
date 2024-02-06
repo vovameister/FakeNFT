@@ -94,16 +94,6 @@ final class UserInfoPresenter: UserInfoPresenterProtocol {
         guard let user = user else {
             return []
         }
-        //для дебага
-//        let nfts = [
-//            "256e28df-aa17-46e4-9586-cb78aab7143c",
-//            "5cd791a3-96cd-4ac3-92cd-744f7422fb31",
-//            "04b79f11-313e-47b4-bd26-f513b77ed264",
-//            "b2f44171-7dcd-46d7-a6d3-e2109aacf520",
-//            "739e293c-1067-43e5-8f1d-4377e744ddde",
-//            "8763e529-ab5f-410f-95c8-d08cb6f49453",
-//            "34c50a1f-e66b-4617-b7a9-8307bb0769af"
-//        ]
         return user.nfts
     }
 }
