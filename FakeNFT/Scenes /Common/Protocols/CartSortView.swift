@@ -36,7 +36,7 @@ extension CartSortView where Self: UIViewController {
         alert.addAction(ratingAction)
         
         let nameAction = UIAlertAction(title: NSLocalizedString("Cart.sort.by_name", comment: ""), style: UIAlertAction.Style.default) {_ in
-            completion(.rating)
+            completion(.name)
         }
         alert.addAction(nameAction)
         

@@ -11,7 +11,7 @@ import Kingfisher
 final class CartTableViewCell: UITableViewCell {
     
     static let reuseId = "cartCell"
-    var nftId: String?
+    private var nftId: String?
     weak var delegate: CartViewControllerDelegate?
     
     private lazy var nameLabel: UILabel =  {

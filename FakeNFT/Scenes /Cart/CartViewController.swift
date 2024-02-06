@@ -147,7 +147,7 @@ final class CartViewController: UIViewController {
     }()
     
     private lazy var cartTableView = CartTableView()
-    internal lazy var activityIndicator = UIActivityIndicatorView()
+    lazy var activityIndicator = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
