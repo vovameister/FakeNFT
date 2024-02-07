@@ -37,15 +37,12 @@ final class MyNFTHelper: MyNFTHelperProtocol {
         }
     }
     func updateMyNFTView() {
-        UIBlockingProgressHUD.show()
         service.loadNFT { result in
             switch result {
             case .success(let nft):
-                UIBlockingProgressHUD.dismiss()
                 self.showNoFavoriteLabel()
                 self.myNFTViewController?.tableView.reloadData()
             case .failure(let error):
-                UIBlockingProgressHUD.dismiss()
                 print(error)
             }
         }

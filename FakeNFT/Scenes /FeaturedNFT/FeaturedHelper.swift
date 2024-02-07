@@ -36,16 +36,13 @@ final class FeaturedHelper: FeaturedHelperProtocol {
         }
     }
     func updateMyNFT() {
-        UIBlockingProgressHUD.show()
         service.loadNFT { result in
             switch result {
-            case .success(let profile):
-                UIBlockingProgressHUD.dismiss()
+            case .success:
                 self.service.updateLikesFirstTime()
                 self.showNoFavoriteLabel()
                 self.viewController?.collectionView.reloadData()
             case .failure(let error):
-                UIBlockingProgressHUD.dismiss()
                 print(error)
             }
         }

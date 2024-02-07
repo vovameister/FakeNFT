@@ -69,13 +69,16 @@ final class MyNFTService: MyNFTServiceProtocol {
             completion(.success(myNFTs))
             return
         }
+        UIBlockingProgressHUD.show()
         let request = MyNFTRequest()
         networkClient.send(request: request, type: [MyNFT].self) { [weak self] result in
             switch result {
             case .success(let NFTs):
                 self?.myNFTs = NFTs
+                UIBlockingProgressHUD.dismiss()
                 completion(.success(NFTs))
             case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
                 completion(.failure(error))
             }
         }
