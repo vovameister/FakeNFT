@@ -19,6 +19,7 @@ final class FeaturedHelper: FeaturedHelperProtocol {
 
     init(viewController: FeaturedNFTViewController) {
         self.viewController = viewController
+        self.updateMyNFT()
     }
 
     func updateTableView(indexPath: IndexPath) -> MyNFT {
@@ -32,6 +33,21 @@ final class FeaturedHelper: FeaturedHelperProtocol {
             viewController?.noFavoriteLabel.isHidden = false
         } else {
             viewController?.noFavoriteLabel.isHidden = true
+        }
+    }
+    func updateMyNFT() {
+        UIBlockingProgressHUD.show()
+        service.loadNFT { result in
+            switch result {
+            case .success(let profile):
+                UIBlockingProgressHUD.dismiss()
+                self.service.updateLikesFirstTime()
+                self.showNoFavoriteLabel()
+                self.viewController?.collectionView.reloadData()
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                print(error)
+            }
         }
     }
 }

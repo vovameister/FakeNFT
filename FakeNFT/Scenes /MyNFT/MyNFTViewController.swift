@@ -15,17 +15,18 @@ final class MyNFTViewController: UIViewController {
     private let titleView = UILabel()
     private let buttonBack = UIButton()
     private let filterButton = UIButton()
-    private let tableView = UITableView()
+    let tableView = UITableView()
 
     private let cellIdentifier = "NFTCell"
 
     let noNFTLabel = UILabel()
     override func viewDidLoad() {
+        helper = MyNFTHelper(viewController: self)
+
         setUpView()
         setUpTableView()
         setUpNoNFTLabel()
 
-        helper = MyNFTHelper(viewController: self)
         presenter = MyNFTPresenter()
         helper?.showNoFavoriteLabel()
     }
@@ -96,6 +97,7 @@ final class MyNFTViewController: UIViewController {
     }
     @objc func tapBack() {
         dismiss(animated: true)
+        ProfileViewController.shared.helper?.realodTableView()
     }
     @objc func changeLike() {
 
@@ -123,7 +125,7 @@ extension MyNFTViewController: UITableViewDelegate, UITableViewDataSource {
 
         cell.likeButton.tintColor = (presenter?.isLike(indexPath: indexPath))! ? .NFTRed : .white
 
-        if let urlSting = nft?.image {
+        if let urlSting = nft?.images.first {
             let url = URL(string: urlSting)
             cell.nftImage.kf.setImage(with: url)
         }

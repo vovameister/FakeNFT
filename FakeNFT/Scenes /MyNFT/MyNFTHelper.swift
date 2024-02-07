@@ -20,6 +20,7 @@ final class MyNFTHelper: MyNFTHelperProtocol {
 
     init(viewController: MyNFTViewController) {
         self.myNFTViewController = viewController
+        updateMyNFTView()
     }
 
     func updateTableView(indexPath: IndexPath) -> MyNFT {
@@ -33,6 +34,20 @@ final class MyNFTHelper: MyNFTHelperProtocol {
             myNFTViewController?.noNFTLabel.isHidden = false
         } else {
             myNFTViewController?.noNFTLabel.isHidden = true
+        }
+    }
+    func updateMyNFTView() {
+        UIBlockingProgressHUD.show()
+        service.loadNFT { result in
+            switch result {
+            case .success(let nft):
+                UIBlockingProgressHUD.dismiss()
+                self.showNoFavoriteLabel()
+                self.myNFTViewController?.tableView.reloadData()
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                print(error)
+            }
         }
     }
 }

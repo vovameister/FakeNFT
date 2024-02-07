@@ -1,16 +1,13 @@
 //
-//  ProfilePutRequest.swift
+//  PutLikesRequest.swift
 //  FakeNFT
 //
-//  Created by Владимир Клевцов on 4.2.24..
+//  Created by Владимир Клевцов on 6.2.24..
 //
 
 import Foundation
 
-struct ProfilePutRequest: NetworkRequest {
-    let name: String
-    let description: String
-    let website: String
+struct PutLikesRequest: NetworkRequest {
     let likes: [String]
 
     var params: String {
@@ -25,10 +22,5 @@ struct ProfilePutRequest: NetworkRequest {
 
     var endpoint: URL? {
         URL(string: "\(RequestConstants.baseURL)/api/v1/profile/1?\(params)")
-    }
-
-    var body: Data? {
-        let body = "name=\(name)&description=\(description)&website=\(website)"
-        return body.data(using: .utf8)!
     }
 }

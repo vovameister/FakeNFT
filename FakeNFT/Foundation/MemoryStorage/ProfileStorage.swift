@@ -11,8 +11,11 @@ protocol ProfileStorageProtocol: AnyObject {
     func saveProfile(profile: Profile)
     func getProfile() -> Profile?
 }
-
-final class ProfileStorage: ProfileStorageProtocol {
+protocol LikeStorageProtocol: AnyObject {
+    func getLikes() -> [String]
+    func updateLikes(likes: [String])
+}
+final class ProfileStorage: ProfileStorageProtocol, LikeStorageProtocol {
     static let shared = ProfileStorage()
 
     private var storage: Profile?
@@ -28,5 +31,13 @@ final class ProfileStorage: ProfileStorageProtocol {
         syncQueue.sync {
             storage
         }
+    }
+    func getLikes() -> [String] {
+        syncQueue.sync {
+            storage?.likes ?? []
+        }
+    }
+    func updateLikes(likes: [String]) {
+        storage?.likes = likes
     }
 }

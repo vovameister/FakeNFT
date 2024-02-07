@@ -15,7 +15,7 @@ final class FeaturedNFTViewController: UIViewController {
     private let buttonBack = UIButton()
 
     let noFavoriteLabel = UILabel()
-    private let collectionView: UICollectionView = {
+    let collectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
@@ -30,7 +30,7 @@ final class FeaturedNFTViewController: UIViewController {
         setUpView()
         setUpCostrints()
         helper = FeaturedHelper(viewController: self)
-        presenter = FeaturedPresenter()
+        presenter = FeaturedPresenter(viewController: self)
         helper?.showNoFavoriteLabel()
     }
 
@@ -79,9 +79,12 @@ final class FeaturedNFTViewController: UIViewController {
             noFavoriteLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
-
+    func reloadImage() {
+        helper?.showNoFavoriteLabel()
+    }
     @objc func tapBack() {
         dismiss(animated: true)
+        ProfileViewController.shared.helper?.realodTableView()
     }
 }
 
@@ -102,7 +105,7 @@ extension FeaturedNFTViewController: UICollectionViewDelegate, UICollectionViewD
 
         cell.likeButton.tintColor = .NFTRed
 
-        if let urlSting = nft?.image {
+        if let urlSting = nft?.images.first {
             let url = URL(string: urlSting)
             cell.nftImage.kf.setImage(with: url)
         }
@@ -130,7 +133,5 @@ extension FeaturedNFTViewController: FeaturedCellDelegate {
     func likeButtonTap(cell: FeaturedCell) {
         guard let nftName = cell.nftName.text else { return }
         presenter?.isLikeTap(nftName: nftName)
-        collectionView.reloadData()
-        helper?.showNoFavoriteLabel()
     }
 }

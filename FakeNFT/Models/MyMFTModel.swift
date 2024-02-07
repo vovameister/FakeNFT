@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct MyNFT {
-    let id: Int
-    let image: String
+struct MyNFT: Decodable {
+    let images: [String]
     let name: String
     let rating: Int
     let author: String
-    let price: Double
+    let price: Float
+    let id: String
 }

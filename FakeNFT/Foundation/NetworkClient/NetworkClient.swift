@@ -118,6 +118,7 @@ struct DefaultNetworkClient: NetworkClient {
         var urlRequest = URLRequest(url: endpoint)
         urlRequest.httpMethod = request.httpMethod.rawValue
         urlRequest.setValue("\(RequestConstants.token)", forHTTPHeaderField: "X-Practicum-Mobile-Token")
+        urlRequest.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
 
         if let dto = request.dto,
            let dtoEncoded = try? encoder.encode(dto) {
@@ -125,7 +126,6 @@ struct DefaultNetworkClient: NetworkClient {
             urlRequest.httpBody = dtoEncoded
         }
         if let body = request.body {
-            urlRequest.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
             urlRequest.httpBody = body
         }
 

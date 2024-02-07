@@ -29,8 +29,9 @@ final class MyNFTPresenter: MyNFTPresenterProtocol {
         service.sortByPrice()
     }
     func isLikeTap(indexPath: IndexPath) -> Bool {
+        UIBlockingProgressHUD.show()
         let id = service.myNFTs[indexPath.row].id
-        let value = service.containsInt(value: id)
+        let value = service.contains(value: id)
         if !value {
             service.likedNFTsid.append(id)
           } else {
@@ -39,12 +40,24 @@ final class MyNFTPresenter: MyNFTPresenterProtocol {
 
               }
           }
-        service.updateLikedNFT()
+        service.putLikes(likes: service.likedNFTsid) { [weak self] result in
+            guard let self = self else {
+                return
+            }
+            service.updateLikedNFT()
+            switch result {
+            case .success:
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                print(error)
+                UIBlockingProgressHUD.dismiss()
+            }
+        }
         return value
     }
     func isLike(indexPath: IndexPath) -> Bool {
         let id = service.myNFTs[indexPath.row].id
-        let value = service.containsInt(value: id)
+        let value = service.contains(value: id)
 
         return value
     }

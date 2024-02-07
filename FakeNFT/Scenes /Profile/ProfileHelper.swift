@@ -9,6 +9,7 @@ import Foundation
 
 protocol ProfileHelperProtocol {
     func updateProfileView()
+    func realodTableView()
     var sumNFT: Int? { get }
     var sumLikes: Int? { get }
 }
@@ -23,7 +24,7 @@ final class ProfileHelper: ProfileHelperProtocol {
 
     init(viewController: ProfileViewController) {
         self.profileViewController = viewController
-        self.service = ProfileService2.shared
+        self.service = ProfileService.shared
     }
 
     func updateProfileView() {
@@ -49,5 +50,17 @@ final class ProfileHelper: ProfileHelperProtocol {
               let url = URL(string: profileURL) else { return }
         profileViewController?.userImage.kf.setImage(with: url)
         profileViewController?.tableView.reloadData()
+    }
+    func realodTableView() {
+        service?.loadProfile { [weak self] result in
+            switch result {
+            case .success(let profile):
+                self?.sumNFT = profile.nfts?.count
+                self?.sumLikes = profile.likes?.count
+                self?.profileViewController?.tableView.reloadData()
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }

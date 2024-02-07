@@ -17,7 +17,7 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
 
     init(viewController: EditProfileViewController) {
         self.viewController = viewController
-        self.service = ProfileService2.shared
+        self.service = ProfileService.shared
     }
     func setNewAvata(url: String) {
         service?.newAvatarURL = url

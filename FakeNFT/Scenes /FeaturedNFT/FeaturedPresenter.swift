@@ -12,9 +12,15 @@ protocol FeaturedPresenterProtocol {
 final class FeaturedPresenter: FeaturedPresenterProtocol {
     private let service = MyNFTService.shared
 
+    weak var viewController: FeaturedNFTViewController?
+
+    init(viewController: FeaturedNFTViewController) {
+        self.viewController = viewController
+    }
     func isLikeTap(nftName: String) {
+        UIBlockingProgressHUD.show()
         if let id = service.mapNFTId(for: nftName) {
-            let value = service.containsInt(value: id)
+            let value = service.contains(value: id)
             if !value {
                 service.likedNFTsid.append(id)
             } else {
@@ -22,7 +28,21 @@ final class FeaturedPresenter: FeaturedPresenterProtocol {
                     service.likedNFTsid.remove(at: index)
                 }
             }
-            service.updateLikedNFT()
+            service.putLikes(likes: service.likedNFTsid) { [weak self] result in
+                guard let self = self else {
+                    return
+                }
+                switch result {
+                case .success:
+                    service.updateLikedNFT()
+                    UIBlockingProgressHUD.dismiss()
+                    self.viewController?.collectionView.reloadData()
+                    self.viewController?.reloadImage()
+                case .failure(let error):
+                    print(error)
+                    UIBlockingProgressHUD.dismiss()
+                }
+            }
         } else {
             print("ID not found for the given NFT name: \(nftName)")
         }

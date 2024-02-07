@@ -36,7 +36,6 @@ final class ProfileViewController: UIViewController {
 
         helper?.updateProfileView()
     }
-
     @objc func presentWeb(gesture: UITapGestureRecognizer) {
         if let urlString = linkLabel.text, let url = URL(string: "https://" + urlString) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
@@ -163,5 +162,3 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 }
-
-private let mockSum = 100

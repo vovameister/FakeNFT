@@ -17,7 +17,7 @@ final class EditProfileHelper: EditProfileHelperProtocol {
 
     init(viewController: EditProfileViewController) {
         self.profileViewController = viewController
-        self.service = ProfileService2.shared
+        self.service = ProfileService.shared
     }
 
     func updateEditProfile() {
