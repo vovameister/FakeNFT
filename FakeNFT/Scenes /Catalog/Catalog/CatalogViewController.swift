@@ -7,7 +7,7 @@
 import Kingfisher
 import UIKit
 
-protocol CatalogViewControllerProtocol: AnyObject {
+protocol CatalogViewControllerProtocol: AnyObject, AlertCatalogView {
     func reloadCatalogTableView()
     func showLoadIndicator()
     func hideLoadIndicator()
@@ -23,7 +23,7 @@ final class CatalogViewController: UIViewController & CatalogViewControllerProto
             style: .plain,
             target: self,
             action: #selector(sortButtonTapped))
-        button.tintColor = .black
+        button.tintColor = .segmentActive
         return button
     }()
     
@@ -59,7 +59,7 @@ final class CatalogViewController: UIViewController & CatalogViewControllerProto
     
     // MARK: - Setup View
     private func setupCatalogViewController() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .yaBackground
         navigationItem.rightBarButtonItem = sortButton
         view.addSubview(catalogTableView)
         setupTableView()
@@ -90,29 +90,21 @@ final class CatalogViewController: UIViewController & CatalogViewControllerProto
     // MARK: - Actions
     @objc
     private func sortButtonTapped() {
-        // TODO: Добавить AlertPresenter
-        let actionSheet = UIAlertController(
-            title: "Сортировка",
-            message: nil,
-            preferredStyle: .actionSheet)
-        
-        actionSheet.addAction(UIAlertAction(
-            title: "По названию",
-            style: .default) { _ in
+        let sortModel = presenter.makeSortingModel()
+        self.openAlert(
+            title: sortModel.title,
+            message: sortModel.message,
+            alertStyle: .actionSheet,
+            actionTitles: sortModel.actionTitles,
+            actionStyles: [.default,
+                           .default,
+                           .cancel],
+            actions: [{ _ in
                 self.presenter.sortingByName()
-            })
-        
-        actionSheet.addAction(UIAlertAction(
-            title: "По количеству NFT",
-            style: .default) { _ in
+            }, { _ in
                 self.presenter.sortingByNftCount()
-            })
-        
-        actionSheet.addAction(UIAlertAction(
-            title: "Закрыть",
-            style: .cancel))
-        
-        present(actionSheet, animated: true)
+            }, { _ in }]
+        )
     }
 }
 // MARK: - CatalogViewControllerProtocol
@@ -152,11 +144,8 @@ extension CatalogViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: CatalogTableViewCell = tableView.dequeueReusableCell()
-        let collection = presenter.collectionsNft[indexPath.row]
-        let collectionCover = URL(string: collection.cover)
-        cell.catalogImage.kf.indicatorType = .activity
-        cell.catalogImage.kf.setImage(with: collectionCover)
-        cell.catalogLabel.text = ("\(collection.name) (\(collection.nfts.count))").firstUppercased
+        let cellModel = presenter.getModel(for: indexPath)
+        cell.configCatalogCell(cellModel: cellModel)
         return cell
     }
 }

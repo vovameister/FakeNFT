@@ -6,8 +6,9 @@
 //
 import Kingfisher
 import UIKit
+import SafariServices
 
-protocol CollectionViewControllerProtocol: AnyObject {
+protocol CollectionViewControllerProtocol: AnyObject, AlertCatalogView {
     func collectionViewData(data: CollectionViewData)
     func reloadNftCollectionView()
     func showLoadIndicator()
@@ -24,7 +25,7 @@ final class CollectionViewController: UIViewController {
             style: .plain,
             target: self,
             action: #selector(backButtonTapped))
-        button.tintColor = .black
+        button.tintColor = .closeButton
         return button
     }()
     
@@ -56,7 +57,7 @@ final class CollectionViewController: UIViewController {
     private lazy var collectionName: UILabel = {
         let label = UILabel()
         label.font = .headline3
-        label.textColor = .textPrimary
+        label.textColor = .segmentActive
         label.numberOfLines = 0
         return label
     }()
@@ -65,7 +66,7 @@ final class CollectionViewController: UIViewController {
         let label = UILabel()
         label.text = "Автор коллекции:"
         label.font = .caption2
-        label.textColor = .textPrimary
+        label.textColor = .segmentActive
         label.numberOfLines = 0
         return label
     }()
@@ -75,14 +76,18 @@ final class CollectionViewController: UIViewController {
         label.font = .caption1
         label.textColor = .yaBlueUniversal
         label.numberOfLines = 0
-        // TODO: - Ссылка на страницу автора (Part-3)
+        let gesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(collectionAuthorLinkTapped))
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(gesture)
         return label
     }()
     
     private lazy var collectionDescription: UILabel = {
         let label = UILabel()
         label.font = .caption2
-        label.textColor = .textPrimary
+        label.textColor = .segmentActive
         label.numberOfLines = 0
         label.sizeToFit()
         return label
@@ -117,7 +122,7 @@ final class CollectionViewController: UIViewController {
     }
     // MARK: - Setup View
     private func setupCollectionViewController() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .yaBackground
         navigationItem.leftBarButtonItem = backButton
         addSubviews()
         setupCollectionView()
@@ -197,6 +202,12 @@ final class CollectionViewController: UIViewController {
     private func backButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
+    
+    @objc func collectionAuthorLinkTapped() {
+        guard let url = URL(string: presenter.authorURL ?? "") else { return }
+        let safaryViewController = SFSafariViewController(url: url)
+        navigationController?.present(safaryViewController, animated: true)
+    }
 }
 // MARK: - UICollectionViewDataSource
 extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -210,6 +221,8 @@ extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDa
         let cell: CollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         let cellModel = presenter.getModel(for: indexPath)
         cell.configCollectionCell(nftModel: cellModel)
+        cell.indexPath = indexPath
+        cell.delegate = self
         return cell
     }
 }
@@ -254,5 +267,15 @@ extension CollectionViewController: CollectionViewControllerProtocol {
     
     func hideLoadIndicator() {
         UIBlockingProgressHUD.dismiss()
+    }
+}
+// MARK: - CollectionViewCellDelegate
+extension CollectionViewController: CollectionViewCellDelegate {
+    func likeButtonDidChange(for indexPath: IndexPath, isLiked: Bool) {
+        presenter.changeLike(for: indexPath, isLiked: isLiked)
+    }
+    
+    func cartButtonDidChange(for indexPath: IndexPath) {
+        presenter.changeOrder(for: indexPath)
     }
 }

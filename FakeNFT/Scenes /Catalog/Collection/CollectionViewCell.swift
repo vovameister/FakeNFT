@@ -7,8 +7,16 @@
 import Kingfisher
 import UIKit
 
+protocol CollectionViewCellDelegate: AnyObject {
+    func likeButtonDidChange(for indexPath: IndexPath, isLiked: Bool)
+    func cartButtonDidChange(for indexPath: IndexPath)
+}
+
 final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     var nftModel: NFTs?
+    var indexPath: IndexPath?
+    weak var delegate: CollectionViewCellDelegate?
+    private var isLiked: Bool = false
     // MARK: - UI-Elements
     private lazy var ratingView = RatingView()
     private lazy var nftImageView: UIImageView = {
@@ -28,14 +36,17 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
             left: 9,
             bottom: 11,
             right: 10)
-        // TODO: - add target (Part-3-3)
+        button.addTarget(
+            self,
+            action: #selector (likeButtonTapped),
+            for: .touchUpInside)
         return button
     }()
     
     private lazy var nftName: UILabel = {
         let label = UILabel()
         label.font = .bodyBold
-        label.textColor = .textPrimary
+        label.textColor = .segmentActive
         label.textAlignment = .left
         label.numberOfLines = 0
         return label
@@ -44,16 +55,17 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     private lazy var nftPrice: UILabel = {
         let label = UILabel()
         label.font = .medium10
-        label.textColor = .textPrimary
+        label.textColor = .segmentActive
         label.numberOfLines = 0
         return label
     }()
     
-    private lazy var cardButton: UIButton = {
+    private lazy var cartButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "CartAdd"), for: .normal)
-        button.tintColor = .textPrimary
-        // TODO: - add target (Part-3-3)
+        button.addTarget(
+            self,
+            action: #selector (cartButtonTapped),
+            for: .touchUpInside)
         return button
     }()
     // MARK: - Initializers
@@ -73,7 +85,35 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
             self.nftName.text = nftModel.name
             self.nftPrice.text = "\(nftModel.price) ETH"
             self.ratingView.createRating(with: nftModel.rating)
+            self.likeButton.tintColor = self.setIsLiked(isLiked: nftModel.isLiked)
+            self.cartButton.setImage(self.setIsCart(isInCart: nftModel.isInCart), for: .normal)
         }
+    }
+    // MARK: - Actions
+    @objc
+    func likeButtonTapped() {
+        guard let indexPath = indexPath else { return }
+        delegate?.likeButtonDidChange(for: indexPath, isLiked: isLiked)
+    }    
+    @objc
+    func cartButtonTapped() {
+        guard let indexPath = indexPath else { return }
+        delegate?.cartButtonDidChange(for: indexPath)
+    }
+    // MARK: - Private Methods
+    private func setIsLiked(isLiked: Bool) -> UIColor {
+        self.isLiked = isLiked
+        let likeColor = UIColor { _ in
+            return isLiked
+            ? .yaRedUniversal
+            : .yaWhiteUniversal
+        }
+        return likeColor
+    }
+    private func setIsCart(isInCart: Bool) -> UIImage? {
+        isInCart
+        ? UIImage(named: "CartDelete")
+        : UIImage(named: "CartAdd")
     }
     // MARK: - Setup View
     private func setupCollectionViewCell() {
@@ -82,7 +122,7 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
          ratingView,
          nftName,
          nftPrice,
-         cardButton
+         cartButton
         ].forEach {
             contentView.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -114,10 +154,10 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
             nftPrice.topAnchor.constraint(equalTo: nftName.bottomAnchor, constant: 4),
             nftPrice.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             
-            cardButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            cardButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
-            cardButton.heightAnchor.constraint(equalToConstant: 40),
-            cardButton.widthAnchor.constraint(equalToConstant: 40)
+            cartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            cartButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            cartButton.heightAnchor.constraint(equalToConstant: 40),
+            cartButton.widthAnchor.constraint(equalToConstant: 40)
         ])
     }
 }
