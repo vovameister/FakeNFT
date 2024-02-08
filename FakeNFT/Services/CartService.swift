@@ -44,17 +44,22 @@ final class CartService: CartServiceProtocol {
             switch result{
             case .success(let cartModel):
                 var nfts: [Nft] = []
-                cartModel.nfts.forEach{
-                    self.loadNft(id: $0){ result in
-                        switch result{
-                        case .success(let nft):
-                            nfts.append(nft)
-                            if nfts.count == cartModel.nfts.count {
-                                completion(.success(nfts))
+                var cartModelNFTs = cartModel.nfts.count
+                for id in cartModel.nfts {
+                    if id.count == 36 {
+                        self.loadNft(id: id) { result1 in
+                            switch result1 {
+                            case .success(let nft):
+                                nfts.append(nft)
+                                if nfts.count == cartModelNFTs {
+                                    completion(.success(nfts))
+                                }
+                            case .failure(let error):
+                                completion(.failure(error))
                             }
-                        case .failure(let error):
-                            completion(.failure(error))
                         }
+                    } else {
+                        cartModelNFTs -= 1
                     }
                 }
             case .failure(let error):
