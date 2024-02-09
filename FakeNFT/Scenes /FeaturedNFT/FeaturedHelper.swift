@@ -36,15 +36,13 @@ final class FeaturedHelper: FeaturedHelperProtocol {
         }
     }
     func updateMyNFT() {
-        service.loadNFT { result in
-            switch result {
-            case .success:
-                self.service.updateLikesFirstTime()
-                self.showNoFavoriteLabel()
-                self.viewController?.collectionView.reloadData()
-            case .failure(let error):
-                print(error)
-            }
+        viewController?.showLoader()
+        service.loadLikedNFT { [weak self] in
+            guard let self = self else { return }
+            self.showNoFavoriteLabel()
+            self.viewController?.collectionView.reloadData()
+            viewController?.hideLoader()
         }
+
     }
 }

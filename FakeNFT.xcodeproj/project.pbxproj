@@ -433,9 +433,9 @@
 		6FEA79022B586DEC00E1A674 /* EditProfile */ = {
 			isa = PBXGroup;
 			children = (
+				6FEA78FA2B55C8FA00E1A674 /* EditProfileViewController.swift */,
 				6FEA79002B5853D200E1A674 /* EditProfileHelper.swift */,
 				6FEA78FC2B56E4EE00E1A674 /* EditProfilePresenter.swift */,
-				6FEA78FA2B55C8FA00E1A674 /* EditProfileViewController.swift */,
 			);
 			path = EditProfile;
 			sourceTree = "<group>";

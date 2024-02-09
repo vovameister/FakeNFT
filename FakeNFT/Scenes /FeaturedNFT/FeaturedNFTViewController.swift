@@ -82,6 +82,12 @@ final class FeaturedNFTViewController: UIViewController {
     func reloadImage() {
         helper?.showNoFavoriteLabel()
     }
+    func showLoader() {
+        UIBlockingProgressHUD.show()
+    }
+    func hideLoader() {
+        UIBlockingProgressHUD.dismiss()
+    }
     @objc func tapBack() {
         dismiss(animated: true)
         ProfileViewController.shared.helper?.realodTableView()
@@ -95,7 +101,7 @@ extension FeaturedNFTViewController: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell",
-                                                              for: indexPath) as? FeaturedCell ?? FeaturedCell()
+                                                      for: indexPath) as? FeaturedCell ?? FeaturedCell()
         let nft = helper?.updateTableView(indexPath: indexPath)
 
         cell.nftName.text = nft?.name

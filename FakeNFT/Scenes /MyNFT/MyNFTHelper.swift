@@ -37,14 +37,12 @@ final class MyNFTHelper: MyNFTHelperProtocol {
         }
     }
     func updateMyNFTView() {
-        service.loadNFT { result in
-            switch result {
-            case .success(let nft):
-                self.showNoFavoriteLabel()
-                self.myNFTViewController?.tableView.reloadData()
-            case .failure(let error):
-                print(error)
-            }
+        myNFTViewController?.showLoader()
+        service.loadMyNFT { [weak self] in
+            guard let self = self else { return }
+            self.showNoFavoriteLabel()
+            self.myNFTViewController?.tableView.reloadData()
+            myNFTViewController?.hideLoader()
         }
     }
 }

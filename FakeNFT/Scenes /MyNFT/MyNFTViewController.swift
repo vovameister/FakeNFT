@@ -27,7 +27,7 @@ final class MyNFTViewController: UIViewController {
         setUpTableView()
         setUpNoNFTLabel()
 
-        presenter = MyNFTPresenter()
+        presenter = MyNFTPresenter(viewController: self)
         helper?.showNoFavoriteLabel()
     }
     private func setUpView() {
@@ -99,8 +99,11 @@ final class MyNFTViewController: UIViewController {
         dismiss(animated: true)
         ProfileViewController.shared.helper?.realodTableView()
     }
-    @objc func changeLike() {
-
+    func showLoader() {
+        UIBlockingProgressHUD.show()
+    }
+    func hideLoader() {
+        UIBlockingProgressHUD.dismiss()
     }
 }
 

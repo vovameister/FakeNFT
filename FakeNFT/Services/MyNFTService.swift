@@ -7,27 +7,25 @@
 
 import Foundation
 typealias LikesCompletion = (Result<Likes, Error>) -> Void
-typealias MyNFTCompletion = (Result<[MyNFT], Error>) -> Void
+typealias MyNFTCompletion = (Result<MyNFT, Error>) -> Void
 
-protocol MyNFTServiceProtocol {
-    func loadNFT(completion: @escaping MyNFTCompletion)
-    func putLikes(likes: [String], completion: @escaping LikesCompletion)
-}
+final class MyNFTService {
 
-final class MyNFTService: MyNFTServiceProtocol {
     static let shared = MyNFTService(networkClient: DefaultNetworkClient())
 
     private let networkClient: NetworkClient
-    private let likeStorage: LikeStorageProtocol
+    private let storage: MyNFTStorageProtocol
 
     var myNFTs: [MyNFT] = []
+    var myNFTsID: [String] = []
     var likedNFTsid: [String] = []
     var likedNFT: [MyNFT] = []
 
     let defaults = UserDefaults.standard
     init(networkClient: NetworkClient) {
         self.networkClient = networkClient
-        self.likeStorage = ProfileStorage.shared
+        self.storage = ProfileStorage.shared
+        self.updateFirstTime()
         savedSortBy(tipe: defaults.integer(forKey: "savedFilter"))
     }
 
@@ -56,36 +54,81 @@ final class MyNFTService: MyNFTServiceProtocol {
     func contains(value: String) -> Bool {
         return likedNFTsid.contains(value)
     }
-
-    func updateLikedNFT() {
-        likedNFT = myNFTs.filter { likedNFTsid.contains($0.id) }
-    }
-    func mapNFTId(for nftName: String) -> String? {
-        return likedNFT.first { $0.name == nftName }?.id
-    }
-
-    func loadNFT(completion: @escaping MyNFTCompletion) {
-        if myNFTs.count > 0 {
-            completion(.success(myNFTs))
+    func loadLikedNFT(completion: @escaping () -> Void) {
+        if likedNFT.count > 0 {
+            completion()
             return
         }
-        UIBlockingProgressHUD.show()
-        let request = MyNFTRequest()
-        networkClient.send(request: request, type: [MyNFT].self) { [weak self] result in
+        var remainingCount = likedNFTsid.count
+        for id in likedNFTsid {
+            loadNft(id: id) { result in
+                switch result {
+                case .success(let nft):
+                    self.likedNFT.append(nft)
+                    print("Successfully loaded NFT: \(nft)")
+                case .failure(let error):
+                    print("Error loading NFT: \(error)")
+                }
+                remainingCount -= 1
+                if remainingCount == 0 {
+                    completion()
+                }
+            }
+        }
+    }
+
+    func loadMyNFT(completion: @escaping () -> Void) {
+        if myNFTs.count > 0 {
+            completion()
+            return
+        }
+        var remainingCount = myNFTsID.count
+        for id in myNFTsID {
+            loadNft(id: id) { result in
+                switch result {
+                case .success(let nft):
+                    self.myNFTs.append(nft)
+                    print("Successfully loaded NFT: \(nft)")
+                case .failure(let error):
+                    print("Error loading NFT: \(error)")
+                }
+                remainingCount -= 1
+                if remainingCount == 0 {
+                    completion()
+                }
+            }
+        }
+    }
+
+    func loadNft(id: String, completion: @escaping MyNFTCompletion) {
+        let request = NFTRequest(id: id)
+        networkClient.send(request: request, type: MyNFT.self) { result in
             switch result {
-            case .success(let NFTs):
-                self?.myNFTs = NFTs
-                UIBlockingProgressHUD.dismiss()
-                completion(.success(NFTs))
+            case .success(let nft):
+                completion(.success(nft))
             case .failure(let error):
-                UIBlockingProgressHUD.dismiss()
                 completion(.failure(error))
             }
         }
     }
-    func updateLikesFirstTime() {
-        likedNFTsid = likeStorage.getLikes()
-        updateLikedNFT()
+
+    func updateFirstTime() {
+        likedNFTsid = storage.getLikes()
+        myNFTsID = storage.getNFTs()
+    }
+    func updateLikedNFT() {
+        likedNFT = likedNFT.filter { likedNFTsid.contains($0.id) } +
+        myNFTs.filter { likedNFTsid.contains($0.id) }
+        likedNFT = removeDuplicatesByID(likedNFT)
+    }
+    func removeDuplicatesByID(_ nfts: [MyNFT]) -> [MyNFT] {
+        var uniqueNFTs = [String: MyNFT]()
+
+        for nft in nfts {
+            uniqueNFTs[nft.id] = nft
+        }
+
+        return Array(uniqueNFTs.values)
     }
     func putLikes(likes: [String], completion: @escaping LikesCompletion) {
 
@@ -94,11 +137,14 @@ final class MyNFTService: MyNFTServiceProtocol {
         networkClient.send(request: request, type: Likes.self) { result in
             switch result {
             case .success(let like):
-                self.likeStorage.updateLikes(likes: likes)
+                self.storage.updateLikes(likes: likes)
                 completion(.success(like))
             case .failure(let error):
                 completion(.failure(error))
             }
         }
+    }
+    func mapNFTId(for nftName: String) -> String? {
+        return likedNFT.first { $0.name == nftName }?.id
     }
 }

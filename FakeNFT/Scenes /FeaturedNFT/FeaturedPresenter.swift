@@ -18,7 +18,7 @@ final class FeaturedPresenter: FeaturedPresenterProtocol {
         self.viewController = viewController
     }
     func isLikeTap(nftName: String) {
-        UIBlockingProgressHUD.show()
+        viewController?.showLoader()
         if let id = service.mapNFTId(for: nftName) {
             let value = service.contains(value: id)
             if !value {
@@ -35,12 +35,12 @@ final class FeaturedPresenter: FeaturedPresenterProtocol {
                 switch result {
                 case .success:
                     service.updateLikedNFT()
-                    UIBlockingProgressHUD.dismiss()
+                    viewController?.hideLoader()
                     self.viewController?.collectionView.reloadData()
                     self.viewController?.reloadImage()
                 case .failure(let error):
                     print(error)
-                    UIBlockingProgressHUD.dismiss()
+                    viewController?.hideLoader()
                 }
             }
         } else {

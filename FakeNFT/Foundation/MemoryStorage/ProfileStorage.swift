@@ -11,11 +11,12 @@ protocol ProfileStorageProtocol: AnyObject {
     func saveProfile(profile: Profile)
     func getProfile() -> Profile?
 }
-protocol LikeStorageProtocol: AnyObject {
+protocol MyNFTStorageProtocol: AnyObject {
     func getLikes() -> [String]
     func updateLikes(likes: [String])
+    func getNFTs() -> [String]
 }
-final class ProfileStorage: ProfileStorageProtocol, LikeStorageProtocol {
+final class ProfileStorage: ProfileStorageProtocol, MyNFTStorageProtocol {
     static let shared = ProfileStorage()
 
     private var storage: Profile?
@@ -39,5 +40,10 @@ final class ProfileStorage: ProfileStorageProtocol, LikeStorageProtocol {
     }
     func updateLikes(likes: [String]) {
         storage?.likes = likes
+    }
+    func getNFTs() -> [String] {
+        syncQueue.sync {
+            storage?.nfts ?? []
+        }
     }
 }

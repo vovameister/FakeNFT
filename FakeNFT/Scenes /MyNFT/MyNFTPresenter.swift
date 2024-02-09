@@ -17,6 +17,11 @@ protocol MyNFTPresenterProtocol {
 final class MyNFTPresenter: MyNFTPresenterProtocol {
     private let service = MyNFTService.shared
 
+    weak var viewController: MyNFTViewController?
+    init(viewController: MyNFTViewController) {
+        self.viewController = viewController
+    }
+
     func sortByRating() {
         service.sortByRating()
     }
@@ -29,17 +34,17 @@ final class MyNFTPresenter: MyNFTPresenterProtocol {
         service.sortByPrice()
     }
     func isLikeTap(indexPath: IndexPath) -> Bool {
-        UIBlockingProgressHUD.show()
+        viewController?.showLoader()
         let id = service.myNFTs[indexPath.row].id
         let value = service.contains(value: id)
         if !value {
             service.likedNFTsid.append(id)
-          } else {
-              if let index = service.likedNFTsid.firstIndex(of: id) {
-                  service.likedNFTsid.remove(at: index)
+        } else {
+            if let index = service.likedNFTsid.firstIndex(of: id) {
+                service.likedNFTsid.remove(at: index)
 
-              }
-          }
+            }
+        }
         service.putLikes(likes: service.likedNFTsid) { [weak self] result in
             guard let self = self else {
                 return
@@ -47,10 +52,10 @@ final class MyNFTPresenter: MyNFTPresenterProtocol {
             service.updateLikedNFT()
             switch result {
             case .success:
-                UIBlockingProgressHUD.dismiss()
+                viewController?.hideLoader()
             case .failure(let error):
                 print(error)
-                UIBlockingProgressHUD.dismiss()
+                viewController?.hideLoader()
             }
         }
         return value
