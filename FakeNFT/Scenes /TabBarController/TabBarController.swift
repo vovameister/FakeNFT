@@ -9,6 +9,12 @@ final class TabBarController: UITabBarController {
         image: UIImage(systemName: "rectangle.stack.fill"),
         tag: 0
     )
+    
+    private let statisticsTabBarItem = UITabBarItem(
+        title: NSLocalizedString("Tab.statistics", comment: ""),
+        image: UIImage(systemName: "flag.2.crossed.fill"),
+        tag: 3
+    )
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,9 +25,14 @@ final class TabBarController: UITabBarController {
         )
         
         catalogController.tabBarItem = catalogTabBarItem
+        
+        let statisticsAsssembly = StatisticsAssembly(servicesAssembler: servicesAssembly)
+        let statisticsController = UINavigationController(rootViewController: statisticsAsssembly.build())
+        statisticsController.tabBarItem = statisticsTabBarItem
 
-        viewControllers = [catalogController]
-
-        view.backgroundColor = .yaBackground
+        viewControllers = [catalogController, statisticsController]
+        selectedIndex = 0
+        view.backgroundColor = .background
+        view.tintColor = UIColor.segmentActive
     }
 }

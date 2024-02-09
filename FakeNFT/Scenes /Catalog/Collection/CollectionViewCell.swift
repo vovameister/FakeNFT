@@ -54,7 +54,7 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
     private lazy var nftPrice: UILabel = {
         let label = UILabel()
-        label.font = .medium10
+        label.font = .caption3
         label.textColor = .segmentActive
         label.numberOfLines = 0
         return label

@@ -59,7 +59,7 @@ final class CatalogViewController: UIViewController & CatalogViewControllerProto
     
     // MARK: - Setup View
     private func setupCatalogViewController() {
-        view.backgroundColor = .yaBackground
+        view.backgroundColor = .background
         navigationItem.rightBarButtonItem = sortButton
         view.addSubview(catalogTableView)
         setupTableView()

@@ -1,4 +1,5 @@
 "Tab.catalog" = "Каталог";
+"Tab.statistics" = "Статистика";
 "Catalog.openNft" = "Открыть Nft";
 "Catalog.sorting" = "Сортировка";
 "Catalog.sortingByName" = "По названию";
@@ -9,3 +10,9 @@
 "Error.repeat" = "Повторить";
 "Error.title" = "Ошибка";
 "Error.cancel" = "Отмена";
+"Sorting.title" = "Сортировка";
+"Sorting.close" = "Закрыть";
+"Sorting.byName" = "По имени";
+"Sorting.byRating" = "По рейтингу";
+"UserInfo.openSite" = "Перейти на сайт пользователя";
+"UserInfo.nftCollections" = "Коллекция NFT";

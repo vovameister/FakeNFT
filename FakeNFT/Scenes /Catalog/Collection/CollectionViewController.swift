@@ -122,7 +122,7 @@ final class CollectionViewController: UIViewController {
     }
     // MARK: - Setup View
     private func setupCollectionViewController() {
-        view.backgroundColor = .yaBackground
+        view.backgroundColor = .background
         navigationItem.leftBarButtonItem = backButton
         addSubviews()
         setupCollectionView()
