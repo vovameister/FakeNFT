@@ -7,13 +7,13 @@
 import Kingfisher
 import UIKit
 
-protocol CatalogViewControllerProtocol: AnyObject, AlertCatalogView {
+protocol CatalogViewControllerProtocol: AnyObject, AlertCatalogView, LoadingView {
     func reloadCatalogTableView()
-    func showLoadIndicator()
-    func hideLoadIndicator()
 }
 
 final class CatalogViewController: UIViewController & CatalogViewControllerProtocol {
+    var activityIndicator = UIActivityIndicatorView()
+    
     // MARK: - Properties
     private var presenter: CatalogPresenterProtocol
     // MARK: - UI-Elements
@@ -62,6 +62,7 @@ final class CatalogViewController: UIViewController & CatalogViewControllerProto
         view.backgroundColor = .background
         navigationItem.rightBarButtonItem = sortButton
         view.addSubview(catalogTableView)
+        view.addSubview(activityIndicator)
         setupTableView()
         setupCatalogViewControllerConstrains()
     }
@@ -73,6 +74,7 @@ final class CatalogViewController: UIViewController & CatalogViewControllerProto
     }
     
     private func setupCatalogViewControllerConstrains() {
+        activityIndicator.constraintCenters(to: view)
         NSLayoutConstraint.activate([
             catalogTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             catalogTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -111,14 +113,6 @@ final class CatalogViewController: UIViewController & CatalogViewControllerProto
 extension CatalogViewController {
     func reloadCatalogTableView() {
         catalogTableView.reloadData()
-    }
-    
-    func showLoadIndicator() {
-        UIBlockingProgressHUD.show()
-    }
-    
-    func hideLoadIndicator() {
-        UIBlockingProgressHUD.dismiss()
     }
 }
 // MARK: - UITableViewDelegate

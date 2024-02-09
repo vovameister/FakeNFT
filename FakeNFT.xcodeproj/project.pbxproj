@@ -60,7 +60,6 @@
 		919CA9222B607BED005475B4 /* CatalogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919CA9212B607BED005475B4 /* CatalogService.swift */; };
 		919CA9242B616C36005475B4 /* Sorting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919CA9232B616C36005475B4 /* Sorting.swift */; };
 		919CA9262B62E542005475B4 /* SortingStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919CA9252B62E542005475B4 /* SortingStorage.swift */; };
-		919CA9282B63128F005475B4 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919CA9272B63128F005475B4 /* UIBlockingProgressHUD.swift */; };
 		91C1BE042B69853D0069DC44 /* CatalogSceneConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1BE032B69853D0069DC44 /* CatalogSceneConfiguration.swift */; };
 		91FC13042B665FD900FFFFDA /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC13032B665FD900FFFFDA /* CollectionViewController.swift */; };
 		91FC13062B665FFA00FFFFDA /* CollectionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FC13052B665FFA00FFFFDA /* CollectionPresenter.swift */; };
@@ -181,7 +180,6 @@
 		919CA9212B607BED005475B4 /* CatalogService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogService.swift; sourceTree = "<group>"; };
 		919CA9232B616C36005475B4 /* Sorting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sorting.swift; sourceTree = "<group>"; };
 		919CA9252B62E542005475B4 /* SortingStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingStorage.swift; sourceTree = "<group>"; };
-		919CA9272B63128F005475B4 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		91C1BE032B69853D0069DC44 /* CatalogSceneConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogSceneConfiguration.swift; sourceTree = "<group>"; };
 		91FC13032B665FD900FFFFDA /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		91FC13052B665FFA00FFFFDA /* CollectionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionPresenter.swift; sourceTree = "<group>"; };
@@ -307,7 +305,6 @@
 				919CA9182B5EC296005475B4 /* CatalogModels */,
 				919CA90D2B5D65DB005475B4 /* Catalog */,
 				91FC13022B665F7400FFFFDA /* Collection */,
-				919CA9292B6315F0005475B4 /* UIBlockingProgressHUD */,
 				0CFCB7482A7808900009A829 /* TestCatalogController.swift */,
 			);
 			path = Catalog;
@@ -534,14 +531,6 @@
 				915BD2182B6DB52B00AE1F12 /* ProfilePutRequest.swift */,
 			);
 			path = Requests;
-			sourceTree = "<group>";
-		};
-		919CA9292B6315F0005475B4 /* UIBlockingProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-				919CA9272B63128F005475B4 /* UIBlockingProgressHUD.swift */,
-			);
-			path = UIBlockingProgressHUD;
 			sourceTree = "<group>";
 		};
 		91FC13022B665F7400FFFFDA /* Collection */ = {
@@ -872,7 +861,6 @@
 				0CF2C2E12A784C7000FDC837 /* LinePageControl.swift in Sources */,
 				3F6806D329CBBE9600B4F915 /* NetworkRequest.swift in Sources */,
 				91FC131A2B69297100FFFFDA /* String+Extension.swift in Sources */,
-				919CA9282B63128F005475B4 /* UIBlockingProgressHUD.swift in Sources */,
 				919CA9262B62E542005475B4 /* SortingStorage.swift in Sources */,
 				0CFCB7492A7808900009A829 /* TestCatalogController.swift in Sources */,
 				911E16312B7073D600BDEEE4 /* OrdersPutRequest.swift in Sources */,

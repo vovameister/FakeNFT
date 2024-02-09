@@ -8,15 +8,14 @@ import Kingfisher
 import UIKit
 import SafariServices
 
-protocol CollectionViewControllerProtocol: AnyObject, AlertCatalogView {
+protocol CollectionViewControllerProtocol: AnyObject, AlertCatalogView, LoadingView {
     func collectionViewData(data: CollectionViewData)
     func reloadNftCollectionView()
-    func showLoadIndicator()
-    func hideLoadIndicator()
 }
 
 final class CollectionViewController: UIViewController {
     // MARK: - Properties
+    var activityIndicator = UIActivityIndicatorView()
     var presenter: CollectionPresenterProtocol
     // MARK: - UI-Elements
     private lazy var backButton: UIBarButtonItem = {
@@ -134,7 +133,8 @@ final class CollectionViewController: UIViewController {
         
         [collectionCoverImage,
          descriptionStackView,
-         nftCollectionView
+         nftCollectionView,
+         activityIndicator
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             scrollView.addSubview($0)
@@ -157,6 +157,7 @@ final class CollectionViewController: UIViewController {
     }
     
     private func setupCollectionViewControllerConstrains() {
+        activityIndicator.constraintCenters(to: view)
         var navigationBarHeight: CGFloat {
             (navigationController?.view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0) +
             (self.navigationController?.navigationBar.frame.height ?? 0.0)
@@ -259,14 +260,6 @@ extension CollectionViewController: CollectionViewControllerProtocol {
     
     func reloadNftCollectionView() {
         nftCollectionView.reloadData()
-    }
-    
-    func showLoadIndicator() {
-        UIBlockingProgressHUD.show()
-    }
-    
-    func hideLoadIndicator() {
-        UIBlockingProgressHUD.dismiss()
     }
 }
 // MARK: - CollectionViewCellDelegate

@@ -34,17 +34,17 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     func getNtfs() {
         guard let collectionNft, !collectionNft.nfts.isEmpty else { return }
         collectionNft.nfts.forEach {
-            collectionView?.showLoadIndicator()
+            collectionView?.showLoadingAndBlockUI()
             catalogService.getNFTs(id: $0, completion: { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success(let nft):
                     self.nfts.append(nft)
                     self.collectionView?.reloadNftCollectionView()
-                    self.collectionView?.hideLoadIndicator()
+                    self.collectionView?.hideLoadingAndUnblockUI()
                 case .failure(let error):
                     let errorModel = makeErrorModel(error)
-                    self.collectionView?.hideLoadIndicator()
+                    self.collectionView?.hideLoadingAndUnblockUI()
                     collectionView?.openAlert(
                         title: errorModel.title,
                         message: errorModel.message,
@@ -64,7 +64,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
         loadAuthor()
         getLikes()
         getOrders()
-        self.collectionView?.hideLoadIndicator()
+        self.collectionView?.hideLoadingAndUnblockUI()
     }
     
     func getModel(for indexPath: IndexPath) -> NFTCellModel {
@@ -72,17 +72,17 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     }
     
     func changeLike(for indexPath: IndexPath, isLiked: Bool) {
-        collectionView?.showLoadIndicator()
+        collectionView?.showLoadingAndBlockUI()
         catalogService.putProfile(id: nfts[indexPath.row].id, completion: { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let profile):
                 self.profile = profile
                 self.collectionView?.reloadNftCollectionView()
-                self.collectionView?.hideLoadIndicator()
+                self.collectionView?.hideLoadingAndUnblockUI()
             case .failure(let error):
                 let errorModel = makePutErrorModel(error)
-                self.collectionView?.hideLoadIndicator()
+                self.collectionView?.hideLoadingAndUnblockUI()
                 collectionView?.openAlert(
                     title: errorModel.title,
                     message: errorModel.message,
@@ -96,7 +96,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
     }
     
     func changeOrder(for indexPath: IndexPath) {
-        collectionView?.showLoadIndicator()
+        collectionView?.showLoadingAndBlockUI()
         catalogService.putOrders(id: nfts[indexPath.row].id, completion: { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -104,7 +104,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                 self.collectionView?.reloadNftCollectionView()
             case .failure(let error):
                 let errorModel = makePutErrorModel(error)
-                self.collectionView?.hideLoadIndicator()
+                self.collectionView?.hideLoadingAndUnblockUI()
                 collectionView?.openAlert(
                     title: errorModel.title,
                     message: errorModel.message,
@@ -114,7 +114,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                     actions: [{ _ in }]
                 )
             }
-            self.collectionView?.hideLoadIndicator()
+            self.collectionView?.hideLoadingAndUnblockUI()
         })
     }
     // MARK: - Private Methods
@@ -161,7 +161,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                 self.collectionView?.reloadNftCollectionView()
             case .failure(let error):
                 let errorModel = makeErrorModel(error)
-                self.collectionView?.hideLoadIndicator()
+                self.collectionView?.hideLoadingAndUnblockUI()
                 collectionView?.openAlert(
                     title: errorModel.title,
                     message: errorModel.message,
@@ -183,7 +183,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                 self.collectionView?.reloadNftCollectionView()
             case .failure(let error):
                 let errorModel = makeErrorModel(error)
-                self.collectionView?.hideLoadIndicator()
+                self.collectionView?.hideLoadingAndUnblockUI()
                 collectionView?.openAlert(
                     title: errorModel.title,
                     message: errorModel.message,

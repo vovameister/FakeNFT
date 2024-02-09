@@ -29,7 +29,7 @@ final class CatalogPresenter: CatalogPresenterProtocol {
     }
     // MARK: - Public Methods
     func getNtfCollections() {
-        catalogView?.showLoadIndicator()
+        catalogView?.showLoadingAndBlockUI()
         catalogService.getNtfCollections { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -37,10 +37,10 @@ final class CatalogPresenter: CatalogPresenterProtocol {
                 self.collectionsNft = collections
                 self.getSortingCollections()
                 self.catalogView?.reloadCatalogTableView()
-                self.catalogView?.hideLoadIndicator()
+                self.catalogView?.hideLoadingAndUnblockUI()
             case .failure(let error):
                 let errorModel = makeErrorModel(error)
-                self.catalogView?.hideLoadIndicator()
+                self.catalogView?.hideLoadingAndUnblockUI()
                 catalogView?.openAlert(
                     title: errorModel.title,
                     message: errorModel.message,
@@ -51,6 +51,7 @@ final class CatalogPresenter: CatalogPresenterProtocol {
                         self.getNtfCollections()}]
                 )
             }
+            self.catalogView?.reloadCatalogTableView()
         }
     }
     
