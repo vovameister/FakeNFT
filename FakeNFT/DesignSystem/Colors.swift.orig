@@ -78,9 +78,16 @@ extension UIColor {
         : .yaBlackLight
     }
     
+<<<<<<< HEAD
+    static let yaBackground = UIColor { traits in
+        return traits.userInterfaceStyle == .dark
+        ? .yaBlackLight
+        : .yaBlackDark
+=======
     static let textColor = UIColor { traits in
         return traits.userInterfaceStyle == .dark
         ? .yaBlackDark
         : .yaBlackLight
+>>>>>>> develop
     }
 }

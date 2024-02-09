@@ -9,7 +9,10 @@
 "Error.unknown" = "Произошла неизвестная ошибка";
 "Error.repeat" = "Повторить";
 "Error.title" = "Ошибка";
+<<<<<<< HEAD
+=======
 "Error.cancel" = "Отмена";
+>>>>>>> catalog
 "Sorting.title" = "Сортировка";
 "Sorting.close" = "Закрыть";
 "Sorting.byName" = "По имени";
