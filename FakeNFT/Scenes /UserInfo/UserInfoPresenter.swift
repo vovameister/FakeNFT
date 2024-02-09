@@ -10,7 +10,7 @@ import Foundation
 // MARK: - Protocol
 
 protocol UserInfoPresenterProtocol {
-    var user: UserInfo? { get set }
+    var user: UserInfoModel? { get set }
     func viewDidLoad()
     func getNftsStringArray() -> [String] 
 }
@@ -18,14 +18,14 @@ protocol UserInfoPresenterProtocol {
 // MARK: - State
 
 enum UserInfoState {
-    case initial, loading, data(UserInfo), failed(Error)
+    case initial, loading, data(UserInfoModel), failed(Error)
 }
 
 final class UserInfoPresenter: UserInfoPresenterProtocol {
     
     // MARK: - Properties
     weak var view: UserInfoViewProtocol?
-    var user: UserInfo?
+    var user: UserInfoModel?
     
     private let userID: String
     private let service: UserInfoServiceProtocol
@@ -67,7 +67,8 @@ final class UserInfoPresenter: UserInfoPresenterProtocol {
     private func loadUserInfo() {
         service.loadUserInfo(with: userID) { [weak self] result in
             switch result {
-            case .success(let user):
+            case .success(let userInfo):
+                let user = UserInfoModel(userInfo: userInfo)
                 self?.state = .data(user)
             case .failure(let error):
                 self?.state = .failed(error)
