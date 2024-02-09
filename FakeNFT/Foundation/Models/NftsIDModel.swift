@@ -12,5 +12,11 @@ struct Likes: Codable {
 }
 
 struct Orders: Codable {
-    let nfts: [String]
+    var nfts: [String]
+    let id: String
+    
+    init() {
+        self.id = ""
+        self.nfts = []
+    }
 }

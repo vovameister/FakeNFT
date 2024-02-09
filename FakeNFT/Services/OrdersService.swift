@@ -12,7 +12,7 @@ typealias OrdersCompletion = (Result<Orders, Error>) -> Void
 // MARK: - Protocol
 protocol OrdersServiceProtocol {
     func getOrders(completion: @escaping OrdersCompletion)
-    func putOrders(orders: [String], completion: @escaping OrdersCompletion)
+    func putOrders(orders: Orders, completion: @escaping OrdersCompletion)
 }
 
 final class OrdersService: OrdersServiceProtocol {
@@ -37,9 +37,9 @@ final class OrdersService: OrdersServiceProtocol {
         }
     }
     
-    func putOrders(orders: [String], completion: @escaping OrdersCompletion) {
+    func putOrders(orders: Orders, completion: @escaping OrdersCompletion) {
         
-        let request = PutOrdersRequest(orders: orders)
+        let request = PutOrdersRequest(id: orders.id, orders: orders.nfts)
         
         networkClient.send(request: request, type: Orders.self) { result in
             switch result {

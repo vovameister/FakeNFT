@@ -119,7 +119,7 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
                 id: user.id,
                 name: user.name,
                 avatar: user.avatar,
-                nfts: user.nfts,
+                nfts: user.nfts ?? [],
                 ratingValue: user.ratingValue,
                 ratingPosition: index + 1)
             return updateUser
