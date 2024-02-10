@@ -100,6 +100,7 @@ final class CartViewPresenter: CartViewPresenterProtocol {
             view?.showError(errorModel)
             view?.showDeleteWarning(show: false)
         case .empty:
+            view?.hideLoading()
             view?.isCartEmpty()
             view?.showDeleteWarning(show: false)
         case .delete:

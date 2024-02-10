@@ -289,8 +289,9 @@ extension CartViewController: CartView {
         deleteButton.isHidden = !show
         returnButton.isHidden = !show
         deleteAcceptLabel.isHidden = !show
-        self.navigationController?.isNavigationBarHidden = !show
-        self.navigationController?.isToolbarHidden = !show
+        self.navigationController?.isNavigationBarHidden = show
+        self.navigationController?.isToolbarHidden = show
+        tabBarController?.tabBar.isHidden = show
     }
     
     func enablePayButton() {
