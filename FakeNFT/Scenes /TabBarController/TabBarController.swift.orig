@@ -26,21 +26,18 @@ final class TabBarController: UITabBarController {
         
         catalogController.tabBarItem = catalogTabBarItem
         
-<<<<<<< HEAD
         
-=======
->>>>>>> catalog
         let statisticsAsssembly = StatisticsAssembly(servicesAssembler: servicesAssembly)
         let statisticsController = UINavigationController(rootViewController: statisticsAsssembly.build())
         statisticsController.tabBarItem = statisticsTabBarItem
 
         viewControllers = [catalogController, statisticsController]
-<<<<<<< HEAD
 
+<<<<<<< HEAD
+        view.backgroundColor = .yaBackground
 =======
-        selectedIndex = 0
->>>>>>> catalog
         view.backgroundColor = .background
         view.tintColor = UIColor.segmentActive
+>>>>>>> develop
     }
 }

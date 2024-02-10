@@ -55,6 +55,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                             self.getNtfs()}]
                     )
                 }
+                self.collectionView?.reloadNftCollectionView()
             })
         }
     }
@@ -92,6 +93,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                     actions: [{ _ in }]
                 )
             }
+            self.collectionView?.reloadNftCollectionView()
         })
     }
     
@@ -114,6 +116,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                     actions: [{ _ in }]
                 )
             }
+            self.collectionView?.reloadNftCollectionView()
             self.collectionView?.hideLoadingAndUnblockUI()
         })
     }
@@ -172,6 +175,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                         self.getLikes()}]
                 )
             }
+            self.collectionView?.reloadNftCollectionView()
         })
     }
     
@@ -194,6 +198,7 @@ final class CollectionPresenter: CollectionPresenterProtocol {
                         self.getOrders()}]
                 )
             }
+            self.collectionView?.reloadNftCollectionView()
         })
     }
     
