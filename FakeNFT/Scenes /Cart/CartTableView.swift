@@ -15,7 +15,7 @@ final class CartTableView: UITableView {
     init() {
         super.init(frame: .zero, style: .plain)
         translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = .clear
+        self.backgroundColor = UIColor.ypWhite
         delegate = self
         dataSource = self
         separatorStyle = .none

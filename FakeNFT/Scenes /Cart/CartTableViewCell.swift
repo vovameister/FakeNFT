@@ -76,6 +76,7 @@ final class CartTableViewCell: UITableViewCell {
     }
     
     private func prepareView() {
+        backgroundColor = UIColor.ypWhite
         addSubview(nameLabel)
         addSubview(nftImage)
         addSubview(priceLabel)
