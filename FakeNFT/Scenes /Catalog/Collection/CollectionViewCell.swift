@@ -112,8 +112,8 @@ final class CollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     }
     private func setIsCart(isInCart: Bool) -> UIImage? {
         isInCart
-        ? UIImage(named: "CartDelete")
-        : UIImage(named: "CartAdd")
+        ? UIImage(named: "basket_enable")
+        : UIImage(named: "basket_disable")
     }
     // MARK: - Setup View
     private func setupCollectionViewCell() {

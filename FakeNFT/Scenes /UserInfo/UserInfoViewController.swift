@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - Protocol
 protocol UserInfoViewProtocol: AnyObject, ErrorView, LoadingView {
-    func displayUserInfo(with user: UserInfo)
+    func displayUserInfo(with user: UserInfoModel)
 }
 
 final class UserInfoViewController: UIViewController {
@@ -180,7 +180,7 @@ final class UserInfoViewController: UIViewController {
 
 // MARK: - UserInfoViewProtocol
 extension UserInfoViewController: UserInfoViewProtocol {
-    func displayUserInfo(with user: UserInfo) {
+    func displayUserInfo(with user: UserInfoModel) {
         nameLabel.text = user.name
         avatarImage.kf.setImage(with: user.avatar)
         descriptionLabel.text = user.description

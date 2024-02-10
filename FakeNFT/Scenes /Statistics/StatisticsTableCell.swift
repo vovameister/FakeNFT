@@ -34,6 +34,7 @@ final class StatisticsTableCell: UITableViewCell, ReuseIdentifying {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 14
         imageView.clipsToBounds = true
+        imageView.backgroundColor = .textColor
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()

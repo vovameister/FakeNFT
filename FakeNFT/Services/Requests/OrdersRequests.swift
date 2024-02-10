@@ -18,20 +18,34 @@ struct GetOrdersRequest: NetworkRequest {
 
 struct PutOrdersRequest: NetworkRequest {
     
-    var orders: [String]
+    var id: String
     
-    var params: String {
-        var params = ""
-        orders.forEach {
-            params += "nfts=" + $0 + "&"
-        }
-        params.removeLast()
-        return params
-    }
+    var orders: [String]
     
     var httpMethod: HttpMethod { .put }
     
+    var body: Data? {
+        return ordersToString().data(using: .utf8)
+    }
+    
     var endpoint: URL? {
-        URL(string: "\(RequestConstants.baseURL)/api/v1/orders/1?\(params)")
+        URL(string: "\(RequestConstants.baseURL)/api/v1/orders/1")
+    }
+    
+    private func ordersToString() -> String {
+        var orderString = "nfts="
+        
+        if orders.isEmpty {
+            orderString = ""
+        } else {
+            for (index , nft) in orders.enumerated() {
+                orderString += nft
+                if index != orders.count - 1 {
+                    orderString += "&nfts="
+                }
+            }
+        }
+        orderString += "&id=\(id)"
+        return orderString
     }
 }

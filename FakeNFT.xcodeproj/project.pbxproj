@@ -590,6 +590,52 @@
 			path = UserNfts;
 			sourceTree = "<group>";
 		};
+		A8C06EA52B584BD4009B4200 /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+				A8C06EA62B584C07009B4200 /* StatisticsViewController.swift */,
+				A8CEEDAE2B5D6314008C2216 /* StatisticsPresenter.swift */,
+				A8C06EA82B5C3C05009B4200 /* StatisticsTableCell.swift */,
+				A8CEEDB42B5D8214008C2216 /* StatisticsAssembly.swift */,
+			);
+			path = Statistics;
+			sourceTree = "<group>";
+		};
+		A8CEEDD42B680E0B008C2216 /* UserInfo */ = {
+			isa = PBXGroup;
+			children = (
+				A8CEEDC12B642C12008C2216 /* UserInfoViewController.swift */,
+				A8CEEDC32B643617008C2216 /* UserInfoPresenter.swift */,
+				A8CEEDD22B66E3B0008C2216 /* WebViewController.swift */,
+				A8CEEDC92B66A9CA008C2216 /* InfoNFTTableCell.swift */,
+				A8CEEDC52B643634008C2216 /* UserInfoAssembly.swift */,
+			);
+			path = UserInfo;
+			sourceTree = "<group>";
+		};
+		A8CEEDD52B680F24008C2216 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A8CEEDB22B5D6395008C2216 /* UserModel.swift */,
+				A8CEEDD02B66CD18008C2216 /* UserInfoModel.swift */,
+				A8FC1BFA2B6AC66E00566585 /* UserNftModel.swift */,
+				A8CEEDBA2B5EE217008C2216 /* SortingsModel.swift */,
+				A8FC1C022B6EB09100566585 /* NftsIDModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A8FC1BF02B6AB9AD00566585 /* UserNfts */ = {
+			isa = PBXGroup;
+			children = (
+				A8FC1BF12B6AB9F200566585 /* UserNftsViewController.swift */,
+				A8FC1BF42B6ABA3600566585 /* UserNftsPresenter.swift */,
+				A8FC1BF82B6AC04C00566585 /* UserNftCell.swift */,
+				A8FC1BF62B6ABAD700566585 /* UserNftsAssembly.swift */,
+			);
+			path = UserNfts;
+			sourceTree = "<group>";
+		};
 		E19CD5A92A98B55900CA39A5 /* Cell */ = {
 			isa = PBXGroup;
 			children = (

@@ -19,7 +19,7 @@ protocol UserNftsPresenterProtocol {
 // MARK: - State
 
 enum UserNftsState {
-    case initial, loading, data, failed(Error)
+    case initial, loading, loadingLikes, loadingOrders, loadingNft, data, failed(Error)
 }
 
 final class UserNftsPresenter: UserNftsPresenterProtocol {
@@ -29,7 +29,7 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
     var userNftsCellModel = [UserNftCellModel]()
     
     private var likesProfile = [String]()
-    private var ordersProfile = [String]()
+    private var ordersProfile = Orders()
     private var userNfts = [UserNft]()
     
     private let nftsInput: [String]
@@ -66,9 +66,13 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
         case .initial:
             assertionFailure("can't move to initial state")
         case .loading:
+            state = .loadingLikes
+        case .loadingLikes:
             view?.showLoadingAndBlockUI()
             loadLikesProfile()
+        case .loadingOrders:
             loadOrdersProfile()
+        case .loadingNft:
             loadUserNfts()
         case .data:
             view?.hideLoadingAndUnblockUI()
@@ -110,6 +114,7 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
             switch result {
             case .success(let likes):
                 self.likesProfile = likes.likes
+                state = .loadingOrders
             case .failure(let error):
                 self.state = .failed(error)
             }
@@ -123,7 +128,8 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
             }
             switch result {
             case .success(let orders):
-                self.ordersProfile = orders.nfts
+                self.ordersProfile = orders
+                state = .loadingNft
             case .failure(let error):
                 self.state = .failed(error)
             }
@@ -137,7 +143,7 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
                 return like == nft.id
             } != nil
             
-            let order = ordersProfile.first { order in
+            let order = ordersProfile.nfts.first { order in
                 return order == nft.id
             } != nil
             
@@ -201,9 +207,9 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
     private func updateOrders(to cell: UserNftCell, by order: Bool, nftId: String) {
         switch order {
         case true:
-            ordersProfile.append(nftId)
+            ordersProfile.nfts.append(nftId)
         case false:
-            ordersProfile.removeAll(where: {
+            ordersProfile.nfts.removeAll(where: {
                 $0 == nftId
             })
         }
@@ -217,7 +223,7 @@ final class UserNftsPresenter: UserNftsPresenterProtocol {
             }
             switch result {
             case .success(let orders):
-                self.ordersProfile = orders.nfts
+                self.ordersProfile = orders
                 cell.setBasket(to: order)
             case .failure(let error):
                 self.state = .failed(error)

@@ -20,18 +20,29 @@ struct PutLikesRequest: NetworkRequest {
     
     var likes: [String]
     
-    var params: String {
-        var params = ""
-        likes.forEach {
-            params += "likes=" + $0 + "&"
-        }
-        params.removeLast()
-        return params
-    }
-    
     var httpMethod: HttpMethod { .put }
     
+    var body: Data? {
+        return likesToString().data(using: .utf8)
+    }
+    
     var endpoint: URL? {
-        URL(string: "\(RequestConstants.baseURL)/api/v1/profile/1?\(params)")
+        URL(string: "\(RequestConstants.baseURL)/api/v1/profile/1")
+    }
+    
+    private func likesToString()->String {
+        var likeString = "likes="
+        
+        if likes.isEmpty {
+            likeString = ""
+        } else {
+            for (index , like) in likes.enumerated() {
+                likeString += like
+                if index != likes.count - 1 {
+                    likeString += "&likes="
+                }
+            }
+        }
+        return likeString
     }
 }
