@@ -43,6 +43,5 @@ final class FeaturedHelper: FeaturedHelperProtocol {
             self.viewController?.collectionView.reloadData()
             viewController?.hideLoader()
         }
-
     }
 }

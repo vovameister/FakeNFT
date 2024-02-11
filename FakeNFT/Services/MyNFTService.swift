@@ -26,7 +26,6 @@ final class MyNFTService {
         self.networkClient = networkClient
         self.storage = ProfileStorage.shared
         self.updateFirstTime()
-        savedSortBy(tipe: defaults.integer(forKey: "savedFilter"))
     }
 
     private func savedSortBy(tipe: Int) {
@@ -55,6 +54,10 @@ final class MyNFTService {
         return likedNFTsid.contains(value)
     }
     func loadLikedNFT(completion: @escaping () -> Void) {
+        if likedNFTsid.count == 0 {
+            completion()
+            return
+        }
         if likedNFT.count > 0 {
             completion()
             return
@@ -78,6 +81,10 @@ final class MyNFTService {
     }
 
     func loadMyNFT(completion: @escaping () -> Void) {
+        if myNFTsID.count == 0 {
+            completion()
+            return
+        }
         if myNFTs.count > 0 {
             completion()
             return
@@ -95,6 +102,7 @@ final class MyNFTService {
                 remainingCount -= 1
                 if remainingCount == 0 {
                     completion()
+                    self.savedSortBy(tipe: self.defaults.integer(forKey: "savedFilter"))
                 }
             }
         }

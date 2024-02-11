@@ -122,7 +122,7 @@ extension MyNFTViewController: UITableViewDelegate, UITableViewDataSource {
         cell.authorLabel.text = nft?.author
         cell.nameLabel.text = nft?.name
         cell.priceLabel.text = "\(String(describing: nft?.price ?? 0)) ETH"
-        cell.starsImage.image = UIImage(named: "stars\(String(describing: nft?.rating ?? 0))")
+        cell.starsImage.image = UIImage(named: "stars\(String(describing: (nft?.rating ?? 0) / 40))")
         cell.delegate = self
         cell.selectionStyle = .none
 
