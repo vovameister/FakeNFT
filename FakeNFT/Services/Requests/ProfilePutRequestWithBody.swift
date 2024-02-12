@@ -1,13 +1,13 @@
 //
-//  ProfilePutRequest.swift
+//  ProfilePutRequestWithBody.swift
 //  FakeNFT
 //
-//  Created by Владимир Клевцов on 4.2.24..
+//  Created by Владимир Клевцов on 12.2.24..
 //
 
 import Foundation
 
-struct ProfilePutRequest: NetworkRequest {
+struct ProfilePutRequestWithBody: NetworkRequest {
     let name: String
     let description: String
     let website: String

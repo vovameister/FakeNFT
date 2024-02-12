@@ -34,7 +34,11 @@ extension UIColor {
     static let secondary = UIColor(red: 255 / 255, green: 193 / 255, blue: 7 / 255, alpha: 1.0)
 
     // Background Colors
-    static let background = UIColor.white
+    static let background = UIColor { traits in
+        return traits.userInterfaceStyle == .dark
+        ? .yaBlackLight
+        : .yaBlackDark
+    }
 
     // Text Colors
     static let textPrimary = UIColor.black
@@ -46,6 +50,15 @@ extension UIColor {
     static let fieldBg = UIColor(hexString: "#F7F7F8")
     static let elementsBG = UIColor(hexString: "1A1B22")
     static let NFTRed = UIColor(hexString: "#F56B6C")
+
+    static let yaGrayUniversal = UIColor(hexString: "625C5C")
+    static let yaRedUniversal = UIColor(hexString: "F56B6C")
+    static let yaBackgroundUniversal = UIColor(hexString: "1A1B22").withAlphaComponent(0.5)
+    static let yaGreenUniversal = UIColor(hexString: "1C9F00")
+    static let yaBlueUniversal = UIColor(hexString: "0A84FF")
+    static let yaBlackUniversal = UIColor(hexString: "1A1B22")
+    static let yaWhiteUniversal = UIColor(hexString: "FFFFFF")
+    static let yaYellowUniversal = UIColor(hexString: "FEEF0D")
 
     private static let yaBlackLight = UIColor(hexString: "1A1B22")
     private static let yaBlackDark = UIColor.white
@@ -65,6 +78,12 @@ extension UIColor {
     }
 
     static let closeButton = UIColor { traits in
+        return traits.userInterfaceStyle == .dark
+        ? .yaBlackDark
+        : .yaBlackLight
+    }
+
+    static let textColor = UIColor { traits in
         return traits.userInterfaceStyle == .dark
         ? .yaBlackDark
         : .yaBlackLight

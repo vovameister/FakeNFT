@@ -52,7 +52,7 @@ final class ProfileService: PropfileServiceProtocol, EditProfileServiceProtocol 
         }
     }
     func putProfile(name: String, description: String, website: String, completion: @escaping ProfileCompletion) {
-        let request = ProfilePutRequest(name: name,
+        let request = ProfilePutRequestWithBody(name: name,
                                         description: description,
                                         website: website,
                                         likes: storage.getProfile()?.likes ?? []

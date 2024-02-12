@@ -6,7 +6,6 @@
 //
 
 import Foundation
-typealias LikesCompletion = (Result<Likes, Error>) -> Void
 typealias MyNFTCompletion = (Result<MyNFT, Error>) -> Void
 
 final class MyNFTService {
