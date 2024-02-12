@@ -36,11 +36,6 @@ final class TabBarController: UITabBarController {
     }
     
     func hideTabBar() {
-//        self.tabBar.isHidden = true
-//        self.tabBar.isUserInteractionEnabled = false
-//        self.viewControllers = []
-//        self.reloadInputViews()
-//        self.tabBarItem.isEnabled = false
         view.removeFromSuperview()
     }
 }

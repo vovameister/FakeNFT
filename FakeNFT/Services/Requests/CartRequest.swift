@@ -17,9 +17,6 @@ struct CartRequest: NetworkRequest {
 }
 
 struct CartPutRequest: NetworkRequest {
-
-//    let id: String
-//    let nfts: [String]
     
     var endpoint: URL? {
         URL(string: "\(RequestConstants.baseURL)/api/v1/orders/1")

@@ -33,11 +33,7 @@ final class CartService: CartServiceProtocol {
     
     func removeFromCart(id: String, nfts: [Nft], completion: @escaping (Result<CartModel, Error>) -> Void) {
         let nftsString = nfts.map{ $0.id }
-        print(nftsString)
         let request = CartPutRequest(id: id, nfts: nftsString)
-        print("request \(String(describing: request.endpoint))")
-        print("request \(String(describing: request.dto))")
-        print("request \(request.httpMethod)")
         networkClient.send(request: request, type: CartModel.self, onResponse: completion)
     }
     
