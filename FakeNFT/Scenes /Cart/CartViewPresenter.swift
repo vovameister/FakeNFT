@@ -11,6 +11,7 @@ protocol CartViewPresenterProtocol {
     func viewDidLoad()
     func sortNFTs()
     func didTapCellDeleteButton(with id: String)
+    func cleanCart()
 }
 
 enum CartDetailState {
@@ -45,6 +46,8 @@ final class CartViewPresenter: CartViewPresenterProtocol {
             if let sortOption = SortOption(rawValue: savedSortOption) {
                 self.choosenSortOption = sortOption
             }
+        } else {
+            self.choosenSortOption = SortOption.name
         }
     }
     
@@ -73,7 +76,7 @@ final class CartViewPresenter: CartViewPresenterProtocol {
             $0.id == idToDelete
         })
         state = nftsInCart.isEmpty ? .empty:.data(nftsInCart)
-        service.removeFromCart(id: "1", nfts: nftsInCart){_ in }
+        service.removeFromCart(id: idToDelete, nfts: nftsInCart){_ in }
     }
     
     private func stateDidChanged() {
@@ -89,12 +92,15 @@ final class CartViewPresenter: CartViewPresenterProtocol {
             self.nftsInCart = nfts
             view?.setPrice(price: getTotalPrice(with: nfts))
             view?.setCount(count: getTotalCount(with: nfts))
+            view?.enablePayButton()
+            sort(with: .name)
         case .failed(let error):
             let errorModel = makeErrorModel(error)
             view?.hideLoading()
             view?.showError(errorModel)
             view?.showDeleteWarning(show: false)
         case .empty:
+            view?.hideLoading()
             view?.isCartEmpty()
             view?.showDeleteWarning(show: false)
         case .delete:
@@ -107,7 +113,11 @@ final class CartViewPresenter: CartViewPresenterProtocol {
             guard let self = self else { return }
             switch result {
             case .success(let nfts):
-                self.state = .data(nfts)
+                if nfts.count > 0 {
+                    self.state = .data(nfts)
+                } else {
+                    self.state = .empty
+                }
             case .failure(let error):
                 self.state = .failed(error)
             }
@@ -163,5 +173,16 @@ final class CartViewPresenter: CartViewPresenterProtocol {
     
     private func getTotalCount(with nfts: [Nft]) -> Int {
         return nfts.count
+    }
+    
+    func cleanCart() {
+        var nftArray = [String]()
+        nftsInCart.forEach { nft in
+            if !nftArray.contains(nft.id) {
+                nftArray.append(nft.id)
+            }
+        }
+        service.removeFromCart(id: "1", nfts: []){_ in }
+        state = .empty
     }
 }

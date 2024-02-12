@@ -8,9 +8,15 @@
 import UIKit
 import Kingfisher
 
+protocol PaymentViewCellDelegate: AnyObject {
+    func didSelectCurrency(with id: String)
+    func didDeselectCurrency()
+}
+
 final class PaymentViewCell: UICollectionViewCell {
     
     static let reuseId = "paymentCell"
+    weak var delegate: PaymentViewCellDelegate?
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
@@ -75,12 +81,15 @@ final class PaymentViewCell: UICollectionViewCell {
         currencyImageView.kf.setImage(with: URL(string: currency.image), placeholder: UIImage(named: "Vector"))
     }
     
-    func didSelectCell() {
-        layer.borderColor = UIColor(named: "YP Black")?.cgColor
+    func didSelectCell(with id: String) {
+        layer.borderColor = UIColor.ypBlack?.cgColor
         layer.borderWidth = 1
+        delegate?.didSelectCurrency(with: id)
     }
     
     func didDeselectCell() {
         layer.borderWidth = 0
+        delegate?.didDeselectCurrency()
     }
 }
+

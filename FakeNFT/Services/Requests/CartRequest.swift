@@ -18,18 +18,26 @@ struct CartRequest: NetworkRequest {
 
 struct CartPutRequest: NetworkRequest {
 
-    let id: String
-    let nfts: [String]
+//    let id: String
+//    let nfts: [String]
     
     var endpoint: URL? {
-        URL(string: "\(RequestConstants.baseURL)/api/v1/orders/\(id)")
+        URL(string: "\(RequestConstants.baseURL)/api/v1/orders/1")
     }
     
     var httpMethod: HttpMethod {
         .put
     }
     
-    var dto: Encodable?{
-        CartModel(nfts: nfts, id: id)
+    var dto: Encodable?
+    var body: Data?
+    init(id: String, nfts: [String]) {
+        var nftsToPUT = ""
+        nfts.enumerated().forEach {  (index, nft) in
+            nftsToPUT += "nfts=\(nft)&"
+        }
+        nftsToPUT += "id=\(id)"
+        self.body = nftsToPUT.data(using: .utf8)
+        self.dto = CartModel(nfts: nfts, id: id)
     }
 }

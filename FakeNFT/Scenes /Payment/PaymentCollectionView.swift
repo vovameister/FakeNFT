@@ -9,6 +9,7 @@ import UIKit
 
 final class PaymentCollectionView: UICollectionView {
     private var currencies: [CurrencyModel] = []
+    weak var paymentDelegate: PaymentViewControllerDelegate?
     
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -27,6 +28,7 @@ final class PaymentCollectionView: UICollectionView {
         super.init(frame: .zero, collectionViewLayout: layout)
         delegate = self
         dataSource = self
+        backgroundColor = UIColor.ypWhite
         register(PaymentViewCell.self, forCellWithReuseIdentifier: PaymentViewCell.reuseId)
         translatesAutoresizingMaskIntoConstraints = false
     }
@@ -71,11 +73,23 @@ extension PaymentCollectionView: UICollectionViewDataSource {
 extension PaymentCollectionView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = cellForItem(at: indexPath) as? PaymentViewCell
-        cell?.didSelectCell()
+        cell?.delegate = self
+        cell?.didSelectCell(with: currencies[indexPath.row].id)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let cell = cellForItem(at: indexPath) as? PaymentViewCell
+        cell?.delegate = self
         cell?.didDeselectCell()
+    }
+}
+
+extension PaymentCollectionView: PaymentViewCellDelegate {
+    func didSelectCurrency(with id: String) {
+        paymentDelegate?.didSelectCurrency(with: id)
+    }
+    
+    func didDeselectCurrency() {
+        paymentDelegate?.didDeselectCurrency()
     }
 }

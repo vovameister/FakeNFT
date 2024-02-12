@@ -13,6 +13,7 @@ protocol CartView: AnyObject, LoadingView, ErrorView, CartSortView {
     func isCartEmpty()
     func setCount(count: Int)
     func showDeleteWarning(show: Bool)
+    func enablePayButton()
 }
 
 protocol CartViewControllerDelegate: AnyObject {
@@ -49,6 +50,7 @@ final class CartViewController: UIViewController {
         button.setTitleColor(UIColor.ypWhite, for: .normal)
         button.backgroundColor = UIColor.ypBlack
         button.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
+        button.isEnabled = false
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -75,7 +77,8 @@ final class CartViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = UIColor.ypLightGray
         view.layer.cornerRadius = 12
-        view.layer.masksToBounds = true
+        view.clipsToBounds = true
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -92,7 +95,7 @@ final class CartViewController: UIViewController {
     
     private lazy var blurView: UIVisualEffectView = {
         let view = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
-        view.frame = UIScreen.main.bounds
+        view.frame = UIScreen.main.accessibilityFrame
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -154,9 +157,7 @@ final class CartViewController: UIViewController {
         prepareView()
         presenter.view = self
         presenter.viewDidLoad()
-        
         cartTableView.cartDelegate = self
-        
     }
     
     private func prepareView() {
@@ -241,6 +242,7 @@ final class CartViewController: UIViewController {
         let paymentViewController = PaymentViewController(presenter: paymentPresenter)
         paymentPresenter.view = paymentViewController
         paymentViewController.modalPresentationStyle = .fullScreen
+        paymentViewController.delegate = self
         present(paymentViewController, animated: true)
         
     }
@@ -287,6 +289,13 @@ extension CartViewController: CartView {
         deleteButton.isHidden = !show
         returnButton.isHidden = !show
         deleteAcceptLabel.isHidden = !show
+        self.navigationController?.isNavigationBarHidden = show
+        self.navigationController?.isToolbarHidden = show
+        tabBarController?.tabBar.isHidden = show
+    }
+    
+    func enablePayButton() {
+        payButton.isEnabled = true
     }
 }
 
@@ -294,5 +303,11 @@ extension CartViewController: CartViewControllerDelegate {
     func didTapCellDeleteButton(with id: String, with image: UIImage) {
         presenter.didTapCellDeleteButton(with: id)
         nftImageView.image = image
+    }
+}
+
+extension CartViewController: PaymentSuccessDelegate {
+    func cleanCart() {
+        presenter.cleanCart()
     }
 }

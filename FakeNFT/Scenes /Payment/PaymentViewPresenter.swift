@@ -9,7 +9,7 @@ import UIKit
 
 protocol PaymentViewPresenterProtocol {
     func viewDidLoad()
-    func didTapPayButton()
+    func didTapPayButton(currencyID: String)
 }
 
 enum PaymentError: Error {
@@ -82,13 +82,14 @@ final class PaymentViewPresenter: PaymentViewPresenterProtocol {
         }
     }
     
-    func didTapPayButton() {
-        service.getPaymentResult(with: "1" ){ [weak self] result in
+    func didTapPayButton(currencyID: String) {
+        service.getPaymentResult(with: currencyID){ [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let paymentResult):
                 if paymentResult.success {
                     view?.showPaymentResultView()
+                    view?.cleanCart()
                 } else {
                     let errorModel = makeErrorModel(PaymentError.failedPayment)
                     view?.showError(errorModel)

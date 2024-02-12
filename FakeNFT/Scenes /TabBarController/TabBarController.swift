@@ -2,7 +2,7 @@ import UIKit
 
 final class TabBarController: UITabBarController {
 
-    var servicesAssembly: ServicesAssembly!
+    var servicesAssembly: ServicesAssembly?
 
     private let catalogTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.catalog", comment: ""),
@@ -14,7 +14,10 @@ final class TabBarController: UITabBarController {
         super.viewDidLoad()
 
         let catalogController = TestCatalogViewController(
-            servicesAssembly: servicesAssembly
+            servicesAssembly: servicesAssembly ?? ServicesAssembly(
+                networkClient: DefaultNetworkClient(),
+                nftStorage: NftStorageImpl()
+            )
         )
         
         let cartTabBarItem = UITabBarItem(
@@ -30,5 +33,14 @@ final class TabBarController: UITabBarController {
         viewControllers = [catalogController, cartController]
 
         view.backgroundColor = .systemBackground
+    }
+    
+    func hideTabBar() {
+//        self.tabBar.isHidden = true
+//        self.tabBar.isUserInteractionEnabled = false
+//        self.viewControllers = []
+//        self.reloadInputViews()
+//        self.tabBarItem.isEnabled = false
+        view.removeFromSuperview()
     }
 }

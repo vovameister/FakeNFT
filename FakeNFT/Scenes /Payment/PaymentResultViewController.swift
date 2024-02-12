@@ -82,6 +82,13 @@ final class PaymentResultViewController: UIViewController {
     }
     
     @objc private func backButtonTapped() {
-        dismiss(animated: true)
+        let tabBarController = TabBarController()
+        tabBarController.servicesAssembly = ServicesAssembly(
+            networkClient: DefaultNetworkClient(),
+            nftStorage: NftStorageImpl()
+        )
+        tabBarController.selectedIndex = 0
+        tabBarController.modalPresentationStyle = .fullScreen
+        present(tabBarController, animated: true)
     }
 }

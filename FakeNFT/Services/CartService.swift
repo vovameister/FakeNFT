@@ -33,8 +33,11 @@ final class CartService: CartServiceProtocol {
     
     func removeFromCart(id: String, nfts: [Nft], completion: @escaping (Result<CartModel, Error>) -> Void) {
         let nftsString = nfts.map{ $0.id }
+        print(nftsString)
         let request = CartPutRequest(id: id, nfts: nftsString)
-
+        print("request \(String(describing: request.endpoint))")
+        print("request \(String(describing: request.dto))")
+        print("request \(request.httpMethod)")
         networkClient.send(request: request, type: CartModel.self, onResponse: completion)
     }
     
@@ -44,24 +47,27 @@ final class CartService: CartServiceProtocol {
             switch result{
             case .success(let cartModel):
                 var nfts: [Nft] = []
-                cartModel.nfts.forEach{
-                    self.loadNft(id: $0){ result in
-                        switch result{
-                        case .success(let nft):
-                            nfts.append(nft)
-                            if nfts.count == cartModel.nfts.count {
-                                completion(.success(nfts))
+                var cartModelNFTs = cartModel.nfts.count
+                if cartModelNFTs > 0 {
+                    for id in cartModel.nfts {
+                        self.loadNft(id: id) { result1 in
+                            switch result1 {
+                            case .success(let nft):
+                                nfts.append(nft)
+                                if nfts.count == cartModelNFTs {
+                                    completion(.success(nfts))
+                                }
+                            case .failure(let error):
+                                completion(.failure(error))
                             }
-                        case .failure(let error):
-                            completion(.failure(error))
                         }
                     }
+                } else {
+                    completion(.success([]))
                 }
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
-    
-    
 }

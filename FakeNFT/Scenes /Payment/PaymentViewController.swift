@@ -10,6 +10,16 @@ import UIKit
 protocol PaymentView: AnyObject, ErrorView, LoadingView {
     func setCollectionView(currencies: [CurrencyModel])
     func showPaymentResultView()
+    func cleanCart()
+}
+
+protocol PaymentViewControllerDelegate: AnyObject {
+    func didSelectCurrency(with currencyID: String)
+    func didDeselectCurrency()
+}
+
+protocol PaymentSuccessDelegate: AnyObject {
+    func cleanCart()
 }
 
 final class PaymentViewController: UIViewController {
@@ -24,12 +34,16 @@ final class PaymentViewController: UIViewController {
     }
     
     private let presenter: PaymentViewPresenterProtocol
+    private var selectedCurrencyID: String = ""
+    let paymentViewCell = PaymentViewCell()
+    weak var delegate: PaymentSuccessDelegate?
     
     private lazy var grayBackground: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.ypLightGray
         view.layer.cornerRadius = 12
-        view.layer.masksToBounds = true
+        view.clipsToBounds = true
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -42,6 +56,7 @@ final class PaymentViewController: UIViewController {
         button.setTitleColor(UIColor.ypWhite, for: .normal)
         button.backgroundColor = UIColor.ypBlack
         button.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
+        button.isEnabled = false
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -92,6 +107,7 @@ final class PaymentViewController: UIViewController {
         super.viewDidLoad()
         prepareView()
         presenter.viewDidLoad()
+        paymentCollectionView.paymentDelegate = self
     }
     
     private func prepareView() {
@@ -142,7 +158,7 @@ final class PaymentViewController: UIViewController {
     }
     
     @objc private func payButtonTapped() {
-        presenter.didTapPayButton()
+        presenter.didTapPayButton(currencyID: selectedCurrencyID)
     }
     
     @objc private func backButtonTapped() {
@@ -154,6 +170,10 @@ final class PaymentViewController: UIViewController {
         let webView = WebViewViewController(link: url)
         webView.modalPresentationStyle = .fullScreen
         present(webView, animated: true)
+    }
+    
+    func cleanCart() {
+        delegate?.cleanCart()
     }
 }
 
@@ -168,3 +188,16 @@ extension PaymentViewController: PaymentView {
         present(paymentResult, animated: true)
     }
 }
+
+extension PaymentViewController: PaymentViewControllerDelegate {
+    func didSelectCurrency(with currencyID: String) {
+        payButton.isEnabled = true
+        selectedCurrencyID = currencyID
+    }
+    
+    func didDeselectCurrency() {
+        payButton.isEnabled = false
+        selectedCurrencyID = ""
+    }
+}
+
