@@ -1,5 +1,5 @@
 import UIKit
-
+// TODO: - Удалить тестовый экран каталога
 final class TestCatalogViewController: UIViewController {
 
     let servicesAssembly: ServicesAssembly

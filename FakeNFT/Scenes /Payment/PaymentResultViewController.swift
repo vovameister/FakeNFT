@@ -85,9 +85,10 @@ final class PaymentResultViewController: UIViewController {
         let tabBarController = TabBarController()
         tabBarController.servicesAssembly = ServicesAssembly(
             networkClient: DefaultNetworkClient(),
-            nftStorage: NftStorageImpl()
+            nftStorage: NftStorageImpl(),
+            usersStorage: UsersStorage()
         )
-        tabBarController.selectedIndex = 0
+        tabBarController.selectedIndex = 1
         tabBarController.modalPresentationStyle = .fullScreen
         present(tabBarController, animated: true)
     }

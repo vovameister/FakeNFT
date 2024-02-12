@@ -158,6 +158,7 @@ final class CartViewController: UIViewController {
         presenter.view = self
         presenter.viewDidLoad()
         cartTableView.cartDelegate = self
+        cartTableView.reloadData()
     }
     
     private func prepareView() {

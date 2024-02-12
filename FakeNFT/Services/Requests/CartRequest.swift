@@ -35,6 +35,6 @@ struct CartPutRequest: NetworkRequest {
         }
         nftsToPUT += "id=\(id)"
         self.body = nftsToPUT.data(using: .utf8)
-        self.dto = CartModel(nfts: nfts, id: id)
+//        self.dto = CartModel(nfts: nfts, id: id)
     }
 }
