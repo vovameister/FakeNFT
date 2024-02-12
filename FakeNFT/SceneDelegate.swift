@@ -1,15 +1,23 @@
 import UIKit
 
-final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     let servicesAssembly = ServicesAssembly(
         networkClient: DefaultNetworkClient(),
-        nftStorage: NftStorageImpl()
+        nftStorage: NftStorageImpl(),
+        usersStorage: UsersStorage()
     )
 
     func scene(_: UIScene, willConnectTo _: UISceneSession, options _: UIScene.ConnectionOptions) {
         let tabBarController = window?.rootViewController as? TabBarController
         tabBarController?.servicesAssembly = servicesAssembly
+
+        let defaults = UserDefaults.standard
+
+        if !defaults.bool(forKey: "hasLaunchedBefore") {
+            defaults.set(true, forKey: "hasLaunchedBefore")
+            defaults.set(0, forKey: "savedFilter")
+        }
     }
-}
+ }
